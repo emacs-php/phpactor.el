@@ -28,8 +28,70 @@
 ;; phpactor is refactoring tool for PHP.  https://github.com/phpactor/phpactor
 
 ;;; Code:
+(require 'php-project)
+
+;; Variables
+;;;###autoload
+(progn
+  (defvar phpactor-executable nil
+    "Path to `phpactor' executable file.")
+  (make-variable-buffer-local 'phpactor-working-dir)
+  #'(lambda (v) (if (consp v)
+                    (and (eq 'root (car v)) (stringp (cdr v)))
+                  (null v) (stringp v))))
+;;;###autoload
+(progn
+  (defvar phpactor-working-dir nil
+    "Path to working directory for phpactor.")
+  (make-variable-buffer-local 'phpactor-working-dir)
+  #'(lambda (v) (if (consp v)
+                    (and (eq 'root (car v)) (stringp (cdr v)))
+                  (null v) (stringp v))))
 
+(defvar phpactor--buffer-name " *phpactor*")
 
+(defconst phpactor-command-name "phpactor")
+
+;; Special variables
+(defvar phpactor--execute-async nil)
+
+(defun phpactor-find-executable ()
+  "Return phpactor command or path to executable."
+  (or phpactor-executable
+      (executable-find phpactor-command-name)))
+
+(defun phpactor-get-working-dir ()
+  "Return working directory of phpactor."
+  (expand-file-name
+   (or phpactor-working-dir (php-project-get-root-dir))))
+
+(defun phpactor--make-command-string (sub-command &rest args)
+  "Return command string by `SUB-COMMAND' and `ARGS'."
+  (declare (indent 1))
+  (mapconcat 'shell-quote-argument
+             (cons (phpactor-find-executable)
+                   (cons sub-command args))
+             " "))
+
+(defun phpactor--rpc (action arguments)
+  "Execute phpactor `ACTION' subcommand with `ARGUMENTS'."
+  (let ((json (json-encode (list :action action
+                                 :parameters arguments)))
+        (cmd  (phpactor--make-command-string "rpc"
+                (format "--working-dir=%s" (phpactor-get-working-dir)))))
+    (with-current-buffer (get-buffer-create phpactor--buffer-name)
+      (erase-buffer)
+      (insert json)
+      (shell-command-on-region (point-min) (point-max) cmd (current-buffer) t)
+      (current-buffer))))
+
+;;;###autoload
+(defun phpactor-rpc-echo (message)
+  "Execute phpactor RPC echo command, say `MESSAGE'."
+  (interactive "MInput Message: ")
+  (with-current-buffer (phpactor--rpc "echo" (list :message message))
+    (message "Message from phpactor: %s"
+             (buffer-substring-no-properties (point-min) (point-max)))))
 
 (provide 'phpactor)
 ;;; phpactor.el ends here
