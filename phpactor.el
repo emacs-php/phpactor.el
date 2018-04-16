@@ -49,7 +49,7 @@
                     (and (eq 'root (car v)) (stringp (cdr v)))
                   (null v) (stringp v))))
 
-(defvar phpactor--buffer-name " *phpactor*")
+(defvar phpactor--buffer-name "*Phpactor*")
 
 (defconst phpactor-command-name "phpactor")
 
@@ -82,7 +82,8 @@
                 (format "--working-dir=%s" (phpactor-get-working-dir))))
         (json-object-type 'plist)
         (json-array-type 'list))
-    (with-temp-buffer
+    (with-current-buffer (get-buffer-create " *Phpactor Output*")
+      (erase-buffer)
       (insert json)
       (shell-command-on-region (point-min) (point-max) cmd (current-buffer) t)
       (goto-char (point-min))
