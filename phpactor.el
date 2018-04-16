@@ -1,4 +1,4 @@
-;;; phpactor.el --- Interface to phpactor            -*- lexical-binding: t; -*-
+;;; phpactor.el --- Interface to Phpactor            -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2018  Friends of Emacs-PHP development
 
@@ -25,7 +25,8 @@
 
 ;;; Commentary:
 
-;; phpactor is refactoring tool for PHP.  https://github.com/phpactor/phpactor
+;; Phpactor is an intelligent code-completion and refactoring tool for PHP.
+;; https://github.com/phpactor/phpactor
 
 ;;; Code:
 (require 'php-project)
@@ -42,7 +43,7 @@
 ;;;###autoload
 (progn
   (defvar phpactor-working-dir nil
-    "Path to working directory for phpactor.")
+    "Path to working directory for Phpactor.")
   (make-variable-buffer-local 'phpactor-working-dir)
   #'(lambda (v) (if (consp v)
                     (and (eq 'root (car v)) (stringp (cdr v)))
@@ -56,12 +57,12 @@
 (defvar phpactor--execute-async nil)
 
 (defun phpactor-find-executable ()
-  "Return phpactor command or path to executable."
+  "Return Phpactor command or path to executable."
   (or phpactor-executable
       (executable-find phpactor-command-name)))
 
 (defun phpactor-get-working-dir ()
-  "Return working directory of phpactor."
+  "Return working directory of Phpactor."
   (expand-file-name
    (or phpactor-working-dir (php-project-get-root-dir))))
 
@@ -74,7 +75,7 @@
              " "))
 
 (defun phpactor--rpc (action arguments)
-  "Execute phpactor `ACTION' subcommand with `ARGUMENTS'."
+  "Execute Phpactor `ACTION' subcommand with `ARGUMENTS'."
   (let ((json (json-encode (list :action action
                                  :parameters arguments)))
         (cmd  (phpactor--make-command-string "rpc"
@@ -89,14 +90,14 @@
 
 ;;;###autoload
 (defun phpactor-echo (message)
-  "Execute phpactor RPC echo command, say `MESSAGE'."
+  "Execute Phpactor RPC echo command, say `MESSAGE'."
   (interactive "MInput Message: ")
-  (message "Message from phpactor: %s"
+  (message "Message from Phpactor: %s"
            (phpactor--rpc "echo" (list :message message))))
 
 ;;;###autoload
 (defun phpactor-status ()
-  "Execute phpactor RPC echo command, say `MESSAGE'."
+  "Execute Phpactor RPC status command, and pop to buffer."
   (interactive)
   (let ((response (phpactor--rpc "status" []))
         (buffer (get-buffer-create phpactor--buffer-name)))
