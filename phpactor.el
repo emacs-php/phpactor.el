@@ -78,20 +78,31 @@
   (let ((json (json-encode (list :action action
                                  :parameters arguments)))
         (cmd  (phpactor--make-command-string "rpc"
-                (format "--working-dir=%s" (phpactor-get-working-dir)))))
-    (with-current-buffer (get-buffer-create phpactor--buffer-name)
-      (erase-buffer)
+                (format "--working-dir=%s" (phpactor-get-working-dir))))
+        (json-object-type 'plist)
+        (json-array-type 'list))
+    (with-temp-buffer
       (insert json)
       (shell-command-on-region (point-min) (point-max) cmd (current-buffer) t)
-      (current-buffer))))
+      (goto-char (point-min))
+      (json-read-object))))
 
 ;;;###autoload
-(defun phpactor-rpc-echo (message)
+(defun phpactor-echo (message)
   "Execute phpactor RPC echo command, say `MESSAGE'."
   (interactive "MInput Message: ")
-  (with-current-buffer (phpactor--rpc "echo" (list :message message))
-    (message "Message from phpactor: %s"
-             (buffer-substring-no-properties (point-min) (point-max)))))
+  (message "Message from phpactor: %s"
+           (phpactor--rpc "echo" (list :message message))))
+
+;;;###autoload
+(defun phpactor-status ()
+  "Execute phpactor RPC echo command, say `MESSAGE'."
+  (interactive)
+  (let ((response (phpactor--rpc "status" []))
+        (buffer (get-buffer-create phpactor--buffer-name)))
+    (with-current-buffer buffer
+      (insert (plist-get (plist-get response :parameters) :message)))
+    (pop-to-buffer buffer)))
 
 (provide 'phpactor)
 ;;; phpactor.el ends here
