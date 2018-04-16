@@ -29,6 +29,7 @@
 ;; https://github.com/phpactor/phpactor
 
 ;;; Code:
+(require 'xref nil t)
 (require 'php-project)
 
 ;; Variables
@@ -105,6 +106,24 @@
     (with-current-buffer buffer
       (insert (plist-get (plist-get response :parameters) :message)))
     (pop-to-buffer buffer)))
+
+(defun phpactor-goto-definition ()
+  "Execute Phpactor RPC goto_definition command."
+  (interactive)
+  (let* ((arguments (list :source (buffer-substring-no-properties
+                                   (point-min) (point-max))
+                          :offset (1- (point))
+                          :path   buffer-file-name))
+         (response (plist-get (phpactor--rpc "goto_definition" arguments)
+                              :parameters))
+         (path (plist-get response :path))
+         (offset (plist-get response :offset)))
+    (if (not (and path offset))
+        (error "Definifion not found")
+      (find-file path)
+      (goto-char (1+ offset))
+      (when (featurep 'xref)
+        (xref-push-marker-stack)))))
 
 (provide 'phpactor)
 ;;; phpactor.el ends here
