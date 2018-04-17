@@ -37,7 +37,7 @@
 (progn
   (defvar phpactor-executable nil
     "Path to `phpactor' executable file.")
-  (make-variable-buffer-local 'phpactor-working-dir)
+  (make-variable-buffer-local 'phpactor-executable)
   #'(lambda (v) (if (consp v)
                     (and (eq 'root (car v)) (stringp (cdr v)))
                   (null v) (stringp v))))
