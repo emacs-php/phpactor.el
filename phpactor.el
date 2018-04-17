@@ -29,7 +29,7 @@
 ;; https://github.com/phpactor/phpactor
 
 ;;; Code:
-(require 'xref nil t)
+(require 'phpactor-action)
 (require 'php-project)
 
 ;; Variables
@@ -96,36 +96,24 @@
 (defun phpactor-echo (message)
   "Execute Phpactor RPC echo command, say `MESSAGE'."
   (interactive "MInput Message: ")
-  (message "Message from Phpactor: %s"
-           (phpactor--rpc "echo" (list :message message))))
+  (let ((phpactor-action--message-format "Message from Phpactor: %s"))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "echo" (list :message message)))))
 
 ;;;###autoload
 (defun phpactor-status ()
   "Execute Phpactor RPC status command, and pop to buffer."
   (interactive)
-  (let ((response (phpactor--rpc "status" []))
-        (buffer (get-buffer-create phpactor--buffer-name)))
-    (with-current-buffer buffer
-      (insert (plist-get (plist-get response :parameters) :message)))
-    (pop-to-buffer buffer)))
+  (apply #'phpactor-action-dispatch (phpactor--rpc "status" [])))
 
+;;;###autoload
 (defun phpactor-goto-definition ()
   "Execute Phpactor RPC goto_definition command."
   (interactive)
-  (let* ((arguments (list :source (buffer-substring-no-properties
-                                   (point-min) (point-max))
-                          :offset (1- (point))
-                          :path   buffer-file-name))
-         (response (plist-get (phpactor--rpc "goto_definition" arguments)
-                              :parameters))
-         (path (plist-get response :path))
-         (offset (plist-get response :offset)))
-    (if (not (and path offset))
-        (error "Definifion not found")
-      (find-file path)
-      (goto-char (1+ offset))
-      (when (featurep 'xref)
-        (xref-push-marker-stack)))))
+  (let ((arguments (list :source (buffer-substring-no-properties
+                                  (point-min) (point-max))
+                         :offset (1- (point))
+                         :path   buffer-file-name)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "goto_definition" arguments))))
 
 (provide 'phpactor)
 ;;; phpactor.el ends here
