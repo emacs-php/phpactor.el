@@ -38,17 +38,19 @@
   (defvar phpactor-executable nil
     "Path to `phpactor' executable file.")
   (make-variable-buffer-local 'phpactor-executable)
-  #'(lambda (v) (if (consp v)
-                    (and (eq 'root (car v)) (stringp (cdr v)))
-                  (null v) (stringp v))))
+  (put 'phpactor-executable 'safe-local-variable
+       #'(lambda (v) (if (consp v)
+                         (and (eq 'root (car v)) (stringp (cdr v)))
+                       (null v) (stringp v)))))
 ;;;###autoload
 (progn
   (defvar phpactor-working-dir nil
     "Path to working directory for Phpactor.")
   (make-variable-buffer-local 'phpactor-working-dir)
-  #'(lambda (v) (if (consp v)
-                    (and (eq 'root (car v)) (stringp (cdr v)))
-                  (null v) (stringp v))))
+  (put 'phpactor-executable 'safe-local-variable
+       #'(lambda (v) (if (consp v)
+                         (and (eq 'root (car v)) (stringp (cdr v)))
+                       (null v) (stringp v)))))
 
 (defvar phpactor--buffer-name "*Phpactor*")
 
