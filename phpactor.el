@@ -29,6 +29,7 @@
 ;; https://github.com/phpactor/phpactor
 
 ;;; Code:
+(require 'json)
 (require 'phpactor-action)
 (require 'php-project)
 
