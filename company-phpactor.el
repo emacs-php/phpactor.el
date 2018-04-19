@@ -1,4 +1,4 @@
-;;; company-phpactor.el --- Phpactor backend for company -*- lexical-binding t; -*-
+;;; company-phpactor.el --- company-mode backend for Phpactor -*- lexical-binding t; -*-
 
 ;; Copyright (C) 2018  Friends of Emacs-PHP development
 
@@ -23,10 +23,16 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+;;; Commentary:
+
+;; Company integration for Phpactor.
+
+;;; Code:
 (require 'company)
 (require 'phpactor)
 
 (defun company-phpactor (command &optional arg &rest ignored)
+  "`company-mode' completion backend for Phpactor."
   (interactive (list 'interactive))
   (cl-case command
     (interactive (company-begin-backend 'company-phpactor))
