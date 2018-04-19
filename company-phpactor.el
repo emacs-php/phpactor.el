@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 2018  Friends of Emacs-PHP development
 
-;; Author: MARTIN tang <martin.tang365@gmail.com>
+;; Author: Martin Tang <martin.tang365@gmail.com>
 ;; Created: 18 Apr 2018
 ;; Version: 0.0.1
 ;; Keywords: tools, php
