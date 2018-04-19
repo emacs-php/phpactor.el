@@ -6,6 +6,8 @@
 
 ## For developers
 
+**NOTICE**: `phpactor.el` and `phpactor-action.el` are under development.  These APIs are subject to change.
+
 ### Requirements
 
  * GNU Emacs 24.3+
