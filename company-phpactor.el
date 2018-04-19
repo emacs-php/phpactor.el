@@ -25,14 +25,14 @@
 
 ;;; Commentary:
 
-;; Company integration for Phactor.
+;; Company integration for Phpactor.
 
 ;;; Code:
 (require 'company)
 (require 'phpactor)
 
 (defun company-phpactor (command &optional arg &rest ignored)
-  "`company-mode' completion backend for Phactor."
+  "`company-mode' completion backend for Phpactor."
   (interactive (list 'interactive))
   (cl-case command
     (interactive (company-begin-backend 'company-phpactor))
