@@ -1,3 +1,5 @@
+/*.rej
 /.cask
 /composer.lock
+/flycheck*
 /vendor
