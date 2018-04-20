@@ -139,11 +139,49 @@
   "Signal an error, noticed from Phpactor by `ARGS'."
   (cons (if (fboundp 'user-error) #'user-error #'error)
         args))
+
+(cl-defun phpactor-action--input-parameters (&key default label type)
+  "Request user input by parameters."
+  (let ((use-dialog-box nil))
+    (cl-case (intern type)
+      (file (read-file-name label nil default))
+      (text (read-string label default))
+      (t (error "Unknown input type %s" type)))))
+
+(defun phpactor-action--collect-inputs (inputs)
+  "Request input by `INPUTS' and return alist which collected the variables."
+  (cl-loop for i in inputs
+           for name = (intern (concat ":" (plist-get i :name)))
+           for parameters = (plist-get i :parameters)
+           append (list name (apply #'phpactor-action--input-parameters parameters))))
+
+(defun phpactor-action--fill-vars (parameters input-vars)
+  "Fill variables `PARAMETERS' by `INPUT-VARS'."
+  (message "fill-vars %s %s" parameters input-vars)
+  (cl-loop for (key value) on parameters by #'cddr
+           do (message "key:%s value:%s input:%s"
+                       key value (plist-get input-vars key))
+           unless value
+           do (setq parameters (plist-put parameters key
+                                          (plist-get input-vars key))))
+  parameters)
+
+(cl-defun phpactor-action-error (&key message)
+  "Echo error message from Phpactor."
+  (phpactor-action-information :message message)
+  (error message))
 
 ;; Action functions:
 (cl-defun phpactor-action-echo (&key message)
   "Echo message from Phpactor."
   (message phpactor-action--message-format message))
+
+(cl-defun phpactor-action-input-callback (&key callback inputs)
+  "Require `INPUTS' and dispatch `CALLBACK'."
+  (let* ((input-vars (phpactor-action--collect-inputs inputs))
+         (parameters (phpactor-action--fill-vars (plist-get callback :parameters) input-vars)))
+    (message "%s" callback)
+    (apply #'phpactor-action-dispatch (phpactor--rpc (plist-get callback :action) parameters))))
 
 (cl-defun phpactor-action-information (&key message)
   "Pop information buffer from Phpactor."
