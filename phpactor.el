@@ -143,7 +143,7 @@
 (cl-defun phpactor-action--input-parameters (&key default label type)
   "Request user input by parameters."
   (let ((use-dialog-box nil))
-    (cl-case (intern type)
+    (cl-case (if type (intern type) 'text)
       (file (read-file-name label nil default))
       (text (read-string label default))
       (t (error "Unknown input type %s" type)))))
@@ -169,7 +169,7 @@
 (cl-defun phpactor-action-error (&key message)
   "Echo error message from Phpactor."
   (phpactor-action-information :message message)
-  (error message))
+  (user-error message))
 
 ;; Action functions:
 (cl-defun phpactor-action-echo (&key message)
@@ -212,6 +212,20 @@
       (error "Respond unknown/unimplemented action: %s" action))))
 
 ;; Phpactor commands
+
+;;;###autoload
+(defun phpactor-copy-class ()
+  "Execute Phpactor RPC copy_class command."
+  (interactive)
+  (let ((arguments (list :source_path (expand-file-name buffer-file-name))))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "copy_class" arguments))))
+
+;;;###autoload
+(defun phpactor-move-class ()
+  "Execute Phpactor RPC move_class command."
+  (interactive)
+  (let ((arguments (list :source_path (expand-file-name buffer-file-name))))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "move_class" arguments))))
 
 ;;;###autoload
 (defun phpactor-echo (message)
