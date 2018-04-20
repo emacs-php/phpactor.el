@@ -2,7 +2,6 @@
 (source melpa)
 
 (package-file "phpactor.el")
-(package-file "phpactor-action.el")
 (package-file "company-phpactor.el")
 
 (development
