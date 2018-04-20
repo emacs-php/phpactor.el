@@ -38,7 +38,7 @@
     (interactive (company-begin-backend 'company-phpactor))
     (prefix (company-grab-symbol))
     (candidates (let* ((offset (point))
-                       (response (phpactor--rpc "complete" (list :source (buffer-substring 1 offset) :offset offset))))
+                       (response (phpactor--rpc "complete" (list :source (buffer-substring-no-properties 1 offset) :offset offset))))
                   (mapcar (lambda (x) (plist-get x :name)) (plist-get (plist-get (plist-get response :parameters) :value) :suggestions))))))
 
 (provide 'company-phpactor)
