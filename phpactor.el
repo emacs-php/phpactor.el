@@ -53,6 +53,8 @@
                          (and (eq 'root (car v)) (stringp (cdr v)))
                        (null v) (stringp v)))))
 
+(defvar phpactor--debug nil)
+
 (defvar phpactor--buffer-name "*Phpactor*")
 
 (defconst phpactor-command-name "phpactor")
@@ -77,7 +79,8 @@
              (cons (phpactor-find-executable)
                    (cons sub-command args))
              " "))
-
+
+;; Phpactor RPC
 (defun phpactor--rpc (action arguments)
   "Execute Phpactor `ACTION' subcommand with `ARGUMENTS'."
   (let ((json (json-encode (list :action action
@@ -86,9 +89,12 @@
                 (format "--working-dir=%s" (phpactor-get-working-dir))))
         (json-object-type 'plist)
         (json-array-type 'list))
-    (with-current-buffer (get-buffer-create " *Phpactor Output*")
+    (with-current-buffer (get-buffer-create "*Phpactor Output*")
       (erase-buffer)
       (insert json)
+      (when phpactor--debug
+        (message "Phpactor RPC input: %s" (buffer-substring-no-properties
+                                           (point-min) (point-max))))
       (shell-command-on-region (point-min) (point-max) cmd (current-buffer) t)
       (goto-char (point-min))
       (json-read-object))))
