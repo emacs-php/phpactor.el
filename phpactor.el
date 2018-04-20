@@ -214,6 +214,20 @@
 ;; Phpactor commands
 
 ;;;###autoload
+(defun phpactor-copy-class ()
+  "Execute Phpactor RPC copy_class command."
+  (interactive)
+  (let ((arguments (list :source_path (expand-file-name buffer-file-name))))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "copy_class" arguments))))
+
+;;;###autoload
+(defun phpactor-move-class ()
+  "Execute Phpactor RPC move_class command."
+  (interactive)
+  (let ((arguments (list :source_path (expand-file-name buffer-file-name))))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "move_class" arguments))))
+
+;;;###autoload
 (defun phpactor-echo (message)
   "Execute Phpactor RPC echo command, say `MESSAGE'."
   (interactive "MInput Message: ")
