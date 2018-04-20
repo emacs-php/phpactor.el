@@ -169,7 +169,7 @@
 (cl-defun phpactor-action-error (&key message)
   "Echo error message from Phpactor."
   (phpactor-action-information :message message)
-  (error message))
+  (user-error message))
 
 ;; Action functions:
 (cl-defun phpactor-action-echo (&key message)
