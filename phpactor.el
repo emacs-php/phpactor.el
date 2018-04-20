@@ -143,7 +143,7 @@
 (cl-defun phpactor-action--input-parameters (&key default label type)
   "Request user input by parameters."
   (let ((use-dialog-box nil))
-    (cl-case (intern type)
+    (cl-case (if type (intern type) 'text)
       (file (read-file-name label nil default))
       (text (read-string label default))
       (t (error "Unknown input type %s" type)))))
