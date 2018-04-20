@@ -204,6 +204,8 @@
 ;; Dispatcher:
 (cl-defun phpactor-action-dispatch (&key action parameters)
   "Execite action by `NAME' and `PARAMETERS'."
+  (when phpactor--debug
+    (message "Phpactor dispatch %s %s" action parameters))
   (let ((func (cdr-safe (assq (intern action) phpactor-action-table))))
     (if func
         (apply func parameters)
