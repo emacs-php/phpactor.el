@@ -31,15 +31,21 @@
 (require 'company)
 (require 'phpactor)
 
+(defun company-phpactor--get-suggestions (source offset)
+  "Get completions for current cursor"
+  (let ((response (phpactor--rpc "complete" (list :source (buffer-substring-no-properties (point-min) (point-max)) :offset (point)))))
+    (plist-get (plist-get (plist-get response  :parameters) :value) :suggestions)))
+
+;;;###autoload
 (defun company-phpactor (command &optional arg &rest ignored)
   "`company-mode' completion backend for Phpactor."
   (interactive (list 'interactive))
   (cl-case command
     (interactive (company-begin-backend 'company-phpactor))
     (prefix (company-grab-symbol))
-    (candidates (let* ((offset (point))
-                       (response (phpactor--rpc "complete" (list :source (buffer-substring-no-properties 1 offset) :offset offset))))
-                  (mapcar (lambda (x) (plist-get x :name)) (plist-get (plist-get (plist-get response :parameters) :value) :suggestions))))))
+    (candidates (let ((offset (point))
+                      (source (buffer-substring-no-properties (point-min) (point-max))))
+                  (all-completions arg (mapcar #'(lambda (suggestion) (plist-get suggestion :name)) (company-phpactor--get-suggestions source offset)))))))
 
 (provide 'company-phpactor)
 ;;; company-phpactor.el ends here
