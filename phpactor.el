@@ -135,11 +135,6 @@
     (replace_file_source . phpactor-action-replace-file-source)))
 
 ;; Helper functions:
-(defmacro phpactor-action--error (&rest args)
-  "Signal an error, noticed from Phpactor by `ARGS'."
-  (cons (if (fboundp 'user-error) #'user-error #'error)
-        args))
-
 (cl-defun phpactor-action--input-parameters (&key default label type)
   "Request user input by parameters."
   (let ((use-dialog-box nil))
@@ -198,7 +193,7 @@
 (cl-defun phpactor-action-open-file (&key path offset)
   "Open file from Phpactor."
   (unless (and path offset)
-    (phpactor-action--error "Definition not found"))
+    (user-error "Definition not found"))
 
   (if (fboundp 'xref-push-marker-stack)
       (xref-push-marker-stack)
