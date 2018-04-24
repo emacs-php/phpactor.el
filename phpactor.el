@@ -166,9 +166,10 @@
                                           (plist-get input-vars key))))
   parameters)
 
-(cl-defun phpactor-action-error (&key message)
+(cl-defun phpactor-action-error (&key message details)
   "Echo error message from Phpactor."
-  (phpactor-action-information :message message)
+  (when phpactor--debug
+    (phpactor-action-information :message message :details details))
   (user-error message))
 
 ;; Action functions:
@@ -183,12 +184,15 @@
     (message "%s" callback)
     (apply #'phpactor-action-dispatch (phpactor--rpc (plist-get callback :action) parameters))))
 
-(cl-defun phpactor-action-information (&key message)
+(cl-defun phpactor-action-information (&key message details)
   "Pop information buffer from Phpactor."
   (let ((buffer (get-buffer-create phpactor-action--buffer-name)))
     (with-current-buffer buffer
       (erase-buffer)
-      (insert message))
+      (insert message)
+      (when details
+        (insert "\n\n")
+        (insert details)))
     (pop-to-buffer buffer)))
 
 (cl-defun phpactor-action-open-file (&key path offset)
