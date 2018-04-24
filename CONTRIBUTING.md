@@ -6,7 +6,7 @@
 
 ## For developers
 
-**NOTICE**: `phpactor.el` and `phpactor-action.el` are under development.  These APIs are subject to change.
+**NOTICE**: `phpactor.el` are under development.  These APIs are subject to change.
 
 ### Requirements
 
@@ -16,6 +16,8 @@
  * *(optional)* [Composer](https://getcomposer.org/): Dependency Manager for PHP
 
 ### Coding Rules
+
+Please follow [the conventions of Emacs Lisp](https://www.gnu.org/software/emacs/manual/html_node/elisp/Tips.html).
 
  * [flycheck/flycheck](https://github.com/flycheck/flycheck): On the fly syntax checking for GNU Emacs
  * [purcell/flycheck-package](https://github.com/purcell/flycheck-package): Flycheck checker for elisp package metadata
