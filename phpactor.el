@@ -200,10 +200,13 @@
   (unless (and path offset)
     (phpactor-action--error "Definition not found"))
 
+  (if (fboundp 'xref-push-marker-stack)
+      (xref-push-marker-stack)
+    (with-no-warnings
+      (ring-insert find-tag-marker-ring (point-marker))))
+
   (find-file path)
-  (goto-char (1+ offset))
-  (when (featurep 'xref)
-    (xref-push-marker-stack)))
+  (goto-char (1+ offset)))
 
 ;; Dispatcher:
 (cl-defun phpactor-action-dispatch (&key action parameters)
