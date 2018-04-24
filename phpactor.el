@@ -135,7 +135,7 @@
     (replace_file_source . phpactor-action-replace-file-source)))
 
 ;; Helper functions:
-(defmacro phpactor-action--error (&rest args)
+(defmacro phpactor-action-error (&rest args)
   "Signal an error, noticed from Phpactor by `ARGS'."
   (cons (if (fboundp 'user-error) #'user-error #'error)
         args))
