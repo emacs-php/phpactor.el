@@ -1,5 +1,7 @@
-/*.rej
+*.elc
+*.rej
 /.cask
 /composer.lock
 /flycheck*
+/phpactor-autoloads.el
 /vendor
