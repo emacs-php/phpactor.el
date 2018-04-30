@@ -87,16 +87,18 @@
         (cmd  (phpactor--make-command-string "rpc"
                 (format "--working-dir=%s" (phpactor-get-working-dir))))
         (json-object-type 'plist)
-        (json-array-type 'list))
-    (with-current-buffer (get-buffer-create "*Phpactor Output*")
+        (json-array-type 'list)
+        (output (get-buffer-create "*Phpactor Output*")))
+    (with-current-buffer (get-buffer-create "*Phpactor Input*")
       (erase-buffer)
       (insert json)
       (when phpactor--debug
         (message "Phpactor RPC input: %s" (buffer-substring-no-properties
                                            (point-min) (point-max))))
-      (shell-command-on-region (point-min) (point-max) cmd (current-buffer) t)
-      (goto-char (point-min))
-      (json-read-object))))
+      (shell-command-on-region (point-min) (point-max) cmd output)
+      (with-current-buffer output
+        (goto-char (point-min))
+        (json-read-object)))))
 
 ;;; Phpactor Action
 
