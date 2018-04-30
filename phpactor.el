@@ -164,7 +164,7 @@
 (cl-defun phpactor-action-error (&key message details)
   "Echo error message from Phpactor."
   (when phpactor--debug
-    (phpactor-action-information :message message :details details))
+    (phpactor-action-information :information message :details details))
   (user-error message))
 
 ;; Action functions:
@@ -179,15 +179,17 @@
     (message "%s" callback)
     (apply #'phpactor-action-dispatch (phpactor--rpc (plist-get callback :action) parameters))))
 
-(cl-defun phpactor-action-information (&key message details)
+(cl-defun phpactor-action-information (&key information details)
   "Pop information buffer from Phpactor."
   (let ((buffer (get-buffer-create phpactor-action--buffer-name)))
     (with-current-buffer buffer
+      (view-mode -1)
       (erase-buffer)
-      (insert message)
+      (insert information)
       (when details
         (insert "\n\n")
-        (insert details)))
+        (insert details))
+      (view-mode 1))
     (pop-to-buffer buffer)))
 
 (cl-defun phpactor-action-open-file (&key path offset)
