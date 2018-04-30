@@ -223,6 +223,15 @@
 
   (find-file path)
   (goto-char (1+ offset)))
+
+(cl-defun phpactor-action-replace-file-source (&key path source)
+  "Replace the source code in the current file."
+  (save-window-excursion
+    (with-current-buffer (find-file-noselect path)
+      ;; This is a simple implementation, so points will not be saved.
+      ;; Should I copy the implementation of gofmt?  Umm...
+      (erase-buffer)
+      (insert source))))
 
 ;; Dispatcher:
 (cl-defun phpactor-action-dispatch (&key action parameters)
@@ -256,6 +265,13 @@
   (interactive)
   (let ((arguments (phpactor--command-argments :source :offset)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "offset_info" arguments))))
+
+;;;###autoload
+(defun phpactor-transform ()
+  "Execute Phpactor RPC transform command."
+    (interactive)
+    (let ((arguments (phpactor--command-argments :source :path)))
+      (apply #'phpactor-action-dispatch (phpactor--rpc "transform" arguments))))
 
 ;;;###autoload
 (defun phpactor-echo (message)
