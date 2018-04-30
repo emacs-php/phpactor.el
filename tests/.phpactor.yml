@@ -4,8 +4,8 @@ rpc.store_replay: true
 autoload: "../vendor/autoload.php"
 
 navigator.destinations:
-    source: lib/<kernel>.php
-    unit_test: tests/Unit/<kernel>Test.php
+    source: src/<kernel>.php
+    unit_test: Unit/<kernel>Test.php
 
 navigator.autocreate:
     source: default
