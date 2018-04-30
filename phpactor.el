@@ -161,6 +161,21 @@
                                           (plist-get input-vars key))))
   parameters)
 
+(defun phpactor--command-argments-1 (key)
+  "Return argument by `KEY'."
+  (cl-case key
+    (:source (buffer-substring-no-properties
+              (point-min) (point-max)))
+    (:path buffer-file-name)
+    (:offset (1- (point)))
+    (t (error "`%s' is unknown argument" key))))
+
+(defun phpactor--command-argments (&rest arg-keys)
+  "Collect arguments by `ARG-KEYS'."
+  (cl-loop for key in arg-keys
+           for arg = (phpactor--command-argments-1 key)
+           append (list key arg)))
+
 (cl-defun phpactor-action-error (&key message details)
   "Echo error message from Phpactor."
   (when phpactor--debug
@@ -248,10 +263,7 @@
 (defun phpactor-goto-definition ()
   "Execute Phpactor RPC goto_definition command."
   (interactive)
-  (let ((arguments (list :source (buffer-substring-no-properties
-                                  (point-min) (point-max))
-                         :offset (1- (point))
-                         :path   buffer-file-name)))
+  (let ((arguments (phpactor--command-argments :source :offset :path)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "goto_definition" arguments))))
 
 (provide 'phpactor)
