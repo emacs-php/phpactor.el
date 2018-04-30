@@ -276,6 +276,14 @@
       (apply #'phpactor-action-dispatch (phpactor--rpc "transform" arguments))))
 
 ;;;###autoload
+(defun phpactor-navigate ()
+  "Execute Phpactor RPC navigate command."
+  (interactive)
+  (let ((arguments (list :source_path (file-relative-name buffer-file-name
+                                                          (phpactor-get-working-dir)))))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "navigate" arguments))))
+
+;;;###autoload
 (defun phpactor-echo (message)
   "Execute Phpactor RPC echo command, say `MESSAGE'."
   (interactive "MInput Message: ")
