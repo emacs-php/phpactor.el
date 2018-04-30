@@ -12,6 +12,10 @@
         }
     ],
     "homepage": "https://github.com/emacs-php/phpactor.el",
+    "autoload-dev": {
+        "files": ["tests/src/functions.php"],
+        "psr-4": {"EmacsPHP\\Phpactor\\Sample\\": "tests/src/"}
+    },
     "require": {
         "phpactor/phpactor": "*"
     },
