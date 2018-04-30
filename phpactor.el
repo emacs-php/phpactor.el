@@ -246,6 +246,12 @@
   (let ((arguments (list :source_path (expand-file-name buffer-file-name))))
     (apply #'phpactor-action-dispatch (phpactor--rpc "move_class" arguments))))
 
+(defun phpactor-offset-info ()
+  "Execute Phpactor RPC offset_info command."
+  (interactive)
+  (let ((arguments (phpactor--command-argments :source :offset)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "offset_info" arguments))))
+
 ;;;###autoload
 (defun phpactor-echo (message)
   "Execute Phpactor RPC echo command, say `MESSAGE'."
