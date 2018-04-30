@@ -135,20 +135,24 @@
     (replace_file_source . phpactor-action-replace-file-source)))
 
 ;; Helper functions:
-(cl-defun phpactor-action--input-parameters (&key default label type)
+(cl-defun phpactor--action-input-parameters (type &key default label choices)
   "Request user input by parameters."
   (let ((use-dialog-box nil))
-    (cl-case (if type (intern type) 'text)
+    (cl-case type
       (file (read-file-name label nil default))
       (text (read-string label default))
+      (choice (completing-read label
+                               (cl-loop for (_ v) on choices by #'cddr
+                                        collect v)))
       (t (error "Unknown input type %s" type)))))
 
 (defun phpactor-action--collect-inputs (inputs)
   "Request input by `INPUTS' and return alist which collected the variables."
   (cl-loop for i in inputs
            for name = (intern (concat ":" (plist-get i :name)))
+           for type = (intern (plist-get i :type))
            for parameters = (plist-get i :parameters)
-           append (list name (apply #'phpactor-action--input-parameters parameters))))
+           append (list name (apply #'phpactor--action-input-parameters type parameters))))
 
 (defun phpactor-action--fill-vars (parameters input-vars)
   "Fill variables `PARAMETERS' by `INPUT-VARS'."
