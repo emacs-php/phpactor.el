@@ -118,7 +118,7 @@
 ;;  - information
 ;;  - replace_file_source
 ;;
-;; See https://phpactor.github.io/phpactor/rpc.html
+;; See https://phpactor.github.io/phpactor/rpc.html#editor-actions
 
 (defvar phpactor-action--message-format "Phpactor: %s")
 (defvar phpactor-action--buffer-name "*Phpactor message*")
@@ -246,6 +246,28 @@
       (error "Respond unknown/unimplemented action: %s" action))))
 
 ;; Phpactor commands
+
+;; Phpactor RPC command implemetation.
+;;
+;; Following commands are defined:
+;;
+;;  - complete
+;;  - class_search
+;;  - goto_definition
+;;  - copy_class
+;;  - move_class
+;;  - offset_info
+;;  - transform
+;;  - class_new
+;;  - class_inflect
+;;  - references
+;;  - extract_constant
+;;  - generate_method
+;;  - generate_accessor
+;;  - context_menu
+;;  - navigate
+;;
+;; See https://phpactor.github.io/phpactor/rpc.html#phpactor-commands
 
 ;;;###autoload
 (defun phpactor-copy-class ()
