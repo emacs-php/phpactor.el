@@ -293,9 +293,9 @@
 ;;;###autoload
 (defun phpactor-transform ()
   "Execute Phpactor RPC transform command."
-    (interactive)
-    (let ((arguments (phpactor--command-argments :source :path)))
-      (apply #'phpactor-action-dispatch (phpactor--rpc "transform" arguments))))
+  (interactive)
+  (let ((arguments (phpactor--command-argments :source :path)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "transform" arguments))))
 
 ;;;###autoload
 (defun phpactor-navigate ()
