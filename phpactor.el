@@ -41,7 +41,7 @@
   (put 'phpactor-executable 'safe-local-variable
        #'(lambda (v) (if (consp v)
                          (and (eq 'root (car v)) (stringp (cdr v)))
-                       (null v) (stringp v)))))
+                       (or (null v) (stringp v))))))
 ;;;###autoload
 (progn
   (defvar phpactor-working-dir nil
@@ -50,7 +50,7 @@
   (put 'phpactor-executable 'safe-local-variable
        #'(lambda (v) (if (consp v)
                          (and (eq 'root (car v)) (stringp (cdr v)))
-                       (null v) (stringp v)))))
+                       (or (null v) (stringp v))))))
 
 (defvar phpactor--debug nil)
 
