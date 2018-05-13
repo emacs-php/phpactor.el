@@ -1,1 +1,9 @@
-* phpactor.el
+* phpactor.el - PHP refactoring and introspection
+This package is Emacs interface to [[http://phpactor.github.io/phpactor/][Phpactor]].
+
+**NOTICE**: This package is in development.  Since some functions are running, this is released as an /alpha version/.
+** Instalation
+Please be aware that Phpactor is also in development stage.
+A simple installation method is not yet provided, but you can build it using Composer.
+** Configuration
+See https://phpactor.github.io/phpactor/configuration.html
