@@ -32,7 +32,7 @@
 (require 'phpactor)
 
 (defun company-phpactor--get-suggestions (source offset)
-  "Get completions for current cursor"
+  "Get completions for current cursor."
   (let ((response (phpactor--rpc "complete" (list :source (buffer-substring-no-properties (point-min) (point-max)) :offset (point)))))
     (plist-get (plist-get (plist-get response  :parameters) :value) :suggestions)))
 
