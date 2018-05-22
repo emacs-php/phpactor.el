@@ -183,8 +183,21 @@
     (:source (buffer-substring-no-properties
               (point-min) (point-max)))
     (:path buffer-file-name)
-    (:offset (1- (point)))
+    (:offset (phpactor--get-offset))
     (t (error "`%s' is unknown argument" key))))
+
+(defun phpactor--get-offset ()
+  "Get relevant offset for autocompletion"
+  (let ((start (current-column))
+        (triggers (list "$" "->" "::" "extends" "use" "implements" "new"))
+    )
+    (while (> start 1)
+      (setq char (string (char-before (- (point) (- (current-column) (1- start)))))
+            start (1- start)
+        )
+      )
+  (1- (point))
+  ))
 
 (defun phpactor--command-argments (&rest arg-keys)
   "Collect arguments by `ARG-KEYS'."
