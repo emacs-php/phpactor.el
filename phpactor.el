@@ -41,6 +41,7 @@
 ;;; Code:
 (require 'json)
 (require 'php-project)
+(require 'ring)
 
 ;; Variables
 ;;;###autoload
@@ -63,6 +64,8 @@
                        (or (null v) (stringp v))))))
 
 (defvar phpactor--debug nil)
+(defvar phpactor-history-size 100)
+(defvar phpactor-history-ring nil)
 
 (defvar phpactor--buffer-name "*Phpactor*")
 
@@ -71,6 +74,7 @@
 ;; Special variables
 (defvar phpactor--execute-async nil)
 
+;; Utility functions
 (defun phpactor-find-executable ()
   "Return Phpactor command or path to executable."
   (or phpactor-executable
@@ -89,10 +93,18 @@
              (cons (phpactor-find-executable)
                    (cons sub-command args))
              " "))
+
+(defun phpactor--add-history (name entry)
+  "Add Phpactor history by `NAME' and `ENTRY'."
+  (unless phpactor-history-ring
+    (setq phpactor-history-ring (make-ring phpactor-history-size)))
+  (ring-insert phpactor-history-ring (cons name entry)))
+
 
 ;; Phpactor RPC
 (defun phpactor--rpc (action arguments)
   "Execute Phpactor `ACTION' subcommand with `ARGUMENTS'."
+  (phpactor--add-history 'phpactor--rpc (list :action action :parameters arguments))
   (let ((json (json-encode (list :action action
                                  :parameters arguments)))
         (cmd  (phpactor--make-command-string "rpc"
@@ -103,9 +115,6 @@
     (with-current-buffer (get-buffer-create "*Phpactor Input*")
       (erase-buffer)
       (insert json)
-      (when phpactor--debug
-        (message "Phpactor RPC input: %s" (buffer-substring-no-properties
-                                           (point-min) (point-max))))
       (shell-command-on-region (point-min) (point-max) cmd output)
       (with-current-buffer output
         (goto-char (point-min))
@@ -249,8 +258,7 @@
 ;; Dispatcher:
 (cl-defun phpactor-action-dispatch (&key action parameters)
   "Execite action by `NAME' and `PARAMETERS'."
-  (when phpactor--debug
-    (message "Phpactor dispatch %s %s" action parameters))
+  (phpactor--add-history 'phpactor-action-dispatch (list :action action :parameters parameters))
   (let ((func (cdr-safe (assq (intern action) phpactor-action-table))))
     (if func
         (apply func parameters)
