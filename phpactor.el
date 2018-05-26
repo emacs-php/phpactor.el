@@ -78,8 +78,9 @@
 
 (defun phpactor-get-working-dir ()
   "Return working directory of Phpactor."
-  (expand-file-name
-   (or phpactor-working-dir (php-project-get-root-dir))))
+  (directory-file-name
+   (expand-file-name
+    (or phpactor-working-dir (php-project-get-root-dir)))))
 
 (defun phpactor--make-command-string (sub-command &rest args)
   "Return command string by `SUB-COMMAND' and `ARGS'."
