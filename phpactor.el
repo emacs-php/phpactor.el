@@ -157,9 +157,10 @@
     (replace_file_source . phpactor-action-replace-file-source)))
 
 ;; Helper functions:
-(cl-defun phpactor--action-input-parameters (type &key default label choices)
+(cl-defun phpactor--action-input-parameters (value-type &key default label choices type)
   "Request user input by parameters."
-  (let ((use-dialog-box nil))
+  (let ((use-dialog-box nil)
+        (type (if type (intern type) value-type)))
     (cl-case type
       (file (read-file-name label nil default))
       (text (read-string label default))
