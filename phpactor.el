@@ -157,9 +157,10 @@
     (replace_file_source . phpactor-action-replace-file-source)))
 
 ;; Helper functions:
-(cl-defun phpactor--action-input-parameters (type &key default label choices)
+(cl-defun phpactor--action-input-parameters (value-type &key default label choices type)
   "Request user input by parameters."
-  (let ((use-dialog-box nil))
+  (let ((use-dialog-box nil)
+        (type (if type (intern type) value-type)))
     (cl-case type
       (file (read-file-name label nil default))
       (text (read-string label default))
@@ -185,6 +186,12 @@
            unless value
            do (setq parameters (plist-put parameters key
                                           (plist-get input-vars key))))
+  (cl-loop for (key value) on input-vars by #'cddr
+           do (message "key:%s value:%s input:%s"
+                       key value (plist-get input-vars key))
+           unless (plist-member parameters key)
+           do (setq parameters (plist-put parameters key
+                                          (plist-get input-vars key))))
   parameters)
 
 (defun phpactor--command-argments-1 (key)
@@ -194,6 +201,7 @@
               (point-min) (point-max)))
     (:path buffer-file-name)
     (:offset (1- (point)))
+    (:current_path buffer-file-name)
     (t (error "`%s' is unknown argument" key))))
 
 (defun phpactor--command-argments (&rest arg-keys)
@@ -315,6 +323,13 @@
   (interactive)
   (let ((arguments (phpactor--command-argments :source :path)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "transform" arguments))))
+
+;;;###autoload
+(defun phpactor-context-menu ()
+  "Execute Phpactor PRC context_menu command."
+  (interactive)
+  (let ((arguments (phpactor--command-argments :source :offset :current_path)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "context_menu" arguments))))
 
 ;;;###autoload
 (defun phpactor-navigate ()
