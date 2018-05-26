@@ -194,6 +194,7 @@
               (point-min) (point-max)))
     (:path buffer-file-name)
     (:offset (1- (point)))
+    (:current_path buffer-file-name)
     (t (error "`%s' is unknown argument" key))))
 
 (defun phpactor--command-argments (&rest arg-keys)
