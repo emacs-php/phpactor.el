@@ -318,6 +318,13 @@
     (apply #'phpactor-action-dispatch (phpactor--rpc "transform" arguments))))
 
 ;;;###autoload
+(defun phpactor-context-menu ()
+  "Execute Phpactor PRC context_menu command."
+  (interactive)
+  (let ((arguments (phpactor--command-argments :source :offset :current_path)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "context_menu" arguments))))
+
+;;;###autoload
 (defun phpactor-navigate ()
   "Execute Phpactor RPC navigate command."
   (interactive)
