@@ -185,6 +185,12 @@
            unless value
            do (setq parameters (plist-put parameters key
                                           (plist-get input-vars key))))
+  (cl-loop for (key value) on input-vars by #'cddr
+           do (message "key:%s value:%s input:%s"
+                       key value (plist-get input-vars key))
+           unless (plist-member parameters key)
+           do (setq parameters (plist-put parameters key
+                                          (plist-get input-vars key))))
   parameters)
 
 (defun phpactor--command-argments-1 (key)
