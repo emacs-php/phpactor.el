@@ -104,7 +104,7 @@
 ;; Phpactor RPC
 (defun phpactor--rpc (action arguments)
   "Execute Phpactor `ACTION' subcommand with `ARGUMENTS'."
-  (phpactor--add-history 'phpactor--rpc (list :action action :parameters arguments))
+  (phpactor--add-history 'phpactor--rpc (list action arguments))
   (let ((json (json-encode (list :action action
                                  :parameters arguments)))
         (cmd  (phpactor--make-command-string "rpc"
