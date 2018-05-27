@@ -77,8 +77,12 @@
 ;; Utility functions
 (defun phpactor-find-executable ()
   "Return Phpactor command or path to executable."
-  (or phpactor-executable
-      (executable-find phpactor-command-name)))
+  (or (when phpactor-executable
+        (php-project--eval-bootstrap-scripts phpactor-executable))
+      (executable-find phpactor-command-name)
+      (let ((vendor-executable (f-join (phpactor-get-working-dir) "vendor/bin/phpactor")))
+        (when (file-exists-p vendor-executable)
+          vendor-executable))))
 
 (defun phpactor-get-working-dir ()
   "Return working directory of Phpactor."
