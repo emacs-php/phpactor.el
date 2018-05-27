@@ -77,14 +77,23 @@
 ;; Utility functions
 (defun phpactor-find-executable ()
   "Return Phpactor command or path to executable."
-  (or phpactor-executable
-      (executable-find phpactor-command-name)))
+  (or (when phpactor-executable
+        (php-project--eval-bootstrap-scripts phpactor-executable))
+      (executable-find phpactor-command-name)
+      (let ((vendor-executable (f-join (phpactor-get-working-dir) "vendor/bin/phpactor")))
+        (when (file-exists-p vendor-executable)
+          vendor-executable))))
 
 (defun phpactor-get-working-dir ()
   "Return working directory of Phpactor."
   (directory-file-name
    (expand-file-name
     (or phpactor-working-dir (php-project-get-root-dir)))))
+
+(defun phpactor--expand-local-file-name (name)
+  "Expand file name by `NAME'."
+  ;; TODO: Support TRAMP
+  (expand-file-name name))
 
 (defun phpactor--make-command-string (sub-command &rest args)
   "Return command string by `SUB-COMMAND' and `ARGS'."
@@ -199,9 +208,10 @@
   (cl-case key
     (:source (buffer-substring-no-properties
               (point-min) (point-max)))
-    (:path buffer-file-name)
+    (:path (phpactor--expand-local-file-name buffer-file-name))
+    (:source_path (phpactor--expand-local-file-name buffer-file-name))
     (:offset (1- (point)))
-    (:current_path buffer-file-name)
+    (:current_path (phpactor--expand-local-file-name buffer-file-name))
     (t (error "`%s' is unknown argument" key))))
 
 (defun phpactor--command-argments (&rest arg-keys)
@@ -300,14 +310,14 @@
 (defun phpactor-copy-class ()
   "Execute Phpactor RPC copy_class command."
   (interactive)
-  (let ((arguments (list :source_path (expand-file-name buffer-file-name))))
+  (let ((arguments (phpactor--command-argments :source_path)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "copy_class" arguments))))
 
 ;;;###autoload
 (defun phpactor-move-class ()
   "Execute Phpactor RPC move_class command."
   (interactive)
-  (let ((arguments (list :source_path (expand-file-name buffer-file-name))))
+  (let ((arguments (phpactor--command-argments :source_path)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "move_class" arguments))))
 
 ;;;###autoload
@@ -335,8 +345,7 @@
 (defun phpactor-navigate ()
   "Execute Phpactor RPC navigate command."
   (interactive)
-  (let ((arguments (list :source_path (file-relative-name buffer-file-name
-                                                          (phpactor-get-working-dir)))))
+  (let ((arguments (phpactor--command-argments :source_path)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "navigate" arguments))))
 
 ;;;###autoload
