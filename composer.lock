@@ -266,12 +266,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/JetBrains/phpstorm-stubs.git",
-                "reference": "9c0d9e50a5f72ea83591028cceef02b622bc4e31"
+                "reference": "276bcbfc1e6baca0bf4b3dd1504b0712070a0b7b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JetBrains/phpstorm-stubs/zipball/9c0d9e50a5f72ea83591028cceef02b622bc4e31",
-                "reference": "9c0d9e50a5f72ea83591028cceef02b622bc4e31",
+                "url": "https://api.github.com/repos/JetBrains/phpstorm-stubs/zipball/276bcbfc1e6baca0bf4b3dd1504b0712070a0b7b",
+                "reference": "276bcbfc1e6baca0bf4b3dd1504b0712070a0b7b",
                 "shasum": ""
             },
             "require-dev": {
@@ -296,7 +296,7 @@
                 "stubs",
                 "type"
             ],
-            "time": "2018-05-22T15:32:15+00:00"
+            "time": "2018-05-23T18:04:54+00:00"
         },
         {
             "name": "lstrojny/functional-php",
@@ -443,12 +443,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Microsoft/tolerant-php-parser.git",
-                "reference": "7647b60b13afd7e929aeef3de2c35696266c4da5"
+                "reference": "01479d7e0af00dfeaaafb83bdabdacacd284638d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Microsoft/tolerant-php-parser/zipball/7647b60b13afd7e929aeef3de2c35696266c4da5",
-                "reference": "7647b60b13afd7e929aeef3de2c35696266c4da5",
+                "url": "https://api.github.com/repos/Microsoft/tolerant-php-parser/zipball/01479d7e0af00dfeaaafb83bdabdacacd284638d",
+                "reference": "01479d7e0af00dfeaaafb83bdabdacacd284638d",
                 "shasum": ""
             },
             "require": {
@@ -476,7 +476,7 @@
                 }
             ],
             "description": "Tolerant PHP-to-AST parser designed for IDE usage scenarios",
-            "time": "2018-05-12T19:12:14+00:00"
+            "time": "2018-05-26T19:42:09+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -881,12 +881,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpactor/phpactor.git",
-                "reference": "1b39f8ce2826c1026e72e3b2c1e69c66c7ab226c"
+                "reference": "be6f69920fe76a3bdc4675fa5db1d77f1821e33d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpactor/phpactor/zipball/1b39f8ce2826c1026e72e3b2c1e69c66c7ab226c",
-                "reference": "1b39f8ce2826c1026e72e3b2c1e69c66c7ab226c",
+                "url": "https://api.github.com/repos/phpactor/phpactor/zipball/be6f69920fe76a3bdc4675fa5db1d77f1821e33d",
+                "reference": "be6f69920fe76a3bdc4675fa5db1d77f1821e33d",
                 "shasum": ""
             },
             "require": {
@@ -926,7 +926,7 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2018-05-20T16:42:17+00:00"
+            "time": "2018-05-23T20:32:04+00:00"
         },
         {
             "name": "phpactor/source-code-filesystem",
@@ -1338,7 +1338,7 @@
         },
         {
             "name": "symfony/console",
-            "version": "v3.4.10",
+            "version": "v3.4.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
@@ -1407,7 +1407,7 @@
         },
         {
             "name": "symfony/debug",
-            "version": "v4.0.10",
+            "version": "v4.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug.git",
@@ -1463,7 +1463,7 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v3.4.10",
+            "version": "v3.4.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
@@ -1513,7 +1513,7 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v4.0.10",
+            "version": "v4.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
@@ -1562,7 +1562,7 @@
         },
         {
             "name": "symfony/options-resolver",
-            "version": "v4.0.10",
+            "version": "v4.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/options-resolver.git",
@@ -1730,7 +1730,7 @@
         },
         {
             "name": "symfony/process",
-            "version": "v4.0.10",
+            "version": "v4.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
@@ -1779,7 +1779,7 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v3.4.10",
+            "version": "v3.4.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
