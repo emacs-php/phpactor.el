@@ -6,7 +6,7 @@
 ;; Created: 8 Apr 2018
 ;; Version: 0.0.2
 ;; Keywords: tools, php
-;; Package-Requires: ((emacs "24.3") (cl-lib "0.5"))
+;; Package-Requires: ((emacs "24.3") (cl-lib "0.5") (f "0.17"))
 ;; URL: https://github.com/emacs-php/phpactor.el
 ;; License: GPL-3.0-or-later
 
