@@ -31,6 +31,20 @@
 (require 'company)
 (require 'phpactor)
 
+(defun company-phpactor--grab-symbol ()
+  "If point is at the end of a symbol, return it.
+Otherwise, if point is not inside a symbol, return an empty string.
+Here we create a temporary syntax table in order to add $ to symbols."
+  (let (($temp-syn-table (make-syntax-table)))
+    (modify-syntax-entry ?\$ "_" $temp-syn-table)
+
+    (with-syntax-table $temp-syn-table
+      (if (looking-at "\\_>")
+          (buffer-substring (point) (save-excursion (skip-syntax-backward "w_")
+                                                    (point)))
+        (unless (and (char-after) (memq (char-syntax (char-after)) '(?w ?_)))
+          "")))))
+
 (defun company-phpactor--get-suggestions ()
   "Get completions for current cursor."
   (let ((response (phpactor--rpc "complete" (phpactor--command-argments :source :offset))))
@@ -42,8 +56,8 @@
   (interactive (list 'interactive))
   (cl-case command
     (interactive (company-begin-backend 'company-phpactor))
-    (prefix (company-grab-symbol))
-    (candidates (all-completions arg (mapcar #'(lambda (suggestion) (plist-get suggestion :name)) (company-phpactor--get-suggestions))))))
+    (prefix (company-phpactor--grab-symbol))
+    (candidates (all-completions (substring-no-properties arg) (mapcar #'(lambda (suggestion) (plist-get suggestion :name)) (company-phpactor--get-suggestions))))))
 
 (provide 'company-phpactor)
 ;;; company-phpactor.el ends here
