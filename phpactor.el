@@ -121,6 +121,7 @@
         (json-object-type 'plist)
         (json-array-type 'list)
         (output (get-buffer-create "*Phpactor Output*")))
+    (with-current-buffer output (erase-buffer))
     (with-current-buffer (get-buffer-create "*Phpactor Input*")
       (erase-buffer)
       (insert json)
