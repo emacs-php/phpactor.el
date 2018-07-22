@@ -52,16 +52,13 @@ Here we create a temporary syntax table in order to add $ to symbols."
 
 (defun company-phpactor--get-candidates ()
   "Build a list of candidates with text-properties extracted from phpactor's output."
-  (let ((suggestions (company-phpactor--get-suggestions))
-        (candidates ()))
-    (while suggestions
-      (setq suggestion (car suggestions))
-      (setq candidate (plist-get suggestion :name))
-      (put-text-property 0 1 'annotation (plist-get suggestion :info) candidate)
-      (add-to-list 'candidates candidate)
-      (setq suggestions (cdr suggestions))
-      )
-    candidates))
+  (let ((suggestions (company-phpactor--get-suggestions)))
+    (mapcar
+     (lambda (suggestion)
+       (setq candidate (plist-get suggestion :name))
+       (put-text-property 0 1 'annotation (plist-get suggestion :info) candidate)
+       candidate)
+     suggestions)))
 (defun company-phpactor--annotation (arg)
   "test annotation."
   (message (concat " " (get-text-property 0 'annotation arg))))
