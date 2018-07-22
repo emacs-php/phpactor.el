@@ -38,6 +38,11 @@
 ;; See https://phpactor.github.io/phpactor/configuration.html
 ;;
 
+;; The following definitions from go-mode.el have been adapted :
+;; (Author: Dominik Honnef, url: https://github.com/dominikh/go-mode.el)
+;;
+;; go--apply-rcs-patch go--goto-line go--delete-whole-line
+
 ;;; Code:
 (require 'json)
 (require 'php-project)
@@ -265,14 +270,108 @@
   (find-file path)
   (goto-char (1+ offset)))
 
-(cl-defun phpactor-action-replace-file-source (&key path source)
+;; this function was adapted from go-mode
+(defun phpactor--goto-line (line)
+  "Goto line LINE."
+  (goto-char (point-min))
+  (forward-line (1- line)))
+
+;; this function was adapted from go-mode
+(defun phpactor--delete-whole-line (&optional arg)
+  "Delete the current line without putting it in the `kill-ring'.
+Derived from function `kill-whole-line'.  ARG is defined as for that
+function."
+  (setq arg (or arg 1))
+  (if (and (> arg 0)
+           (eobp)
+           (save-excursion (forward-visible-line 0) (eobp)))
+      (signal 'end-of-buffer nil))
+  (if (and (< arg 0)
+           (bobp)
+           (save-excursion (end-of-visible-line) (bobp)))
+      (signal 'beginning-of-buffer nil))
+  (cond ((zerop arg)
+         (delete-region (progn (forward-visible-line 0) (point))
+                        (progn (end-of-visible-line) (point))))
+        ((< arg 0)
+         (delete-region (progn (end-of-visible-line) (point))
+                        (progn (forward-visible-line (1+ arg))
+                               (unless (bobp)
+                                 (backward-char))
+                               (point))))
+        (t
+         (delete-region (progn (forward-visible-line 0) (point))
+                        (progn (forward-visible-line arg) (point))))))
+
+;; this function was adapted from go-mode
+(defun phpactor--apply-rcs-patch (patch-buffer)
+  "Apply an RCS-formatted diff from PATCH-BUFFER to the current buffer."
+  (let ((target-buffer (current-buffer))
+        ;; Relative offset between buffer line numbers and line numbers
+        ;; in patch.
+        ;;
+        ;; Line numbers in the patch are based on the source file, so
+        ;; we have to keep an offset when making changes to the
+        ;; buffer.
+        ;;
+        ;; Appending lines decrements the offset (possibly making it
+        ;; negative), deleting lines increments it. This order
+        ;; simplifies the forward-line invocations.
+        (line-offset 0)
+        (column (current-column)))
+    (save-excursion
+      (with-current-buffer patch-buffer
+        (goto-char (point-min))
+        (while (not (eobp))
+          (unless (looking-at "^\\([ad]\\)\\([0-9]+\\) \\([0-9]+\\)")
+            (error "Invalid rcs patch or internal error in go--apply-rcs-patch"))
+          (forward-line)
+          (let ((action (match-string 1))
+                (from (string-to-number (match-string 2)))
+                (len  (string-to-number (match-string 3))))
+            (cond
+             ((equal action "a")
+              (let ((start (point)))
+                (forward-line len)
+                (let ((text (buffer-substring start (point))))
+                  (with-current-buffer target-buffer
+                    (cl-decf line-offset len)
+                    (goto-char (point-min))
+                    (forward-line (- from len line-offset))
+                    (insert text)))))
+             ((equal action "d")
+              (with-current-buffer target-buffer
+                (phpactor--goto-line (- from line-offset))
+                (cl-incf line-offset len)
+                (phpactor--delete-whole-line len)))
+             (t
+              (error "Invalid rcs patch or internal error in phpactor--apply-rcs-patch")))))))
+    (move-to-column column)))
+
+(cl-defun  phpactor-action-replace-file-source (&key path source)
   "Replace the source code in the current file."
-  (save-window-excursion
-    (with-current-buffer (find-file-noselect path)
-      ;; This is a simple implementation, so points will not be saved.
-      ;; Should I copy the implementation of gofmt?  Umm...
-      (erase-buffer)
-      (insert source))))
+  (interactive)
+  (let ((tmpfile (make-temp-file "phpactor" nil ".php"))
+        (patchbuf (get-buffer-create "*Phpactor patch*"))
+        (coding-system-for-read 'utf-8)
+        (coding-system-for-write 'utf-8))
+
+    (unwind-protect
+        (save-restriction
+          (widen)
+          (with-current-buffer patchbuf
+            (erase-buffer))
+
+          (with-temp-file tmpfile
+            (insert source))
+
+          (if (zerop (call-process-region (point-min) (point-max) "diff" nil patchbuf nil "-n" "-" tmpfile))
+              (message "Buffer was unchanged by phpactor")
+            (phpactor--apply-rcs-patch patchbuf)
+            (message "Buffer modified by phpactor")))
+
+      (kill-buffer patchbuf)
+      (delete-file tmpfile))))
 
 ;; Dispatcher:
 (cl-defun phpactor-action-dispatch (&key action parameters)
@@ -368,6 +467,13 @@
   (interactive)
   (let ((arguments (phpactor--command-argments :source :offset :path)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "goto_definition" arguments))))
+
+;;;###autoload
+(defun phpactor-import-class (name)
+  "Execute Phpactor PRC import_class command for class NAME."
+  (interactive)
+  (let ((arguments (phpactor--command-argments :source :offset :path)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "import_class" (append arguments (list :name name))))))
 
 (provide 'phpactor)
 ;;; phpactor.el ends here

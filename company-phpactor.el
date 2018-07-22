@@ -50,14 +50,38 @@ Here we create a temporary syntax table in order to add $ to symbols."
   (let ((response (phpactor--rpc "complete" (phpactor--command-argments :source :offset))))
     (plist-get (plist-get (plist-get response  :parameters) :value) :suggestions)))
 
+(defun company-phpactor--get-candidates ()
+  "Build a list of candidates with text-properties extracted from phpactor's output."
+  (let ((suggestions (company-phpactor--get-suggestions)) candidate)
+    (mapcar
+     (lambda (suggestion)
+       (setq candidate (plist-get suggestion :name))
+       (put-text-property 0 1 'annotation (plist-get suggestion :info) candidate)
+       (put-text-property 0 1 'type (plist-get suggestion :type) candidate)
+       candidate)
+     suggestions)))
+
+(defun company-phpactor--post-completion (arg)
+  "Trigger auto-import of completed item ARG when relevant."
+  (if (string= (get-text-property 0 'type arg) "t")
+      (phpactor-import-class (get-text-property 0 'annotation arg))))
+
+(defun company-phpactor--annotation (arg)
+  "Show additional info (ARG) from phpactor as lateral annotation."
+  (message (concat " " (get-text-property 0 'annotation arg))))
+
 ;;;###autoload
 (defun company-phpactor (command &optional arg &rest ignored)
   "`company-mode' completion backend for Phpactor."
   (interactive (list 'interactive))
-  (cl-case command
-    (interactive (company-begin-backend 'company-phpactor))
-    (prefix (company-phpactor--grab-symbol))
-    (candidates (all-completions (substring-no-properties arg) (mapcar #'(lambda (suggestion) (plist-get suggestion :name)) (company-phpactor--get-suggestions))))))
+  (save-restriction
+    (widen)
+    (cl-case command
+      (post-completion (company-phpactor--post-completion arg))
+      (annotation (company-phpactor--annotation arg))
+      (interactive (company-begin-backend 'company-phpactor))
+      (prefix (company-phpactor--grab-symbol))
+      (candidates (all-completions arg (company-phpactor--get-candidates))))))
 
 (provide 'company-phpactor)
 ;;; company-phpactor.el ends here
