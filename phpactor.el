@@ -130,7 +130,7 @@
     (with-current-buffer (get-buffer-create "*Phpactor Input*")
       (erase-buffer)
       (insert json)
-      (shell-command-on-region (point-min) (point-max) cmd output)
+      (call-process-region (point-min) (point-max) (phpactor-find-executable) nil output nil "rpc" (format "--working-dir=%s" (phpactor-get-working-dir)))
       (with-current-buffer output
         (goto-char (point-min))
         (json-read-object)))))
