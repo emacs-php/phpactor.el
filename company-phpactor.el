@@ -35,7 +35,7 @@
   "If point is at the end of a symbol, return it.
 Otherwise, if point is not inside a symbol, return an empty string.
 Here we create a temporary syntax table in order to add $ to symbols."
-  (let (($temp-syn-table (make-syntax-table)))
+  (let (($temp-syn-table (make-syntax-table php-mode-syntax-table)))
     (modify-syntax-entry ?\$ "_" $temp-syn-table)
 
     (with-syntax-table $temp-syn-table
