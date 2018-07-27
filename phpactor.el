@@ -121,16 +121,16 @@
   (phpactor--add-history 'phpactor--rpc (list action arguments))
   (let ((json (json-encode (list :action action
                                  :parameters arguments)))
-        (cmd  (phpactor--make-command-string "rpc"
-                (format "--working-dir=%s" (phpactor-get-working-dir))))
         (json-object-type 'plist)
         (json-array-type 'list)
-        (output (get-buffer-create "*Phpactor Output*")))
+        (output (get-buffer-create "*Phpactor Output*"))
+        (cwd (phpactor-get-working-dir))
+        (phpactor-executable (phpactor-find-executable)))
     (with-current-buffer output (erase-buffer))
     (with-current-buffer (get-buffer-create "*Phpactor Input*")
       (erase-buffer)
       (insert json)
-      (call-process-region (point-min) (point-max) (phpactor-find-executable) nil output nil "rpc" (format "--working-dir=%s" (phpactor-get-working-dir)))
+      (call-process-region (point-min) (point-max) phpactor-executable nil output nil "rpc" (format "--working-dir=%s" cwd))
       (with-current-buffer output
         (goto-char (point-min))
         (json-read-object)))))
