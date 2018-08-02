@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "47250c9448bee12a5ede7d7ee84e34e1",
+    "content-hash": "f6e44236958af26a3afb9dc03503a7fd",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -266,12 +266,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/JetBrains/phpstorm-stubs.git",
-                "reference": "246e396c782429173762c4b9c1c1b79892a3d7b4"
+                "reference": "15620ee9d8df58a209000a81759277570bc89317"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JetBrains/phpstorm-stubs/zipball/246e396c782429173762c4b9c1c1b79892a3d7b4",
-                "reference": "246e396c782429173762c4b9c1c1b79892a3d7b4",
+                "url": "https://api.github.com/repos/JetBrains/phpstorm-stubs/zipball/15620ee9d8df58a209000a81759277570bc89317",
+                "reference": "15620ee9d8df58a209000a81759277570bc89317",
                 "shasum": ""
             },
             "require-dev": {
@@ -296,7 +296,7 @@
                 "stubs",
                 "type"
             ],
-            "time": "2018-07-19T14:58:51+00:00"
+            "time": "2018-08-02T10:56:10+00:00"
         },
         {
             "name": "lstrojny/functional-php",
@@ -443,12 +443,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Microsoft/tolerant-php-parser.git",
-                "reference": "bce97ae2fc06d9259368afdd813fe30e6415b6e5"
+                "reference": "58814f104f8de9c96d295487b70c5734b9c77959"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Microsoft/tolerant-php-parser/zipball/bce97ae2fc06d9259368afdd813fe30e6415b6e5",
-                "reference": "bce97ae2fc06d9259368afdd813fe30e6415b6e5",
+                "url": "https://api.github.com/repos/Microsoft/tolerant-php-parser/zipball/58814f104f8de9c96d295487b70c5734b9c77959",
+                "reference": "58814f104f8de9c96d295487b70c5734b9c77959",
                 "shasum": ""
             },
             "require": {
@@ -476,25 +476,25 @@
                 }
             ],
             "description": "Tolerant PHP-to-AST parser designed for IDE usage scenarios",
-            "time": "2018-06-11T23:33:48+00:00"
+            "time": "2018-07-27T16:59:32+00:00"
         },
         {
             "name": "monolog/monolog",
-            "version": "dev-master",
+            "version": "1.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "334b8d8783a1262c3b8311d6599889d82e9cc58c"
+                "reference": "fd8c787753b3a2ad11bc60c063cff1358a32a3b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/334b8d8783a1262c3b8311d6599889d82e9cc58c",
-                "reference": "334b8d8783a1262c3b8311d6599889d82e9cc58c",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/fd8c787753b3a2ad11bc60c063cff1358a32a3b4",
+                "reference": "fd8c787753b3a2ad11bc60c063cff1358a32a3b4",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1",
-                "psr/log": "^1.0.1"
+                "php": ">=5.3.0",
+                "psr/log": "~1.0"
             },
             "provide": {
                 "psr/log-implementation": "1.0.0"
@@ -502,14 +502,12 @@
             "require-dev": {
                 "aws/aws-sdk-php": "^2.4.9 || ^3.0",
                 "doctrine/couchdb": "~1.0@dev",
-                "graylog2/gelf-php": "^1.4.2",
-                "jakub-onderka/php-parallel-lint": "^0.9",
+                "graylog2/gelf-php": "~1.0",
+                "jakub-onderka/php-parallel-lint": "0.9",
                 "php-amqplib/php-amqplib": "~2.4",
                 "php-console/php-console": "^3.1.3",
-                "phpspec/prophecy": "^1.6.1",
-                "phpunit/phpunit": "^6.5",
-                "predis/predis": "^1.1",
-                "rollbar/rollbar": "^1.3",
+                "phpunit/phpunit": "~4.5",
+                "phpunit/phpunit-mock-objects": "2.3.0",
                 "ruflin/elastica": ">=0.90 <3.0",
                 "sentry/sentry": "^0.13",
                 "swiftmailer/swiftmailer": "^5.3|^6.0"
@@ -518,9 +516,9 @@
                 "aws/aws-sdk-php": "Allow sending log messages to AWS services like DynamoDB",
                 "doctrine/couchdb": "Allow sending log messages to a CouchDB server",
                 "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
-                "ext-mongodb": "Allow sending log messages to a MongoDB server (via driver)",
+                "ext-mongo": "Allow sending log messages to a MongoDB server",
                 "graylog2/gelf-php": "Allow sending log messages to a GrayLog2 server",
-                "mongodb/mongodb": "Allow sending log messages to a MongoDB server (via library)",
+                "mongodb/mongodb": "Allow sending log messages to a MongoDB server via PHP Driver",
                 "php-amqplib/php-amqplib": "Allow sending log messages to an AMQP server using php-amqplib",
                 "php-console/php-console": "Allow sending log messages to Google Chrome",
                 "rollbar/rollbar": "Allow sending log messages to Rollbar",
@@ -530,7 +528,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.x-dev"
+                    "dev-master": "2.0.x-dev"
                 }
             },
             "autoload": {
@@ -556,7 +554,56 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2018-07-18T07:55:49+00:00"
+            "time": "2017-06-19T01:22:40+00:00"
+        },
+        {
+            "name": "ocramius/package-versions",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Ocramius/PackageVersions.git",
+                "reference": "4489d5002c49d55576fa0ba786f42dbb009be46f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Ocramius/PackageVersions/zipball/4489d5002c49d55576fa0ba786f42dbb009be46f",
+                "reference": "4489d5002c49d55576fa0ba786f42dbb009be46f",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0.0",
+                "php": "^7.1.0"
+            },
+            "require-dev": {
+                "composer/composer": "^1.6.3",
+                "ext-zip": "*",
+                "infection/infection": "^0.7.1",
+                "phpunit/phpunit": "^7.0.0"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "PackageVersions\\Installer",
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PackageVersions\\": "src/PackageVersions"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marco Pivetta",
+                    "email": "ocramius@gmail.com"
+                }
+            ],
+            "description": "Composer plugin that provides efficient querying for installed package versions (no runtime IO)",
+            "time": "2018-02-05T13:05:30+00:00"
         },
         {
             "name": "phpactor/class-mover",
@@ -753,12 +800,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpactor/completion.git",
-                "reference": "f5a596384c3054fee51bf10d294e63adf8bcdde5"
+                "reference": "22d5ba1925ea428390afdf521f8cdd2052f7bccd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpactor/completion/zipball/f5a596384c3054fee51bf10d294e63adf8bcdde5",
-                "reference": "f5a596384c3054fee51bf10d294e63adf8bcdde5",
+                "url": "https://api.github.com/repos/phpactor/completion/zipball/22d5ba1925ea428390afdf521f8cdd2052f7bccd",
+                "reference": "22d5ba1925ea428390afdf521f8cdd2052f7bccd",
                 "shasum": ""
             },
             "require": {
@@ -794,7 +841,7 @@
                 }
             ],
             "description": "Completion library for Worse Reflection",
-            "time": "2018-07-14T14:47:08+00:00"
+            "time": "2018-08-02T07:24:03+00:00"
         },
         {
             "name": "phpactor/docblock",
@@ -879,16 +926,16 @@
         },
         {
             "name": "phpactor/phpactor",
-            "version": "dev-master",
+            "version": "0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpactor/phpactor.git",
-                "reference": "6ff2125594d53f2b94b4fc3b4a8008c67060061e"
+                "reference": "a22c370917e57dbbb8d4de0189413ac0fbd5b7b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpactor/phpactor/zipball/6ff2125594d53f2b94b4fc3b4a8008c67060061e",
-                "reference": "6ff2125594d53f2b94b4fc3b4a8008c67060061e",
+                "url": "https://api.github.com/repos/phpactor/phpactor/zipball/a22c370917e57dbbb8d4de0189413ac0fbd5b7b9",
+                "reference": "a22c370917e57dbbb8d4de0189413ac0fbd5b7b9",
                 "shasum": ""
             },
             "require": {
@@ -930,7 +977,7 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2018-05-23T20:32:04+00:00"
+            "time": "2018-07-02T20:39:29+00:00"
         },
         {
             "name": "phpactor/source-code-filesystem",
@@ -1292,6 +1339,58 @@
             "time": "2016-10-10T12:19:37+00:00"
         },
         {
+            "name": "sebastian/diff",
+            "version": "2.0.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/diff.git",
+                "reference": "abcc70409ddfb310a8cb41ef0c2e857425438cf4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/abcc70409ddfb310a8cb41ef0c2e857425438cf4",
+                "reference": "abcc70409ddfb310a8cb41ef0c2e857425438cf4",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Kore Nordmann",
+                    "email": "mail@kore-nordmann.de"
+                },
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de"
+                }
+            ],
+            "description": "Diff implementation",
+            "homepage": "https://github.com/sebastianbergmann/diff",
+            "keywords": [
+                "diff"
+            ],
+            "time": "2017-12-14T11:32:19+00:00"
+        },
+        {
             "name": "seld/jsonlint",
             "version": "1.7.1",
             "source": {
@@ -1342,16 +1441,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v3.4.12",
+            "version": "v3.4.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "1b97071a26d028c9bd4588264e101e14f6e7cd00"
+                "reference": "6b217594552b9323bcdcfc14f8a0ce126e84cd73"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/1b97071a26d028c9bd4588264e101e14f6e7cd00",
-                "reference": "1b97071a26d028c9bd4588264e101e14f6e7cd00",
+                "url": "https://api.github.com/repos/symfony/console/zipball/6b217594552b9323bcdcfc14f8a0ce126e84cd73",
+                "reference": "6b217594552b9323bcdcfc14f8a0ce126e84cd73",
                 "shasum": ""
             },
             "require": {
@@ -1407,7 +1506,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2018-05-23T05:02:55+00:00"
+            "time": "2018-07-26T11:19:56+00:00"
         },
         {
             "name": "symfony/debug",
@@ -2057,7 +2156,6 @@
     "stability-flags": {
         "jetbrains/phpstorm-stubs": 20,
         "microsoft/tolerant-php-parser": 20,
-        "monolog/monolog": 20,
         "phpactor/class-mover": 20,
         "phpactor/class-to-file": 20,
         "phpactor/code-builder": 20,
@@ -2065,10 +2163,10 @@
         "phpactor/completion": 20,
         "phpactor/docblock": 20,
         "phpactor/path-finder": 20,
-        "phpactor/phpactor": 20,
         "phpactor/source-code-filesystem": 20,
         "phpactor/worse-reflection": 20,
-        "phpbench/phpbench": 20
+        "phpbench/phpbench": 20,
+        "sebastian/diff": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

@@ -17,23 +17,22 @@
         "psr-4": {"EmacsPHP\\Phpactor\\Sample\\": "tests/src/"}
     },
     "require": {
-        "phpactor/phpactor": "*"
-    },
-    "require-dev": {
         "jetbrains/phpstorm-stubs": "dev-master",
-        "microsoft/tolerant-php-parser": "dev-master",
-        "monolog/monolog": "^2.0@dev",
-        "phpactor/class-mover": "dev-master",
-        "phpactor/class-to-file": "dev-master",
-        "phpactor/code-builder": "dev-master",
+        "microsoft/tolerant-php-parser": "@dev",
+        "phpactor/class-mover": "@dev",
+        "phpactor/class-to-file": "@dev",
+        "phpactor/code-builder": "@dev",
         "phpactor/code-transform": "dev-master",
-        "phpactor/completion": "^1.0@dev",
-        "phpactor/docblock": "dev-master",
-        "phpactor/path-finder": "dev-master",
-        "phpactor/phpactor": "dev-master",
-        "phpactor/source-code-filesystem": "dev-master",
-        "phpactor/worse-reflection": "dev-master",
-        "phpbench/phpbench": "^1.0@dev",
-        "symfony/console": "^3.0"
+        "phpactor/completion": "dev-master",
+        "phpactor/docblock": "@dev",
+        "phpactor/path-finder": "@dev",
+        "phpactor/phpactor": "^0.7.0",
+        "phpactor/source-code-filesystem": "@dev",
+        "phpactor/worse-reflection": "@dev",
+        "phpbench/phpbench": "@dev",
+        "sebastian/diff": "@dev"
+    },
+    "config": {
+         "sort-packages": true
     }
 }
