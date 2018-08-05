@@ -3,6 +3,7 @@
 ;; Copyright (C) 2018  Friends of Emacs-PHP development
 
 ;; Author: Martin Tang <martin.tang365@gmail.com>
+;;         Mikael Kermorgant <mikael@kgtech.fi>
 ;; Created: 18 Apr 2018
 ;; Version: 0.1.0
 ;; Keywords: tools, php
@@ -56,15 +57,17 @@ Here we create a temporary syntax table in order to add $ to symbols."
     (mapcar
      (lambda (suggestion)
        (setq candidate (plist-get suggestion :name))
-       (put-text-property 0 1 'annotation (plist-get suggestion :info) candidate)
+       (put-text-property 0 1 'annotation (plist-get suggestion :short_description) candidate)
        (put-text-property 0 1 'type (plist-get suggestion :type) candidate)
+       (if (string= (plist-get suggestion :type) "class")
+           (put-text-property 0 1 'class_import (plist-get suggestion :class_import) candidate))
        candidate)
      suggestions)))
 
 (defun company-phpactor--post-completion (arg)
   "Trigger auto-import of completed item ARG when relevant."
-  (if (string= (get-text-property 0 'type arg) "t")
-      (phpactor-import-class (get-text-property 0 'annotation arg))))
+  (if (get-text-property 0 'class_import arg)
+      (phpactor-import-class (get-text-property 0 'class_import arg))))
 
 (defun company-phpactor--annotation (arg)
   "Show additional info (ARG) from phpactor as lateral annotation."

@@ -3,6 +3,8 @@
 ;; Copyright (C) 2018  Friends of Emacs-PHP development
 
 ;; Author: USAMI Kenta <tadsan@zonu.me>
+;;         Mikael Kermorgant <mikael@kgtech.fi>
+
 ;; Created: 8 Apr 2018
 ;; Version: 0.1.0
 ;; Keywords: tools, php
@@ -75,6 +77,7 @@
 (defvar phpactor--buffer-name "*Phpactor*")
 
 (defconst phpactor-command-name "phpactor")
+(defconst phpactor--supported-rpc-version "1.0.0")
 
 ;; Special variables
 (defvar phpactor--execute-async nil)
@@ -180,7 +183,7 @@
     (file_references . phpactor-action-file-references)
     (input_callback . phpactor-action-input-callback)
     (information . phpactor-action-information)
-    (replace_file_source . phpactor-action-replace-file-source)))
+    (update_file_source . phpactor-action-update-file-source)))
 
 ;; Helper functions:
 (cl-defun phpactor--action-input-parameters (value-type &key default label choices type)
@@ -329,7 +332,7 @@
      (apply #'phpactor-action-dispatch (list :action (plist-get action :name) :parameters (plist-get action :parameters))))
    actions))
 
-(cl-defun phpactor-action-open-file (&key path offset)
+(cl-defun phpactor-action-open-file (&key path offset force_reload)
   "Open file from Phpactor."
   (unless (and path offset)
     (user-error "Definition not found"))
@@ -339,6 +342,11 @@
     (with-no-warnings
       (ring-insert find-tag-marker-ring (point-marker))))
 
+  (let ((buf (find-buffer-visiting path)))
+    (when (and force_reload buf)
+        (progn
+          (set-buffer buf)
+          (revert-buffer t t t))))
   (find-file path)
   (goto-char (1+ (byte-to-position offset))))
 
@@ -424,7 +432,7 @@ function."
               (error "Invalid rcs patch or internal error in phpactor--apply-rcs-patch")))))))
     (move-to-column column)))
 
-(cl-defun  phpactor-action-replace-file-source (&key path source)
+(cl-defun  phpactor-action-update-file-source (&key path source edits)
   "Replace the source code in the current file."
   (interactive)
   (let ((tmpfile (make-temp-file "phpactor" nil ".php"))
@@ -450,9 +458,11 @@ function."
       (delete-file tmpfile))))
 
 ;; Dispatcher:
-(cl-defun phpactor-action-dispatch (&key action parameters)
+(cl-defun phpactor-action-dispatch (&key action parameters version)
   "Execite action by `NAME' and `PARAMETERS'."
-  (phpactor--add-history 'phpactor-action-dispatch (list :action action :parameters parameters))
+  (when (and version (not (equal phpactor--supported-rpc-version version)))
+    (error "Phpactor uses rpc protocol %s whereas this package requires %s" version phpactor--supported-rpc-version))
+  (phpactor--add-history 'phpactor-action-dispatch (list :action action :parameters parameters :version version))
   (let ((func (cdr-safe (assq (intern action) phpactor-action-table))))
     (if func
         (apply func parameters)
