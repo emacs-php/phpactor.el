@@ -177,6 +177,8 @@
   (let ((use-dialog-box nil)
         (type (if type (intern type) value-type)))
     (cl-case type
+      (confirm (if (y-or-n-p label) t
+                 (error "Action cancelled")))
       (file (read-file-name label nil default))
       (text (read-string label default))
       (choice (completing-read label
@@ -257,6 +259,13 @@
       (view-mode 1))
     (pop-to-buffer buffer)))
 
+(cl-defun phpactor-action-collection (&key actions)
+  "Executes a collection of actions."
+  (mapc
+   (lambda (action)
+     (apply #'phpactor-action-dispatch (list :action (plist-get action :name) :parameters (plist-get action :parameters))))
+   actions))
+
 (cl-defun phpactor-action-open-file (&key path offset)
   "Open file from Phpactor."
   (unless (and path offset)
@@ -269,6 +278,10 @@
 
   (find-file path)
   (goto-char (1+ offset)))
+
+(cl-defun phpactor-action-close-file (&key path)
+  "Close file from Phpactor."
+  (kill-buffer (find-file-noselect path t)))
 
 ;; this function was adapted from go-mode
 (defun phpactor--goto-line (line)
