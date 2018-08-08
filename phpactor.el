@@ -218,7 +218,7 @@
               (point-min) (point-max)))
     (:path (phpactor--expand-local-file-name buffer-file-name))
     (:source_path (phpactor--expand-local-file-name buffer-file-name))
-    (:offset (1- (point)))
+    (:offset (1- (position-bytes (point))))
     (:current_path (phpactor--expand-local-file-name buffer-file-name))
     (t (error "`%s' is unknown argument" key))))
 
