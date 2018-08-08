@@ -1,7 +1,7 @@
 * phpactor.el - PHP refactoring and introspection
 This package is Emacs interface to [[http://phpactor.github.io/phpactor/][Phpactor]].
 
-**NOTICE**: This package is in development.  Since some functions are running, this is released as an /alpha version/.
+*NOTICE*: This package is in development.  Since some functions are running, this is released as an /alpha version/.
 
 #+BEGIN_HTML
 <a href="http://melpa.org/#/phpactor"><img alt="MELPA: phpactor" src="http://melpa.org/packages/phpactor-badge.svg"></a>
