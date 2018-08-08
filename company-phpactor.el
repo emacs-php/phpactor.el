@@ -4,7 +4,7 @@
 
 ;; Author: Martin Tang <martin.tang365@gmail.com>
 ;; Created: 18 Apr 2018
-;; Version: 0.0.2
+;; Version: 0.1.0
 ;; Keywords: tools, php
 ;; Package-Requires: ((emacs "24.3") (cl-lib "0.5") (company "0.9.6"))
 ;; URL: https://github.com/emacs-php/phpactor.el

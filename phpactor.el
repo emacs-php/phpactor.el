@@ -4,7 +4,7 @@
 
 ;; Author: USAMI Kenta <tadsan@zonu.me>
 ;; Created: 8 Apr 2018
-;; Version: 0.0.2
+;; Version: 0.1.0
 ;; Keywords: tools, php
 ;; Package-Requires: ((emacs "24.3") (cl-lib "0.5") (f "0.17"))
 ;; URL: https://github.com/emacs-php/phpactor.el

@@ -1,4 +1,4 @@
-(package "phpactor" "0.0.2" "Interface to Phpactor")
+(package "phpactor" "0.1.0" "Interface to Phpactor")
 (source melpa)
 
 (package-file "phpactor.el")
