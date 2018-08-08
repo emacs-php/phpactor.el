@@ -1,0 +1,18 @@
+* Changelog
+All notable changes of the phpactor.el are documented in this file using the [[https://keepachangelog.com/][Keep a Changelog]] principles.
+** [[https://github.com/emacs-php/phpactor.el/releases/tag/0.1.0][Version 0.1.0]] / 2018-08-08
+This release depends on many contributions of [[https://github.com/kermorgant][Mikael Kermorgant]].  Thanks [[https://github.com/kermorgant][@kermorgant]]!
+*** Add
+- Implement actions
+  - RPC ~import_class~ action [[https://github.com/emacs-php/phpactor.el/pull/34][#34]]
+  - RPC ~close-file~ action [[https://github.com/emacs-php/phpactor.el/pull/39][#39]]
+  - Editor ~collection~ action [[https://github.com/emacs-php/phpactor.el/pull/39][#39]]
+*** Changed
+- Replace ~company-grab-symbol~ by specific ~company-phpactor--grab-symbol~ [[https://github.com/emacs-php/phpactor.el/pull/29][#29]]
+- Automatically add appropriate ~use~ statement after class completion [[https://github.com/emacs-php/phpactor.el/pull/34][#34]]
+*** Fixed
+- Alter ~php-mode'~s syntax table on the fly to use correct completion prefix [[https://github.com/emacs-php/phpactor.el/pull/29][#29]]
+- Fix completion and goto definition when file contains multi-byte chars [[https://github.com/emacs-php/phpactor.el/issues/40][#40]] [[https://github.com/emacs-php/phpactor.el/pull/46][#46]]
+- Fix ~move_class~ RPC action [[https://github.com/emacs-php/phpactor.el/issues/36][#36]] [[https://github.com/emacs-php/phpactor.el/pull/39][#39]]
+** [[https://github.com/emacs-php/phpactor.el/releases/tag/0.0.2][Veresion 0.0.2]] / 2018-05-27
+** [[https://github.com/emacs-php/phpactor.el/releases/tag/0.0.1][Veresion 0.0.1]] / 2018-05-13
