@@ -114,6 +114,15 @@
     (setq phpactor-history-ring (make-ring phpactor-history-size)))
   (ring-insert phpactor-history-ring (cons name entry)))
 
+(defun phpactor-config:dump ()
+  "Execute Phpactor `config:dump' sub command."
+  (interactive)
+  (let ((default-directory (phpactor-get-working-dir)))
+    (funcall
+     (if (called-interactively-p 'interactive)
+         #'shell-command
+       #'shell-command-to-string)
+     (phpactor--make-command-string "config:dump"))))
 
 ;; Phpactor RPC
 (defun phpactor--rpc (action arguments)
