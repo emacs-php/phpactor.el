@@ -114,6 +114,15 @@
     (setq phpactor-history-ring (make-ring phpactor-history-size)))
   (ring-insert phpactor-history-ring (cons name entry)))
 
+(defun phpactor-config:dump ()
+  "Execute Phpactor `config:dump' sub command."
+  (interactive)
+  (let ((default-directory (phpactor-get-working-dir)))
+    (funcall
+     (if (called-interactively-p 'interactive)
+         #'shell-command
+       #'shell-command-to-string)
+     (phpactor--make-command-string "config:dump"))))
 
 ;; Phpactor RPC
 (defun phpactor--rpc (action arguments)
@@ -124,13 +133,14 @@
         (json-object-type 'plist)
         (json-array-type 'list)
         (output (get-buffer-create "*Phpactor Output*"))
-        (cwd (phpactor-get-working-dir))
-        (phpactor-executable (phpactor-find-executable)))
+        (phpactor-executable (phpactor-find-executable))
+        ;; `default-directory' is a *special variable*
+        (default-directory (phpactor-get-working-dir)))
     (with-current-buffer output (erase-buffer))
     (with-current-buffer (get-buffer-create "*Phpactor Input*")
       (erase-buffer)
       (insert json)
-      (call-process-region (point-min) (point-max) phpactor-executable nil output nil "rpc" (format "--working-dir=%s" cwd))
+      (call-process-region (point-min) (point-max) phpactor-executable nil output nil "rpc" (format "--working-dir=%s" default-directory))
       (with-current-buffer output
         (goto-char (point-min))
         (json-read-object)))))
