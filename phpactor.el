@@ -288,7 +288,7 @@
 
   (find-file path)
   (unless (zerop offset)
-    (goto-char (byte-to-position (1+ offset)))))
+    (goto-char (1+ (byte-to-position offset)))))
 
 (cl-defun phpactor-action-close-file (&key path)
   "Close file from Phpactor."
