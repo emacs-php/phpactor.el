@@ -287,8 +287,7 @@
       (ring-insert find-tag-marker-ring (point-marker))))
 
   (find-file path)
-  (unless (zerop offset)
-    (goto-char (1+ (byte-to-position offset)))))
+  (goto-char (1+ (byte-to-position offset))))
 
 (cl-defun phpactor-action-close-file (&key path)
   "Close file from Phpactor."
