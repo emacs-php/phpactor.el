@@ -498,5 +498,12 @@ function."
   (let ((arguments (phpactor--command-argments :source :offset :path)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "import_class" (append arguments (list :name name))))))
 
+;;;###autoload
+(defun phpactor-complete-constructor ()
+  "Execute Phpactor PRC transform command to complete_constructor."
+  (interactive)
+  (let ((arguments (phpactor--command-argments :source :path)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "transform" (append arguments (list :transform "complete_constructor"))))))
+
 (provide 'phpactor)
 ;;; phpactor.el ends here
