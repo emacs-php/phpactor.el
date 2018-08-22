@@ -491,47 +491,55 @@ function."
 ;;
 ;; See https://phpactor.github.io/phpactor/rpc.html#phpactor-commands
 
-;;;###autoload
-(defun phpactor-copy-class ()
-  "Execute Phpactor RPC copy_class command."
-  (interactive)
-  (let ((arguments (phpactor--command-argments :source_path)))
-    (apply #'phpactor-action-dispatch (phpactor--rpc "copy_class" arguments))))
+(defmacro phpactor-defrpc (name command-arguments)
+  "Define a function which calls a Phpactor RPC command.
+
+The NAME must be the name of the RPC command as a string,
+e.g. 'classs_search', with underscores if needed.  The macro will
+convert those underscores to dashes for the function name,
+e.g. it would define the function 'phpactor-class-search' given
+the example NAME above.
+
+The COMMAND-ARGUMENTS must be a list of symbols acceptable to the
+`phpactor--command-argments' function.  Even if there is only one
+argument, it must be in a list nonetheless.
+
+For example:
+
+    (phpactor-defrpc \"class_search\" '(:source_path))
+
+This will create a function, `phpactor-class-search', which will
+invoke the 'class_search' Phpactor RPC command.  The resulting
+function will accept no arguments.  And it will have a generic
+docstring.
+
+See `phpactor--rpc-command-data' for a list of the data we pass along
+to this macro."
+  (let ((function-name (intern (concat "phpactor-" (replace-regexp-in-string "_" "-" name)))))
+    `(defun ,function-name ()
+       ,(format "Execute Phpactor RPC %s command." name)
+       (interactive)
+       (let ((arguments ((phpactor--command-argments ,@command-arguments))))
+	 (apply #'phpactor-action-dispatch (phpactor--rpc ,name arguments))))))
 
 ;;;###autoload
-(defun phpactor-move-class ()
-  "Execute Phpactor RPC move_class command."
-  (interactive)
-  (let ((arguments (phpactor--command-argments :source_path)))
-    (apply #'phpactor-action-dispatch (phpactor--rpc "move_class" arguments))))
+(defconst phpactor--rpc-command-data
+  '(("complete" . ())
+    ("class_search" . ())
+    ("copy_class" . (:source_path))
+    ("move_class" . (:source_path))
+    ("offset_info" . (:source :offset))
+    ("transform" . (:source :path))
+    ("context_menu" . (:source :offset :current_path))
+    ("navigate" . (:source_path))
+    ("status" . ())
+    ("goto_definition" . (:source :offset :path)))
+  "A list of all Phpactor RPC commands and the respective data
+necessary for `phpactor-defrpc' to create functions for each.")
 
 ;;;###autoload
-(defun phpactor-offset-info ()
-  "Execute Phpactor RPC offset_info command."
-  (interactive)
-  (let ((arguments (phpactor--command-argments :source :offset)))
-    (apply #'phpactor-action-dispatch (phpactor--rpc "offset_info" arguments))))
-
-;;;###autoload
-(defun phpactor-transform ()
-  "Execute Phpactor RPC transform command."
-  (interactive)
-  (let ((arguments (phpactor--command-argments :source :path)))
-    (apply #'phpactor-action-dispatch (phpactor--rpc "transform" arguments))))
-
-;;;###autoload
-(defun phpactor-context-menu ()
-  "Execute Phpactor PRC context_menu command."
-  (interactive)
-  (let ((arguments (phpactor--command-argments :source :offset :current_path)))
-    (apply #'phpactor-action-dispatch (phpactor--rpc "context_menu" arguments))))
-
-;;;###autoload
-(defun phpactor-navigate ()
-  "Execute Phpactor RPC navigate command."
-  (interactive)
-  (let ((arguments (phpactor--command-argments :source_path)))
-    (apply #'phpactor-action-dispatch (phpactor--rpc "navigate" arguments))))
+(dolist (rpc-data phpactor--rpc-command-data)
+  (phpactor-defrpc (car rpc-data) (cdr rpc-data)))
 
 ;;;###autoload
 (defun phpactor-echo (message)
@@ -539,19 +547,6 @@ function."
   (interactive "MInput Message: ")
   (let ((phpactor-action--message-format "Message from Phpactor: %s"))
     (apply #'phpactor-action-dispatch (phpactor--rpc "echo" (list :message message)))))
-
-;;;###autoload
-(defun phpactor-status ()
-  "Execute Phpactor RPC status command, and pop to buffer."
-  (interactive)
-  (apply #'phpactor-action-dispatch (phpactor--rpc "status" [])))
-
-;;;###autoload
-(defun phpactor-goto-definition ()
-  "Execute Phpactor RPC goto_definition command."
-  (interactive)
-  (let ((arguments (phpactor--command-argments :source :offset :path)))
-    (apply #'phpactor-action-dispatch (phpactor--rpc "goto_definition" arguments))))
 
 ;;;###autoload
 (defun phpactor-import-class (name)
