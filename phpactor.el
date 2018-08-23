@@ -134,10 +134,11 @@
         (json-array-type 'list)
         (output (get-buffer-create "*Phpactor Output*"))
         (phpactor-executable (phpactor-find-executable))
-        ;; `default-directory' is a *special variable*
-        (default-directory (phpactor-get-working-dir)))
+        (cwd (phpactor-get-working-dir)))
     (with-current-buffer output (erase-buffer))
     (with-current-buffer (get-buffer-create "*Phpactor Input*")
+      ;; `default-directory' is a *special variable* and buffer-local.
+      (setq default-directory cwd)
       (erase-buffer)
       (insert json)
       (call-process-region (point-min) (point-max) phpactor-executable nil output nil "rpc" (format "--working-dir=%s" default-directory))
