@@ -270,6 +270,58 @@
       (view-mode 1))
     (pop-to-buffer buffer)))
 
+(defvar phpactor-references nil)
+
+(cl-defun phpactor-action-file-references (&key file_references)
+  "Receives a list of file references for information purpose."
+  (setq-local phpactor-references file_references)
+  (message "Phpactor changed %d references(s), use phpactor-list-references to check them" (length file_references)))
+
+;;; Listing references in this buffer
+(defconst phpactor-references-buffer "*Phpactor references*"
+  "The name of the buffer to list referenced files.")
+
+(defconst phpactor-references-list-col1-width 60)
+
+(defun phpactor-truncate-left (string width)
+  "Truncate STRING to WIDTH starting from the end, prepending ..."
+  (if (> (length string) width)
+      (concat "..." (substring string (- 3 width)))
+    string))
+
+(defun phpactor-open-file-other-window (path offset)
+  "Open PATH at OFFSET in a different window."
+  (save-selected-window
+    (when (buffer-live-p (get-file-buffer path))
+      (switch-to-buffer-other-window (get-file-buffer path)))
+    (phpactor-action-open-file :path path :offset offset)))
+
+(defun phpactor-references-list-make-entry (file-reference index)
+  "Return an entry for the tabulated list, for FILE-REFERENCE at INDEX."
+  (let ((path (plist-get file-reference :file))
+        (in-project-path (string-remove-prefix (phpactor-get-working-dir) (plist-get file-reference :file)))
+        (references (car (plist-get file-reference :references))))
+    (list index
+          (vector (list
+                   (phpactor-truncate-left in-project-path phpactor-references-list-col1-width)
+                   . ('action
+                      (lambda (event) (phpactor-open-file-other-window path (plist-get references :start)))
+                      'help-echo path))
+                  (number-to-string (plist-get references :line_no))))))
+
+;; adapted from flycheck-list-errors
+(cl-defun phpactor-list-references ()
+  (interactive)
+  (let ((current-references phpactor-references))
+    (with-current-buffer (get-buffer-create phpactor-references-buffer)
+      (setq tabulated-list-format (vector `("File" ,phpactor-references-list-col1-width nil) '("Line" 12 nil :right-align t))
+            tabulated-list-padding 2
+            tabulated-list-entries (seq-map-indexed #'phpactor-references-list-make-entry current-references))
+      (tabulated-list-mode)
+      (tabulated-list-init-header)
+      (tabulated-list-print t)
+      (switch-to-buffer-other-window phpactor-references-buffer))))
+
 (cl-defun phpactor-action-collection (&key actions)
   "Executes a collection of actions."
   (mapc
@@ -505,6 +557,13 @@ function."
   (interactive)
   (let ((arguments (phpactor--command-argments :source :path)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "transform" (append arguments (list :transform "complete_constructor"))))))
+
+;;;###autoload
+(defun phpactor-replace-references ()
+  "Execute Phpactor PRC replace_references command to complete_constructor."
+  (interactive)
+  (let ((arguments (phpactor--command-argments :source :path :offset)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "references" (append arguments (list :mode "replace"))))))
 
 (provide 'phpactor)
 ;;; phpactor.el ends here
