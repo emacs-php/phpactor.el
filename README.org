@@ -12,3 +12,9 @@ Please be aware that Phpactor is also in development stage.
 A simple installation method is not yet provided, but you can build it using Composer.
 ** Configuration
 See https://phpactor.github.io/phpactor/configuration.html
+
+** Troubleshooting
+
+You can run ``phpactor-status`` while visiting a project file.
+
+If needed, configure [[https://github.com/emacs-php/php-mode/blob/1f04813f46219e626b385d0d96abefad914bfae0/php-project.el#L54][the way the project root is detected]] via .dir-locals.el
