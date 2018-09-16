@@ -3,13 +3,20 @@ This package is Emacs interface to [[http://phpactor.github.io/phpactor/][Phpact
 
 *NOTICE*: This package is in development.  Since some functions are running, this is released as an /alpha version/.
 
+*NOTICE*: Phpactor is also in development stage.
+
 #+BEGIN_HTML
 <a href="http://melpa.org/#/phpactor"><img alt="MELPA: phpactor" src="http://melpa.org/packages/phpactor-badge.svg"></a>
 <a href="http://stable.melpa.org/#/phpactor"><img alt="MELPA stable: phpactor" src="http://stable.melpa.org/packages/phpactor-badge.svg"></a>
 #+END_HTML
 ** Instalation
-Please be aware that Phpactor is also in development stage.
-A simple installation method is not yet provided, but you can build it using Composer.
+
+After having installed this package, run `phpactor-update` (this will install a supported version of phpactor inside phpactor.el's installation folder).
+*NOTICE*: To ensure the appropriate version of Phpactor is installed, please run this command after every upgrade of phpactor.el
+
+Alternatively, you can install Phpactor on your own and configure `phpactor-executable` but please be aware that any change in Phpactor's rpc protocol can introduce breakages.
+
+
 ** Configuration
 See https://phpactor.github.io/phpactor/configuration.html
 
