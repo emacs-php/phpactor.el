@@ -347,7 +347,7 @@
           (set-buffer buf)
           (revert-buffer t t t))))
   (find-file path)
-  (goto-char (1+ (byte-to-position offset))))
+  (goto-char (1+ (byte-to-position (max 1 offset)))))
 
 (cl-defun phpactor-action-close-file (&key path)
   "Close file from Phpactor."
