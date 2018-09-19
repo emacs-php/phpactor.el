@@ -14,5 +14,5 @@ This release depends on many contributions of [[https://github.com/kermorgant][M
 - Alter ~php-mode'~s syntax table on the fly to use correct completion prefix [[https://github.com/emacs-php/phpactor.el/pull/29][#29]]
 - Fix completion and goto definition when file contains multi-byte chars [[https://github.com/emacs-php/phpactor.el/issues/40][#40]] [[https://github.com/emacs-php/phpactor.el/pull/46][#46]]
 - Fix ~move_class~ RPC action [[https://github.com/emacs-php/phpactor.el/issues/36][#36]] [[https://github.com/emacs-php/phpactor.el/pull/39][#39]]
-** [[https://github.com/emacs-php/phpactor.el/releases/tag/0.0.2][Veresion 0.0.2]] / 2018-05-27
-** [[https://github.com/emacs-php/phpactor.el/releases/tag/0.0.1][Veresion 0.0.1]] / 2018-05-13
+** [[https://github.com/emacs-php/phpactor.el/releases/tag/0.0.2][Version 0.0.2]] / 2018-05-27
+** [[https://github.com/emacs-php/phpactor.el/releases/tag/0.0.1][Version 0.0.1]] / 2018-05-13
