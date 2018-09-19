@@ -4,7 +4,6 @@
 
 ;; Author: USAMI Kenta <tadsan@zonu.me>
 ;;         Mikael Kermorgant <mikael@kgtech.fi>
-
 ;; Created: 8 Apr 2018
 ;; Version: 0.1.0
 ;; Keywords: tools, php
