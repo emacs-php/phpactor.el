@@ -568,6 +568,25 @@ function."
     (apply #'phpactor-action-dispatch (phpactor--rpc "transform" (append arguments (list :transform "complete_constructor"))))))
 
 ;;;###autoload
+(defun phpactor-rename-variable (&optional scope)
+  "Execute Phpactor PRC action to rename variable in SCOPE."
+  (interactive)
+  (let ((arguments (phpactor--command-argments :source :path :offset)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "rename_variable" (append arguments (list :scope scope))))))
+
+;;;###autoload
+(defun phpactor-rename-variable-local ()
+  "Execute Phpactor PRC action to rename variable locally."
+  (interactive)
+  (phpactor-rename-variable "local"))
+
+;;;###autoload
+(defun phpactor-rename-variable-file ()
+  "Execute Phpactor PRC action to rename variable in whole file."
+  (interactive)
+  (phpactor-rename-variable "file"))
+
+;;;###autoload
 (defun phpactor-replace-references ()
   "Execute Phpactor PRC replace_references command to complete_constructor."
   (interactive)
