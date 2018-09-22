@@ -586,6 +586,26 @@ function."
   (interactive)
   (phpactor-rename-variable "file"))
 
+(defun phpactor-complete-properties ()
+  "Execute Phpactor PRC transform command to add_missing_properties."
+  (interactive)
+  (let ((arguments (phpactor--command-argments :source :path)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "transform" (append arguments (list :transform "add_missing_properties"))))))
+
+;;;###autoload
+(defun phpactor-fix-namespace ()
+  "Execute Phpactor PRC transform command to fix namespace."
+  (interactive)
+  (let ((arguments (phpactor--command-argments :source :path)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "transform" (append arguments (list :transform "fix_namespace_class_name"))))))
+
+;;;###autoload
+(defun phpactor-implement-contracts ()
+  "Execute Phpactor PRC transform command to implement contracts."
+  (interactive)
+  (let ((arguments (phpactor--command-argments :source :path)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "transform" (append arguments (list :transform "implement_contracts"))))))
+
 ;;;###autoload
 (defun phpactor-replace-references ()
   "Execute Phpactor PRC replace_references command to complete_constructor."
