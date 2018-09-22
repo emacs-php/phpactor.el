@@ -272,6 +272,10 @@
       (view-mode 1))
     (pop-to-buffer buffer)))
 
+(cl-defun phpactor-action-return (&key value)
+  "Return var from Phpactor."
+  value)
+
 (defvar phpactor-references nil)
 
 (cl-defun phpactor-action-file-references (&key file_references)
@@ -592,6 +596,20 @@ function."
   (interactive)
   (let ((arguments (phpactor--command-argments :source :path :offset)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "references" (append arguments (list :mode "replace"))))))
+
+;;;###autoload
+(defun phpactor-file-information ()
+  "Execute Phpactor PRC file_info command to gather file informations."
+  (interactive)
+  (let ((arguments (phpactor--command-argments :path)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "file_info" arguments))))
+
+;;;###autoload
+(defun phpactor-insert-namespace ()
+  "Find namespace for current file."
+  (interactive)
+  (let ((file-info (phpactor-file-information)))
+    (insert (plist-get file-info :class_namespace))))
 
 (provide 'phpactor)
 ;;; phpactor.el ends here
