@@ -492,6 +492,13 @@ function."
 ;; See https://phpactor.github.io/phpactor/rpc.html#phpactor-commands
 
 ;;;###autoload
+(defun phpactor-open-rpc-documentation (command)
+  "Open the official documentation for COMMAND."
+  (interactive "sRPC Command: ")
+  (let ((doc-uri (concat "https://github.com/phpactor/phpactor/blob/develop/doc/rpc.md#" command)))
+    (browse-url doc-uri)))
+
+;;;###autoload
 (defun phpactor-copy-class ()
   "Execute Phpactor RPC copy_class command."
   (interactive)
