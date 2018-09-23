@@ -618,8 +618,16 @@ function."
     (apply #'phpactor-action-dispatch (phpactor--rpc "transform" (append arguments (list :transform "implement_contracts"))))))
 
 ;;;###autoload
+(defun phpactor-find-references ()
+  "Execute Phpactor PRC references action to find references."
+  (interactive)
+  (let ((arguments (phpactor--command-argments :source :path :offset)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "references" arguments))
+    (phpactor-list-references)))
+
+;;;###autoload
 (defun phpactor-replace-references ()
-  "Execute Phpactor PRC replace_references command to complete_constructor."
+  "Execute Phpactor PRC references action command to replace references."
   (interactive)
   (let ((arguments (phpactor--command-argments :source :path :offset)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "references" (append arguments (list :mode "replace"))))))
