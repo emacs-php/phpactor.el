@@ -33,6 +33,8 @@
         "sebastian/diff": "@dev"
     },
     "config": {
-         "sort-packages": true
+        "optimize-autoloader": true,
+        "classmap-authoritative": true,
+        "sort-packages": true
     }
 }

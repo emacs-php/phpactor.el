@@ -7,7 +7,7 @@
 ;; Created: 8 Apr 2018
 ;; Version: 0.1.0
 ;; Keywords: tools, php
-;; Package-Requires: ((emacs "24.3") (cl-lib "0.5") (f "0.17"))
+;; Package-Requires: ((emacs "24.3") (cl-lib "0.5") (f "0.17") (composer "0.1"))
 ;; URL: https://github.com/emacs-php/phpactor.el
 ;; License: GPL-3.0-or-later
 
@@ -48,6 +48,7 @@
 (require 'json)
 (require 'php-project)
 (require 'ring)
+(require 'composer)
 
 ;; Variables
 ;;;###autoload
@@ -86,10 +87,23 @@
   "Return Phpactor command or path to executable."
   (or (when phpactor-executable
         (php-project--eval-bootstrap-scripts phpactor-executable))
-      (executable-find phpactor-command-name)
-      (let ((vendor-executable (f-join (phpactor-get-working-dir) "vendor/bin/phpactor")))
+      (let ((vendor-executable (f-join (phpactor-package-directory) "vendor/bin/phpactor")))
         (when (file-exists-p vendor-executable)
-          vendor-executable))))
+          vendor-executable))
+      (error "Phpactor not found. Please run phpactor-update")))
+
+(defun phpactor-update ()
+  "Install or update phpactor inside phpactor.el's folder."
+  (interactive)
+  (let ((package-folder (phpactor-package-directory))
+        (composer-executable (car (composer--find-executable))))
+    (unless composer-executable (error ("composer not found.")))
+    (setq default-directory package-folder)
+    (call-process composer-executable nil (get-buffer-create phpactor-action--buffer-name) nil "install" "--no-dev")))
+
+(defun phpactor-package-directory ()
+  "Return the folder where phpactor.el is installed."
+  (file-name-directory(locate-library "phpactor.el")))
 
 (defun phpactor-get-working-dir ()
   "Return working directory of Phpactor."
@@ -464,7 +478,9 @@ function."
 (cl-defun phpactor-action-dispatch (&key action parameters version)
   "Execite action by `NAME' and `PARAMETERS'."
   (when (and version (not (equal phpactor--supported-rpc-version version)))
-    (error "Phpactor uses rpc protocol %s whereas this package requires %s" version phpactor--supported-rpc-version))
+    (if (phpactor-executable)
+        (error "Phpactor uses rpc protocol %s but this package requires %s" version phpactor--supported-rpc-version)
+        (error "Phpactor should be upgraded. Please run phpactor-update")))
   (phpactor--add-history 'phpactor-action-dispatch (list :action action :parameters parameters :version version))
   (let ((func (cdr-safe (assq (intern action) phpactor-action-table))))
     (if func
