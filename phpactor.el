@@ -662,5 +662,12 @@ function."
   (let ((file-info (phpactor-file-information)))
     (insert (plist-get file-info :class_namespace))))
 
+;;;###autoload
+(defun phpactor-generate-accessors ()
+  "Execute Phpactor PRC generate_accessor action."
+  (interactive)
+  (let ((arguments (phpactor--command-argments :current_path :offset :source)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "context_menu" (append arguments (list :action "generate_accessor"))))))
+
 (provide 'phpactor)
 ;;; phpactor.el ends here
