@@ -67,7 +67,9 @@ Here we create a temporary syntax table in order to add $ to symbols."
 (defun company-phpactor--post-completion (arg)
   "Trigger auto-import of completed item ARG when relevant."
   (if (get-text-property 0 'class_import arg)
-      (phpactor-import-class (get-text-property 0 'class_import arg))))
+      (phpactor-import-class (get-text-property 0 'class_import arg)))
+  (if (member (get-text-property 0 'type arg) '(list "method" "function"))
+      (let ((parens-require-spaces nil)) (insert-parentheses))))
 
 (defun company-phpactor--annotation (arg)
   "Show additional info (ARG) from phpactor as lateral annotation."
