@@ -478,7 +478,7 @@ function."
 (cl-defun phpactor-action-dispatch (&key action parameters version)
   "Execite action by `NAME' and `PARAMETERS'."
   (when (and version (not (equal phpactor--supported-rpc-version version)))
-    (if (phpactor-executable)
+    (if (phpactor-find-executable)
         (error "Phpactor uses rpc protocol %s but this package requires %s" version phpactor--supported-rpc-version)
       (error "Phpactor should be upgraded.  Please run phpactor-update")))
   (phpactor--add-history 'phpactor-action-dispatch (list :action action :parameters parameters :version version))
