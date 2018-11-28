@@ -90,16 +90,16 @@
       (let ((vendor-executable (f-join (phpactor-package-directory) "vendor/bin/phpactor")))
         (when (file-exists-p vendor-executable)
           vendor-executable))
-      (error "Phpactor not found. Please run phpactor-update")))
+      (error "Phpactor not found.  Please run phpactor-update")))
 
 (defun phpactor-update ()
   "Install or update phpactor inside phpactor.el's folder."
   (interactive)
   (let ((package-folder (phpactor-package-directory))
         (composer-executable (car (composer--find-executable))))
-    (unless composer-executable (error ("composer not found.")))
+    (unless composer-executable (error "`composer' not found"))
     (setq default-directory package-folder)
-    (call-process composer-executable nil (get-buffer-create phpactor-action--buffer-name) nil "install" "--no-dev")))
+    (call-process composer-executable nil (get-buffer-create phpactor--buffer-name) nil "install" "--no-dev")))
 
 (defun phpactor-package-directory ()
   "Return the folder where phpactor.el is installed."
@@ -325,7 +325,7 @@
           (vector (list
                    (phpactor-truncate-left in-project-path phpactor-references-list-col1-width)
                    . ('action
-                      (lambda (event) (phpactor-open-file-other-window path (plist-get references :start)))
+                      (lambda (_event) (phpactor-open-file-other-window path (plist-get references :start)))
                       'help-echo path))
                   (number-to-string (plist-get references :line_no))))))
 
@@ -361,9 +361,9 @@
 
   (let ((buf (find-buffer-visiting path)))
     (when (and force_reload buf)
-        (progn
-          (set-buffer buf)
-          (revert-buffer t t t))))
+      (progn
+        (set-buffer buf)
+        (revert-buffer t t t))))
   (find-file path)
   (goto-char (1+ (byte-to-position (max 1 offset)))))
 
@@ -480,7 +480,7 @@ function."
   (when (and version (not (equal phpactor--supported-rpc-version version)))
     (if (phpactor-executable)
         (error "Phpactor uses rpc protocol %s but this package requires %s" version phpactor--supported-rpc-version)
-        (error "Phpactor should be upgraded. Please run phpactor-update")))
+      (error "Phpactor should be upgraded.  Please run phpactor-update")))
   (phpactor--add-history 'phpactor-action-dispatch (list :action action :parameters parameters :version version))
   (let ((func (cdr-safe (assq (intern action) phpactor-action-table))))
     (if func
