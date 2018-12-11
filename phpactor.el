@@ -87,7 +87,7 @@
   "Return Phpactor command or path to executable."
   (or (when phpactor-executable
         (php-project--eval-bootstrap-scripts phpactor-executable))
-      (let ((vendor-executable (f-join (phpactor-package-directory) "vendor/bin/phpactor")))
+      (let ((vendor-executable (f-join (phpactor--get-package-directory) "vendor/bin/phpactor")))
         (when (file-exists-p vendor-executable)
           vendor-executable))
       (error "Phpactor not found.  Please run phpactor-update")))
