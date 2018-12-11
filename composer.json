@@ -19,6 +19,7 @@
     },
     "require": {
         "composer/xdebug-handler": "^1.1",
+        "jetbrains/phpstorm-stubs": "dev-master",
         "ocramius/package-versions": "^1.2",
         "phpactor/class-mover": "dev-master",
         "phpactor/class-to-file-extension": "~0.1",

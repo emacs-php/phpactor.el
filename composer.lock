@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b759012e9bdb06a9f9f4d671e5ef3727",
+    "content-hash": "8e81a468b78d643e8e6a6f2e9ee018a2",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -437,12 +437,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/JetBrains/phpstorm-stubs.git",
-                "reference": "11e3c04d896bb0108644f57be1fce82ac1fa3ed9"
+                "reference": "88e48ed150aaf796a48b5742c0aeeee21e323a76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JetBrains/phpstorm-stubs/zipball/11e3c04d896bb0108644f57be1fce82ac1fa3ed9",
-                "reference": "11e3c04d896bb0108644f57be1fce82ac1fa3ed9",
+                "url": "https://api.github.com/repos/JetBrains/phpstorm-stubs/zipball/88e48ed150aaf796a48b5742c0aeeee21e323a76",
+                "reference": "88e48ed150aaf796a48b5742c0aeeee21e323a76",
                 "shasum": ""
             },
             "require-dev": {
@@ -467,7 +467,7 @@
                 "stubs",
                 "type"
             ],
-            "time": "2018-11-26T16:50:45+00:00"
+            "time": "2018-12-07T14:44:26+00:00"
         },
         {
             "name": "justinrainbow/json-schema",
@@ -2959,6 +2959,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "jetbrains/phpstorm-stubs": 20,
         "phpactor/class-mover": 20,
         "phpactor/code-transform": 20,
         "phpactor/language-server": 20,
