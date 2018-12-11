@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4cb04efd37910e3f462593d20417a829",
+    "content-hash": "b759012e9bdb06a9f9f4d671e5ef3727",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -582,12 +582,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "b46967e74ca067c059f2753a586ca981cac8ee39"
+                "reference": "68f536105f1e4fe439ccabac105bb1c90dee8b92"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/b46967e74ca067c059f2753a586ca981cac8ee39",
-                "reference": "b46967e74ca067c059f2753a586ca981cac8ee39",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/68f536105f1e4fe439ccabac105bb1c90dee8b92",
+                "reference": "68f536105f1e4fe439ccabac105bb1c90dee8b92",
                 "shasum": ""
             },
             "require": {
@@ -652,7 +652,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2018-12-10T10:13:43+00:00"
+            "time": "2018-12-11T10:11:11+00:00"
         },
         {
             "name": "ocramius/package-versions",
