@@ -95,13 +95,13 @@
 (defun phpactor-update ()
   "Install or update phpactor inside phpactor.el's folder."
   (interactive)
-  (let ((package-folder (phpactor-package-directory))
+  (let ((package-folder (phpactor--get-package-directory))
         (composer-executable (car (composer--find-executable))))
     (unless composer-executable (error "`composer' not found"))
     (setq default-directory package-folder)
     (call-process composer-executable nil (get-buffer-create phpactor--buffer-name) nil "install" "--no-dev")))
 
-(defun phpactor-package-directory ()
+(defun phpactor--get-package-directory ()
   "Return the folder where phpactor.el is installed."
   (file-name-directory(locate-library "phpactor.el")))
 
