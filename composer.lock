@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a5378d87fe1ea45d071fe7ecd799e63f",
+    "content-hash": "752eb18fac6f7f304e5b8e0509852946",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -1218,12 +1218,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpactor/code-transform.git",
-                "reference": "1875734f0dcc91e073f0d1672df2ce7da69e7c5a"
+                "reference": "8b3e155241e7af93a45cbf946a0e61c23929f12d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpactor/code-transform/zipball/1875734f0dcc91e073f0d1672df2ce7da69e7c5a",
-                "reference": "1875734f0dcc91e073f0d1672df2ce7da69e7c5a",
+                "url": "https://api.github.com/repos/phpactor/code-transform/zipball/8b3e155241e7af93a45cbf946a0e61c23929f12d",
+                "reference": "8b3e155241e7af93a45cbf946a0e61c23929f12d",
                 "shasum": ""
             },
             "require": {
@@ -1260,7 +1260,7 @@
                 }
             ],
             "description": "Applies introspective transformations on source code",
-            "time": "2018-12-23T14:33:32+00:00"
+            "time": "2018-11-27T08:10:19+00:00"
         },
         {
             "name": "phpactor/completion",
@@ -2218,12 +2218,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpactor/worse-reflection.git",
-                "reference": "2085e0246185551d4f19892a02f55c4afc1eba3d"
+                "reference": "531509a4055d4446bfbb99268834acadce5beff1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpactor/worse-reflection/zipball/2085e0246185551d4f19892a02f55c4afc1eba3d",
-                "reference": "2085e0246185551d4f19892a02f55c4afc1eba3d",
+                "url": "https://api.github.com/repos/phpactor/worse-reflection/zipball/531509a4055d4446bfbb99268834acadce5beff1",
+                "reference": "531509a4055d4446bfbb99268834acadce5beff1",
                 "shasum": ""
             },
             "require": {
@@ -2264,7 +2264,7 @@
                 }
             ],
             "description": "Lazy AST reflector that is much worse than better",
-            "time": "2018-12-22T22:42:13+00:00"
+            "time": "2018-12-08T12:28:28+00:00"
         },
         {
             "name": "phpactor/worse-reflection-extension",
@@ -3564,5 +3564,8 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
-    "platform-dev": []
+    "platform-dev": [],
+    "platform-overrides": {
+        "php": "7.1.3"
+    }
 }
