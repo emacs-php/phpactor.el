@@ -7,7 +7,7 @@
 ;; Created: 8 Apr 2018
 ;; Version: 0.1.0
 ;; Keywords: tools, php
-;; Package-Requires: ((emacs "24.4") (cl-lib "0.5") (f "0.17") (composer "0.1"))
+;; Package-Requires: ((emacs "24.4") (cl-lib "0.5") (f "0.17") (php-runtime "0.2") (composer "0.1"))
 ;; URL: https://github.com/emacs-php/phpactor.el
 ;; License: GPL-3.0-or-later
 
@@ -45,8 +45,10 @@
 ;; go--apply-rcs-patch go--goto-line go--delete-whole-line
 
 ;;; Code:
+(require 'cl-lib)
 (require 'json)
 (require 'php-project)
+(require 'php-runtime)
 (require 'ring)
 (require 'subr-x)
 (require 'composer)
