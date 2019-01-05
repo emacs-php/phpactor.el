@@ -117,14 +117,23 @@
           vendor-executable))
       (error "Phpactor not found.  Please run phpactor-update")))
 
-(defun phpactor-update ()
+;;;###autoload
+(defun phpactor-install-or-update ()
   "Install or update phpactor inside phpactor.el's folder."
   (interactive)
-  (let ((package-folder (phpactor--get-package-directory))
-        (composer-executable (car (composer--find-executable))))
-    (unless composer-executable (error "`composer' not found"))
-    (let ((default-directory package-folder))
-      (call-process composer-executable nil (get-buffer-create phpactor--buffer-name) nil "install" "--no-dev"))))
+  (let* ((default-directory (phpactor--get-package-directory))
+         (directory (or phpactor--base-directory
+                        phpactor--remote-composer-file-url-dir)))
+    (unless (file-directory-p phpactor-package-directory)
+      (make-directory phpactor-package-directory))
+    (cl-loop for file in '("composer.json" "composer.lock")
+             for code = (format "copy(%s, %s)"
+                                (php-runtime-quote-string (concat directory file))
+                                (php-runtime-quote-string (concat phpactor-package-directory file)))
+             do (message code)
+             do (php-runtime-expr code))
+    (composer nil "install" "--no-dev")))
+(defalias 'phpactor-update #'phpactor-install-or-update)
 
 (defun phpactor--get-package-directory ()
   "Return the folder where phpactor.el is installed."
