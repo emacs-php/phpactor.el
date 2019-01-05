@@ -51,6 +51,21 @@
 (require 'subr-x)
 (require 'composer)
 
+;; Custom variables
+;;;###autoload
+(defgroup phpactor nil
+  "PHP refactoring and introspection"
+  :prefix "phpactor-"
+  :group 'tools
+  :group 'php)
+
+;;;###autoload
+(defcustom phpactor-package-directory
+  (eval-when-compile
+    (expand-file-name (locate-user-emacs-file "phpactor/")))
+  "Directory for setup Phactor."
+  :type 'directory)
+
 ;; Variables
 ;;;###autoload
 (progn
