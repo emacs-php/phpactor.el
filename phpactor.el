@@ -94,12 +94,19 @@
 
 (defvar phpactor--buffer-name "*Phpactor*")
 
+;;; Constants
 (defconst phpactor-command-name "phpactor")
 (defconst phpactor--supported-rpc-version "1.0.0")
+(defconst phpactor--base-directory
+  (eval-when-compile
+    (when (and (boundp 'byte-compile-current-file) byte-compile-current-file)
+      (file-name-directory byte-compile-current-file))))
+(defconst phpactor--remote-composer-file-url-dir
+  "https://raw.githubusercontent.com/emacs-php/phpactor.el/master/")
 
 ;; Special variables
 (defvar phpactor--execute-async nil)
-
+
 ;; Utility functions
 (defun phpactor-find-executable ()
   "Return Phpactor command or path to executable."
@@ -121,7 +128,8 @@
 
 (defun phpactor--get-package-directory ()
   "Return the folder where phpactor.el is installed."
-  (file-name-directory(locate-library "phpactor.el")))
+  (or phpactor-package-directory
+      (file-name-directory (locate-library "phpactor.el"))))
 
 (defun phpactor-get-working-dir ()
   "Return working directory of Phpactor."
