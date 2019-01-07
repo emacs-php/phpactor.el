@@ -508,6 +508,9 @@ function."
 ;;  - generate_accessor
 ;;  - context_menu
 ;;  - navigate
+;;  - extension_list
+;;  - extension_remove
+;;  - extension_install
 ;;
 ;; See https://phpactor.github.io/phpactor/rpc.html#phpactor-commands
 
@@ -559,6 +562,28 @@ function."
   (interactive)
   (let ((arguments (phpactor--command-argments :source_path)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "navigate" arguments))))
+
+;;;###autoload
+(defun phpactor-extension-list ()
+  "Execute Phpactor RPC extension_list command."
+  (interactive)
+  (let ((arguments (phpactor--command-argments :source_path)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "extension_list" arguments))))
+
+
+;;;###autoload
+(defun phpactor-extension-remove ()
+  "Execute Phpactor RPC extension_remove command."
+  (interactive)
+  (let ((arguments (phpactor--command-argments :source_path)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "extension_remove" arguments))))
+
+;;;###autoload
+(defun phpactor-extension-install ()
+  "Execute Phpactor RPC extension_install command."
+  (interactive)
+  (let ((arguments (phpactor--command-argments :source_path)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "extension_install" arguments))))
 
 ;;;###autoload
 (defun phpactor-echo (message)
