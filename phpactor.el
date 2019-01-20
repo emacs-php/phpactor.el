@@ -152,7 +152,6 @@ of GitHub.")
                                 ;; Do not use `f-join' as this string may be a URL.
                                 (php-runtime-quote-string (concat directory file))
                                 (php-runtime-quote-string (concat phpactor-install-directory file)))
-             do (message code)
              do (php-runtime-expr code))
     (composer nil "install" "--no-dev")))
 (defalias 'phpactor-update #'phpactor-install-or-update)
