@@ -147,6 +147,9 @@ of GitHub.")
                       phpactor--remote-composer-file-url-dir)))
     (unless (file-directory-p phpactor-install-directory)
       (make-directory phpactor-install-directory))
+    ;; Create .gitignore to prevent unnecessary files from being copied to GitHub
+    (unless (file-exists-p (expand-file-name ".gitignore" phpactor-install-directory))
+      (f-write-text "*\n" 'utf-8 (expand-file-name ".gitignore" phpactor-install-directory)))
     (cl-loop for file in '("composer.json" "composer.lock")
              for code = (format "copy(%s, %s)"
                                 ;; Do not use `f-join' as this string may be a URL.
