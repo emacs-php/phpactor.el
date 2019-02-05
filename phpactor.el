@@ -97,7 +97,7 @@
 ;;; Constants
 (defconst phpactor-command-name "phpactor")
 (defconst phpactor--supported-rpc-version "1.0.0")
-(defconst phpactor--base-directory
+(defconst phpactor--lisp-directory
   (let ((byte-compiled-dir
          (eval-when-compile
            (when (and (boundp 'byte-compile-current-file) byte-compile-current-file)
@@ -139,8 +139,12 @@ of GitHub.")
   "Install or update phpactor inside phpactor.el's folder."
   (interactive)
   (let* ((default-directory phpactor-install-directory)
-         (directory (or phpactor--base-directory
-                        phpactor--remote-composer-file-url-dir)))
+         (directory (if (and phpactor--lisp-directory
+                             (file-directory-p phpactor--lisp-directory)
+                             (file-exists-p (expand-file-name "composer.json" phpactor--lisp-directory))
+                             (file-exists-p (expand-file-name "composer.lock" phpactor--lisp-directory)))
+                        phpactor--lisp-directory
+                      phpactor--remote-composer-file-url-dir)))
     (unless (file-directory-p phpactor-install-directory)
       (make-directory phpactor-install-directory))
     (cl-loop for file in '("composer.json" "composer.lock")
