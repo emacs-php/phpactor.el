@@ -65,7 +65,7 @@
 (defcustom phpactor-package-directory
   (eval-when-compile
     (expand-file-name (locate-user-emacs-file "phpactor/")))
-  "Directory for setup Phactor."
+  "Directory for setup Phactor.  (default `~/.emacs.d/phpactor/')."
   :type 'directory)
 
 ;; Variables
@@ -136,7 +136,7 @@
 (defalias 'phpactor-update #'phpactor-install-or-update)
 
 (defun phpactor--get-package-directory ()
-  "Return the folder where phpactor.el is installed."
+  "Return the folder where Phpactor is installed."
   (or phpactor-package-directory
       (file-name-directory (locate-library "phpactor.el"))))
 
