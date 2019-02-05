@@ -62,7 +62,7 @@
   :group 'php)
 
 ;;;###autoload
-(defcustom phpactor-package-directory
+(defcustom phpactor-install-directory
   (eval-when-compile
     (expand-file-name (locate-user-emacs-file "phpactor/")))
   "Directory for setup Phactor.  (default `~/.emacs.d/phpactor/')."
@@ -124,12 +124,12 @@
   (let* ((default-directory (phpactor--get-package-directory))
          (directory (or phpactor--base-directory
                         phpactor--remote-composer-file-url-dir)))
-    (unless (file-directory-p phpactor-package-directory)
-      (make-directory phpactor-package-directory))
+    (unless (file-directory-p phpactor-install-directory)
+      (make-directory phpactor-install-directory))
     (cl-loop for file in '("composer.json" "composer.lock")
              for code = (format "copy(%s, %s)"
                                 (php-runtime-quote-string (concat directory file))
-                                (php-runtime-quote-string (concat phpactor-package-directory file)))
+                                (php-runtime-quote-string (concat phpactor-install-directory file)))
              do (message code)
              do (php-runtime-expr code))
     (composer nil "install" "--no-dev")))
@@ -137,7 +137,7 @@
 
 (defun phpactor--get-package-directory ()
   "Return the folder where Phpactor is installed."
-  (or phpactor-package-directory
+  (or phpactor-install-directory
       (file-name-directory (locate-library "phpactor.el"))))
 
 (defun phpactor-get-working-dir ()
