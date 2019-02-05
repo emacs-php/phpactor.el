@@ -98,11 +98,28 @@
 (defconst phpactor-command-name "phpactor")
 (defconst phpactor--supported-rpc-version "1.0.0")
 (defconst phpactor--base-directory
-  (eval-when-compile
-    (when (and (boundp 'byte-compile-current-file) byte-compile-current-file)
-      (file-name-directory byte-compile-current-file))))
+  (let ((byte-compiled-dir
+         (eval-when-compile
+           (when (and (boundp 'byte-compile-current-file) byte-compile-current-file)
+             byte-compile-current-file)))
+        lib-dir)
+    (if (and byte-compiled-dir (file-directory-p byte-compiled-dir))
+        (file-name-directory byte-compiled-dir)
+      (setq lib-dir (locate-library "phpactor.el"))
+      (when (and lib-dir (file-directory-p lib-dir))
+        (file-name-directory lib-dir))))
+  "Path to phpactor.el installed directory.
+Byte compilation information or `locate-library' function is referenced.
+
+NOTE: If you can not acquire either of them when you run Emacs, you will get
+the necessary files from the Web.")
+
 (defconst phpactor--remote-composer-file-url-dir
-  "https://raw.githubusercontent.com/emacs-php/phpactor.el/master/")
+  "https://raw.githubusercontent.com/emacs-php/phpactor.el/master/"
+  "Path of the URL for getting the files for Phpactor.
+Please be aware that this files refers to the latest version regardless of
+version.  It is also affected by changes in the distribution URL structure
+of GitHub.")
 
 ;; Special variables
 (defvar phpactor--execute-async nil)
