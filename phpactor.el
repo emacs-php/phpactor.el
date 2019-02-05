@@ -149,6 +149,7 @@ of GitHub.")
       (make-directory phpactor-install-directory))
     (cl-loop for file in '("composer.json" "composer.lock")
              for code = (format "copy(%s, %s)"
+                                ;; Do not use `f-join' as this string may be a URL.
                                 (php-runtime-quote-string (concat directory file))
                                 (php-runtime-quote-string (concat phpactor-install-directory file)))
              do (message code)
