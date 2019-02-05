@@ -112,7 +112,7 @@
   "Return Phpactor command or path to executable."
   (or (when phpactor-executable
         (php-project--eval-bootstrap-scripts phpactor-executable))
-      (let ((vendor-executable (f-join (phpactor--get-package-directory) "vendor/bin/phpactor")))
+      (let ((vendor-executable (f-join phpactor-install-directory "vendor/bin/phpactor")))
         (when (file-exists-p vendor-executable)
           vendor-executable))
       (error "Phpactor not found.  Please run phpactor-update")))
@@ -121,7 +121,7 @@
 (defun phpactor-install-or-update ()
   "Install or update phpactor inside phpactor.el's folder."
   (interactive)
-  (let* ((default-directory (phpactor--get-package-directory))
+  (let* ((default-directory phpactor-install-directory)
          (directory (or phpactor--base-directory
                         phpactor--remote-composer-file-url-dir)))
     (unless (file-directory-p phpactor-install-directory)
@@ -134,11 +134,6 @@
              do (php-runtime-expr code))
     (composer nil "install" "--no-dev")))
 (defalias 'phpactor-update #'phpactor-install-or-update)
-
-(defun phpactor--get-package-directory ()
-  "Return the folder where Phpactor is installed."
-  (or phpactor-install-directory
-      (file-name-directory (locate-library "phpactor.el"))))
 
 (defun phpactor-get-working-dir ()
   "Return working directory of Phpactor."
