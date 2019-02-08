@@ -7,7 +7,7 @@
 ;; Created: 8 Apr 2018
 ;; Version: 0.1.0
 ;; Keywords: tools, php
-;; Package-Requires: ((emacs "24.4") (cl-lib "0.5") (f "0.17") (composer "0.1"))
+;; Package-Requires: ((emacs "24.4") (cl-lib "0.5") (f "0.17") (php-runtime "0.2") (composer "0.1"))
 ;; URL: https://github.com/emacs-php/phpactor.el
 ;; License: GPL-3.0-or-later
 
@@ -45,11 +45,28 @@
 ;; go--apply-rcs-patch go--goto-line go--delete-whole-line
 
 ;;; Code:
+(require 'cl-lib)
 (require 'json)
 (require 'php-project)
+(require 'php-runtime)
 (require 'ring)
 (require 'subr-x)
 (require 'composer)
+
+;; Custom variables
+;;;###autoload
+(defgroup phpactor nil
+  "PHP refactoring and introspection"
+  :prefix "phpactor-"
+  :group 'tools
+  :group 'php)
+
+;;;###autoload
+(defcustom phpactor-install-directory
+  (eval-when-compile
+    (expand-file-name (locate-user-emacs-file "phpactor/")))
+  "Directory for setup Phactor.  (default `~/.emacs.d/phpactor/')."
+  :type 'directory)
 
 ;; Variables
 ;;;###autoload
@@ -77,34 +94,70 @@
 
 (defvar phpactor--buffer-name "*Phpactor*")
 
+;;; Constants
 (defconst phpactor-command-name "phpactor")
 (defconst phpactor--supported-rpc-version "1.0.0")
+(defconst phpactor--lisp-directory
+  (let ((byte-compiled-dir
+         (eval-when-compile
+           (when (and (boundp 'byte-compile-current-file) byte-compile-current-file)
+             byte-compile-current-file)))
+        lib-dir)
+    (if (and byte-compiled-dir (file-directory-p byte-compiled-dir))
+        (file-name-directory byte-compiled-dir)
+      (setq lib-dir (locate-library "phpactor.el"))
+      (when (and lib-dir (file-directory-p lib-dir))
+        (file-name-directory lib-dir))))
+  "Path to phpactor.el installed directory.
+Byte compilation information or `locate-library' function is referenced.
+
+NOTE: If you can not acquire either of them when you run Emacs, you will get
+the necessary files from the Web.")
+
+(defconst phpactor--remote-composer-file-url-dir
+  "https://raw.githubusercontent.com/emacs-php/phpactor.el/master/"
+  "Path of the URL for getting the files for Phpactor.
+Please be aware that this files refers to the latest version regardless of
+version.  It is also affected by changes in the distribution URL structure
+of GitHub.")
 
 ;; Special variables
 (defvar phpactor--execute-async nil)
-
+
 ;; Utility functions
 (defun phpactor-find-executable ()
   "Return Phpactor command or path to executable."
   (or (when phpactor-executable
         (php-project--eval-bootstrap-scripts phpactor-executable))
-      (let ((vendor-executable (f-join (phpactor--get-package-directory) "vendor/bin/phpactor")))
+      (let ((vendor-executable (f-join phpactor-install-directory "vendor/bin/phpactor")))
         (when (file-exists-p vendor-executable)
           vendor-executable))
       (error "Phpactor not found.  Please run phpactor-update")))
 
-(defun phpactor-update ()
+;;;###autoload
+(defun phpactor-install-or-update ()
   "Install or update phpactor inside phpactor.el's folder."
   (interactive)
-  (let ((package-folder (phpactor--get-package-directory))
-        (composer-executable (car (composer--find-executable))))
-    (unless composer-executable (error "`composer' not found"))
-    (setq default-directory package-folder)
-    (call-process composer-executable nil (get-buffer-create phpactor--buffer-name) nil "install" "--no-dev")))
-
-(defun phpactor--get-package-directory ()
-  "Return the folder where phpactor.el is installed."
-  (file-name-directory(locate-library "phpactor.el")))
+  (let* ((default-directory phpactor-install-directory)
+         (directory (if (and phpactor--lisp-directory
+                             (file-directory-p phpactor--lisp-directory)
+                             (file-exists-p (expand-file-name "composer.json" phpactor--lisp-directory))
+                             (file-exists-p (expand-file-name "composer.lock" phpactor--lisp-directory)))
+                        phpactor--lisp-directory
+                      phpactor--remote-composer-file-url-dir)))
+    (unless (file-directory-p phpactor-install-directory)
+      (make-directory phpactor-install-directory))
+    ;; Create .gitignore to prevent unnecessary files from being copied to GitHub
+    (unless (file-exists-p (expand-file-name ".gitignore" phpactor-install-directory))
+      (f-write-text "*\n" 'utf-8 (expand-file-name ".gitignore" phpactor-install-directory)))
+    (cl-loop for file in '("composer.json" "composer.lock")
+             for code = (format "copy(%s, %s)"
+                                ;; Do not use `f-join' as this string may be a URL.
+                                (php-runtime-quote-string (concat directory file))
+                                (php-runtime-quote-string (concat phpactor-install-directory file)))
+             do (php-runtime-expr code))
+    (composer nil "install" "--no-dev")))
+(defalias 'phpactor-update #'phpactor-install-or-update)
 
 (defun phpactor-get-working-dir ()
   "Return working directory of Phpactor."
