@@ -748,5 +748,12 @@ function."
   (let ((arguments (phpactor--command-argments :current_path :offset :source)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "context_menu" (append arguments (list :action "generate_accessor"))))))
 
+;;;###autoload
+(defun phpactor-add-missing-assignments ()
+  "Execute Phpactor PRC add_missing_assignments action."
+  (interactive)
+  (let ((arguments (phpactor--command-argments :source :path)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "transform" (append arguments (list :transform "add_missing_properties"))))))
+
 (provide 'phpactor)
 ;;; phpactor.el ends here
