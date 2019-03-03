@@ -78,15 +78,6 @@
        #'(lambda (v) (if (consp v)
                          (and (eq 'root (car v)) (stringp (cdr v)))
                        (or (null v) (stringp v))))))
-;;;###autoload
-(progn
-  (defvar phpactor-working-dir nil
-    "Path to working directory for Phpactor.")
-  (make-variable-buffer-local 'phpactor-working-dir)
-  (put 'phpactor-executable 'safe-local-variable
-       #'(lambda (v) (if (consp v)
-                         (and (eq 'root (car v)) (stringp (cdr v)))
-                       (or (null v) (stringp v))))))
 
 (defvar phpactor--debug nil)
 (defvar phpactor-history-size 100)
@@ -105,7 +96,7 @@
         lib-dir)
     (if (and byte-compiled-dir (file-directory-p byte-compiled-dir))
         (file-name-directory byte-compiled-dir)
-      (setq lib-dir (locate-library "phpactor.el"))
+      (setq lib-dir (file-name-directory (locate-library "phpactor.el")))
       (when (and lib-dir (file-directory-p lib-dir))
         (file-name-directory lib-dir))))
   "Path to phpactor.el installed directory.
@@ -156,14 +147,15 @@ of GitHub.")
                                 (php-runtime-quote-string (concat directory file))
                                 (php-runtime-quote-string (concat phpactor-install-directory file)))
              do (php-runtime-expr code))
-    (composer nil "install" "--no-dev")))
+    (composer nil "install" "--no-dev")
+    ;; (call-process "composer" nil t nil "install" "--no-dev")
+    ))
 (defalias 'phpactor-update #'phpactor-install-or-update)
 
 (defun phpactor-get-working-dir ()
   "Return working directory of Phpactor."
   (directory-file-name
-   (expand-file-name
-    (or phpactor-working-dir (php-project-get-root-dir)))))
+   (expand-file-name (php-project-get-root-dir))))
 
 (defun phpactor--expand-local-file-name (name)
   "Expand file name by `NAME'."
