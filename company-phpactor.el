@@ -32,6 +32,11 @@
 (require 'company)
 (require 'phpactor)
 
+; this should have the same value as phpactor's completion.completor.class.limit value
+; by default, phpactor sets this to 100
+(defvar company-phpactor--completion-limit 100)
+(defvar company-phpactor--ignore-cache nil)
+
 (defun company-phpactor--grab-symbol ()
   "If point is at the end of a symbol, return it.
 Otherwise, if point is not inside a symbol, return an empty string.
@@ -54,6 +59,7 @@ Here we create a temporary syntax table in order to add $ to symbols."
 (defun company-phpactor--get-candidates ()
   "Build a list of candidates with text-properties extracted from phpactor's output."
   (let ((suggestions (company-phpactor--get-suggestions)) candidate)
+    (setq company-phpactor--ignore-cache (= (length suggestions) company-phpactor--completion-limit))
     (mapcar
      (lambda (suggestion)
        (setq candidate (plist-get suggestion :name))
@@ -80,6 +86,7 @@ Here we create a temporary syntax table in order to add $ to symbols."
   (save-restriction
     (widen)
     (cl-case command
+      (no-cache company-phpactor--ignore-cache)
       (post-completion (company-phpactor--post-completion arg))
       (annotation (company-phpactor--annotation arg))
       (interactive (company-begin-backend 'company-phpactor))
