@@ -737,8 +737,8 @@ function."
 (defun phpactor-generate-accessors ()
   "Execute Phpactor PRC generate_accessor action."
   (interactive)
-  (let ((arguments (phpactor--command-argments :current_path :offset :source)))
-    (apply #'phpactor-action-dispatch (phpactor--rpc "context_menu" (append arguments (list :action "generate_accessor"))))))
+  (let ((arguments (phpactor--command-argments :path :offset :source)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "generate_accessor" arguments))))
 
 ;;;###autoload
 (defun phpactor-add-missing-assignments ()
