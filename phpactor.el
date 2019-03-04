@@ -598,7 +598,7 @@ function."
 
 ;;;###autoload
 (defun phpactor-context-menu ()
-  "Execute Phpactor PRC context_menu command."
+  "Execute Phpactor RPC context_menu command."
   (interactive)
   (let ((arguments (phpactor--command-argments :source :offset :current_path)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "context_menu" arguments))))
@@ -654,60 +654,60 @@ function."
 
 ;;;###autoload
 (defun phpactor-import-class (name)
-  "Execute Phpactor PRC import_class command for class NAME."
+  "Execute Phpactor RPC import_class command for class NAME."
   (interactive)
   (let ((arguments (phpactor--command-argments :source :offset :path)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "import_class" (append arguments (list :name name))))))
 
 ;;;###autoload
 (defun phpactor-complete-constructor ()
-  "Execute Phpactor PRC transform command to complete_constructor."
+  "Execute Phpactor RPC transform command to complete_constructor."
   (interactive)
   (let ((arguments (phpactor--command-argments :source :path)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "transform" (append arguments (list :transform "complete_constructor"))))))
 
 ;;;###autoload
 (defun phpactor-rename-variable (&optional scope)
-  "Execute Phpactor PRC action to rename variable in SCOPE."
+  "Execute Phpactor RPC action to rename variable in SCOPE."
   (interactive)
   (let ((arguments (phpactor--command-argments :source :path :offset)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "rename_variable" (append arguments (list :scope scope))))))
 
 ;;;###autoload
 (defun phpactor-rename-variable-local ()
-  "Execute Phpactor PRC action to rename variable locally."
+  "Execute Phpactor RPC action to rename variable locally."
   (interactive)
   (phpactor-rename-variable "local"))
 
 ;;;###autoload
 (defun phpactor-rename-variable-file ()
-  "Execute Phpactor PRC action to rename variable in whole file."
+  "Execute Phpactor RPC action to rename variable in whole file."
   (interactive)
   (phpactor-rename-variable "file"))
 
 (defun phpactor-complete-properties ()
-  "Execute Phpactor PRC transform command to add_missing_properties."
+  "Execute Phpactor RPC transform command to add_missing_properties."
   (interactive)
   (let ((arguments (phpactor--command-argments :source :path)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "transform" (append arguments (list :transform "add_missing_properties"))))))
 
 ;;;###autoload
 (defun phpactor-fix-namespace ()
-  "Execute Phpactor PRC transform command to fix namespace."
+  "Execute Phpactor RPC transform command to fix namespace."
   (interactive)
   (let ((arguments (phpactor--command-argments :source :path)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "transform" (append arguments (list :transform "fix_namespace_class_name"))))))
 
 ;;;###autoload
 (defun phpactor-implement-contracts ()
-  "Execute Phpactor PRC transform command to implement contracts."
+  "Execute Phpactor RPC transform command to implement contracts."
   (interactive)
   (let ((arguments (phpactor--command-argments :source :path)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "transform" (append arguments (list :transform "implement_contracts"))))))
 
 ;;;###autoload
 (defun phpactor-find-references ()
-  "Execute Phpactor PRC references action to find references."
+  "Execute Phpactor RPC references action to find references."
   (interactive)
   (let ((arguments (phpactor--command-argments :source :path :offset)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "references" arguments))
@@ -715,14 +715,14 @@ function."
 
 ;;;###autoload
 (defun phpactor-replace-references ()
-  "Execute Phpactor PRC references action command to replace references."
+  "Execute Phpactor RPC references action command to replace references."
   (interactive)
   (let ((arguments (phpactor--command-argments :source :path :offset)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "references" (append arguments (list :mode "replace"))))))
 
 ;;;###autoload
 (defun phpactor-file-information ()
-  "Execute Phpactor PRC file_info command to gather file informations."
+  "Execute Phpactor RPC file_info command to gather file informations."
   (interactive)
   (let ((arguments (phpactor--command-argments :path)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "file_info" arguments))))
@@ -736,17 +736,38 @@ function."
 
 ;;;###autoload
 (defun phpactor-generate-accessors ()
-  "Execute Phpactor PRC generate_accessor action."
+  "Execute Phpactor RPC generate_accessor action."
   (interactive)
   (let ((arguments (phpactor--command-argments :path :offset :source)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "generate_accessor" arguments))))
 
 ;;;###autoload
 (defun phpactor-add-missing-assignments ()
-  "Execute Phpactor PRC add_missing_assignments action."
+  "Execute Phpactor RPC add_missing_assignments action."
   (interactive)
   (let ((arguments (phpactor--command-argments :source :path)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "transform" (append arguments (list :transform "add_missing_properties"))))))
+
+;;;###autoload
+(defun phpactor-create-new-class ()
+  "Execute Phpactor RPC class_new action."
+  (interactive)
+  (let ((arguments (phpactor--command-argments :current_path)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "class_new" arguments))))
+
+;;;###autoload
+(defun phpactor-inflect-class ()
+  "Execute Phpactor RPC class_inflect action."
+  (interactive)
+  (let ((arguments (phpactor--command-argments :current_path)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "class_inflect" arguments))))
+
+;;;###autoload
+(defun phpactor-extract-constant ()
+  "Execute Phpactor RPC extract-constant action."
+  (interactive)
+  (let ((arguments (phpactor--command-argments :source :offset :path)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "extract_constant" arguments))))
 
 (provide 'phpactor)
 ;;; phpactor.el ends here
