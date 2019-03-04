@@ -242,6 +242,7 @@ of GitHub.")
     (file_references . phpactor-action-file-references)
     (input_callback . phpactor-action-input-callback)
     (information . phpactor-action-information)
+    (replace_file_source . phpactor-action-update-file-source)
     (update_file_source . phpactor-action-update-file-source)))
 
 ;; Helper functions:
