@@ -457,23 +457,23 @@ function."
         (patchbuf (get-buffer-create "*Phpactor patch*"))
         (coding-system-for-read 'utf-8)
         (coding-system-for-write 'utf-8))
+    (with-current-buffer (find-file path)
+      (unwind-protect
+          (save-restriction
+            (widen)
+            (with-current-buffer patchbuf
+              (erase-buffer))
 
-    (unwind-protect
-        (save-restriction
-          (widen)
-          (with-current-buffer patchbuf
-            (erase-buffer))
+            (with-temp-file tmpfile
+              (insert source))
 
-          (with-temp-file tmpfile
-            (insert source))
+            (if (zerop (call-process-region (point-min) (point-max) "diff" nil patchbuf nil "-n" "-" tmpfile))
+                (message "Buffer was unchanged by phpactor")
+              (phpactor--apply-rcs-patch patchbuf)
+              (message "Buffer modified by phpactor")))
 
-          (if (zerop (call-process-region (point-min) (point-max) "diff" nil patchbuf nil "-n" "-" tmpfile))
-              (message "Buffer was unchanged by phpactor")
-            (phpactor--apply-rcs-patch patchbuf)
-            (message "Buffer modified by phpactor")))
-
-      (kill-buffer patchbuf)
-      (delete-file tmpfile))))
+        (kill-buffer patchbuf)
+        (delete-file tmpfile)))))
 
 ;; Dispatcher:
 (cl-defun phpactor-action-dispatch (&key action parameters version)
