@@ -742,6 +742,13 @@ function."
     (apply #'phpactor-action-dispatch (phpactor--rpc "generate_accessor" arguments))))
 
 ;;;###autoload
+(defun phpactor-generate-method ()
+  "Execute Phpactor RPC generate_method action."
+  (interactive)
+  (let ((arguments (phpactor--command-argments :path :offset :source)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "generate_method" arguments))))
+
+;;;###autoload
 (defun phpactor-add-missing-assignments ()
   "Execute Phpactor RPC add_missing_assignments action."
   (interactive)
