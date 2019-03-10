@@ -356,38 +356,26 @@ of GitHub.")
       (concat "..." (substring string (- 3 width)))
     string))
 
-(defun phpactor-open-file-other-window (path offset)
-  "Open PATH at OFFSET in a different window."
-  (save-selected-window
-    (when (buffer-live-p (get-file-buffer path))
-      (switch-to-buffer-other-window (get-file-buffer path)))
-    (phpactor-action-open-file :path path :offset offset)))
-
-(defun phpactor-references-list-make-entry (file-reference index)
-  "Return an entry for the tabulated list, for FILE-REFERENCE at INDEX."
-  (let ((path (plist-get file-reference :file))
-        (in-project-path (string-remove-prefix (phpactor-get-working-dir) (plist-get file-reference :file)))
-        (references (car (plist-get file-reference :references))))
-    (list index
-          (vector (list
-                   (phpactor-truncate-left in-project-path phpactor-references-list-col1-width)
-                   . ('action
-                      (lambda (_event) (phpactor-open-file-other-window path (plist-get references :start)))
-                      'help-echo path))
-                  (number-to-string (plist-get references :line_no))))))
-
-;; adapted from flycheck-list-errors
-(cl-defun phpactor-list-references ()
+(defun phpactor-list-references ()
+  "View references in a new buffer."
   (interactive)
   (let ((current-references phpactor-references))
-    (with-current-buffer (get-buffer-create phpactor-references-buffer)
-      (setq tabulated-list-format (vector `("File" ,phpactor-references-list-col1-width nil) '("Line" 12 nil :right-align t))
-            tabulated-list-padding 2
-            tabulated-list-entries (seq-map-indexed #'phpactor-references-list-make-entry current-references))
-      (tabulated-list-mode)
-      (tabulated-list-init-header)
-      (tabulated-list-print t)
-      (switch-to-buffer-other-window phpactor-references-buffer))))
+    (switch-to-buffer (get-buffer-create phpactor-references-buffer))
+    (set-window-dedicated-p (get-buffer-window) t)
+    (setq buffer-read-only nil)
+    (erase-buffer)
+    (dolist (file-reference current-references)
+      (let ((path (plist-get file-reference :file)))
+        (dolist (reference (plist-get file-reference :references))
+          (when path
+            (insert-text-button (phpactor-truncate-left path phpactor-references-list-col1-width)
+                                'action (lambda (_) (find-file path) (goto-char (plist-get reference :start)))
+                                'help-echo "mouse-2: visit this file in other window")
+          (insert ": ")
+          (insert (number-to-string (plist-get reference :line_no)))
+            (insert "\n")))))
+    (goto-char 0)
+    (grep-mode)))
 
 (cl-defun phpactor-action-collection (&key actions)
   "Executes a collection of actions."
