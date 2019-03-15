@@ -1,0 +1,38 @@
+# matrix:
+#   include:
+#     - language: emacs-lisp
+#       sudo: no
+#       env:
+#           - EVM_EMACS=emacs-25.1-travis
+#       before_install:
+#           - curl -fsSkL https://gist.github.com/rejeep/ebcd57c3af83b049833b/raw > travis.sh && source ./travis.sh
+#           - evm install "$EVM_EMACS" --use --skip
+#       install:
+#           - cask --debug --verbose
+#       script:
+#           - cask exec buttercup -L . -p phpactor-install-or-update
+#           - cd ~/.emacs.d/phpactor && composer install --no-dev
+#           - cd -
+
+#     - language: php
+#       php:
+#           - 7.2
+#       script:
+#           - cd ~/.emacs.d/phpactor && composer install --no-dev
+
+language: php
+php:
+    - 7.1
+sudo: no
+env:
+  - EVM_EMACS=emacs-25.1-travis
+before_install:
+  - curl -fsSkL https://gist.github.com/rejeep/ebcd57c3af83b049833b/raw > travis.sh && source ./travis.sh
+  - evm install "$EVM_EMACS" --use --skip
+install:
+  - cask --debug --verbose
+script:
+  - cask exec buttercup -L .
+  # - cask exec buttercup -L . -p phpactor-install-or-update # running only this test prepares ./emacs.d/phpactor folder
+  # - cd ~/.emacs.d/phpactor && composer install --no-dev
+  # - cd - &&  cask exec buttercup -L .
