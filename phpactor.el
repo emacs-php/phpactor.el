@@ -764,5 +764,12 @@ function."
   (let ((arguments (phpactor--command-argments :source :offset :path)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "extract_constant" arguments))))
 
+;;;###autoload
+(defun phpactor-hover ()
+  "Execute Phpactor RPC hover action."
+  (interactive)
+  (let ((arguments (phpactor--command-argments :source :offset)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "hover" arguments))))
+
 (provide 'phpactor)
 ;;; phpactor.el ends here
