@@ -35,6 +35,17 @@ Alternatively, you can install Phpactor on your own and configure `phpactor-exec
 
 
 ** Configuration
+*** eldoc integration
+
+#+BEGIN_SRC elisp
+  (add-hook 'php-mode-hook
+            (lambda ()
+              (make-local-variable 'eldoc-documentation-function)
+              (setq eldoc-documentation-function
+                    'phpactor-hover)))
+#+END_SRC
+
+*** phpactor itself
 See https://phpactor.github.io/phpactor/configuration.html
 
 ** Troubleshooting
@@ -42,3 +53,5 @@ See https://phpactor.github.io/phpactor/configuration.html
 You can run ``phpactor-status`` while visiting a project file.
 
 If needed, configure [[https://github.com/emacs-php/php-mode/blob/1f04813f46219e626b385d0d96abefad914bfae0/php-project.el#L54][the way the project root is detected]] via .dir-locals.el
+
+"*Phpactor Output*" buffer might also contain useful informations.
