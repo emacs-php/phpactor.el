@@ -489,7 +489,7 @@ function."
         (patchbuf (get-buffer-create "*Phpactor patch*"))
         (coding-system-for-read 'utf-8)
         (coding-system-for-write 'utf-8))
-    (with-current-buffer (find-file path)
+    (with-current-buffer (find-file-noselect path)
       (unwind-protect
           (save-restriction
             (widen)
