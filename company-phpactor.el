@@ -79,14 +79,15 @@ Here we create a temporary syntax table in order to add $ to symbols."
 (defun company-phpactor (command &optional arg &rest ignored)
   "`company-mode' completion backend for Phpactor."
   (interactive (list 'interactive))
-  (save-restriction
-    (widen)
-    (pcase command
-      (`post-completion (company-phpactor--post-completion arg))
-      (`annotation (company-phpactor--annotation arg))
-      (`interactive (company-begin-backend 'company-phpactor))
-      (`prefix (company-phpactor--grab-symbol))
-      (`candidates (all-completions arg (company-phpactor--get-candidates))))))
+  (when (phpactor-find-executable)
+    (save-restriction
+      (widen)
+      (pcase command
+        (`post-completion (company-phpactor--post-completion arg))
+        (`annotation (company-phpactor--annotation arg))
+        (`interactive (company-begin-backend 'company-phpactor))
+        (`prefix (company-phpactor--grab-symbol))
+        (`candidates (company-phpactor--get-candidates))))))
 
 (provide 'company-phpactor)
 ;;; company-phpactor.el ends here
