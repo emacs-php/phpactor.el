@@ -69,15 +69,6 @@
   :type 'directory)
 
 ;; Variables
-;;;###autoload
-(progn
-  (defvar phpactor-executable nil
-    "Path to `phpactor' executable file.")
-  (make-variable-buffer-local 'phpactor-executable)
-  (put 'phpactor-executable 'safe-local-variable
-       #'(lambda (v) (if (consp v)
-                         (and (eq 'root (car v)) (stringp (cdr v)))
-                       (or (null v) (stringp v))))))
 
 (defvar phpactor--debug nil)
 (defvar phpactor-history-size 100)
@@ -117,15 +108,24 @@ of GitHub.")
 ;; Special variables
 (defvar phpactor--execute-async nil)
 
+
+;;;###autoload
+(defun phpactor--find-executable ()
+  (let ((vendor-executable (f-join phpactor-install-directory "vendor/bin/phpactor")))
+    (if (file-exists-p vendor-executable)
+        vendor-executable
+      (warn "Phpactor not found. Please run phpactor-install-or-update")
+      nil)))
+
+(defcustom phpactor-executable (phpactor--find-executable)
+  "Path to phpactor executable.
+ It is recommemded not to customize this, but if you do, you'll
+ have to ensure a compatible version of phpactor is used."
+  :type '(string)
+  :safe #'stringp
+  :group 'phpactor)
+
 ;; Utility functions
-(defun phpactor-find-executable ()
-  "Return Phpactor command or path to executable."
-  (or (when phpactor-executable
-        (php-project--eval-bootstrap-scripts phpactor-executable))
-      (let ((vendor-executable (f-join phpactor-install-directory "vendor/bin/phpactor")))
-        (when (file-exists-p vendor-executable)
-          vendor-executable))
-      (error "Phpactor not found.  Please run phpactor-install-or-update")))
 
 ;;;###autoload
 (defun phpactor-install-or-update ()
@@ -149,7 +149,9 @@ of GitHub.")
                                 (php-runtime-quote-string (concat directory file))
                                 (php-runtime-quote-string (concat phpactor-install-directory file)))
              do (php-runtime-expr code))
+    (add-hook 'compilation-finish-functions (lambda (buffer desc) (setq phpactor-executable (phpactor--find-executable))))
     (composer nil "install" "--no-dev")))
+
 (defalias 'phpactor-update #'phpactor-install-or-update)
 
 (defun phpactor-get-working-dir ()
@@ -167,7 +169,7 @@ of GitHub.")
   "Return command string by `SUB-COMMAND' and `ARGS'."
   (declare (indent 1))
   (mapconcat 'shell-quote-argument
-             (cons (phpactor-find-executable)
+             (cons phpactor-executable
                    (cons sub-command args))
              " "))
 
@@ -196,7 +198,6 @@ of GitHub.")
         (json-object-type 'plist)
         (json-array-type 'list)
         (output (get-buffer-create "*Phpactor Output*"))
-        (phpactor-executable (phpactor-find-executable))
         (cwd (phpactor-get-working-dir)))
     (with-current-buffer output (erase-buffer))
     (with-current-buffer (get-buffer-create "*Phpactor Input*")
@@ -372,8 +373,8 @@ of GitHub.")
             (insert-text-button (phpactor-truncate-left path phpactor-references-list-col1-width)
                                 'action (lambda (_) (find-file path) (goto-char (plist-get reference :start)))
                                 'help-echo "mouse-2: visit this file in other window")
-          (insert ": ")
-          (insert (number-to-string (plist-get reference :line_no)))
+            (insert ": ")
+            (insert (number-to-string (plist-get reference :line_no)))
             (insert "\n")))))
     (goto-char 0)
     (grep-mode)))
@@ -515,9 +516,9 @@ function."
 (cl-defun phpactor-action-dispatch (&key action parameters version)
   "Execite action by `NAME' and `PARAMETERS'."
   (when (and version (not (equal phpactor--supported-rpc-version version)))
-    (if (phpactor-find-executable)
+    (if phpactor-executable
         (error "Phpactor uses rpc protocol %s but this package requires %s" version phpactor--supported-rpc-version)
-      (error "Phpactor should be upgraded.  Please run phpactor-update")))
+      (error "Phpactor should be upgraded.  Please run phpactor-install-or-update")))
   (phpactor--add-history 'phpactor-action-dispatch (list :action action :parameters parameters :version version))
   (let ((func (cdr-safe (assq (intern action) phpactor-action-table))))
     (if func
