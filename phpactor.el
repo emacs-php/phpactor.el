@@ -84,6 +84,8 @@
 (defvar phpactor-history-ring nil)
 
 (defvar phpactor--buffer-name "*Phpactor*")
+(defvar phpactor-after-update-file-hook nil
+  "Hook called after the file is updated by phpactor.")
 
 ;;; Constants
 (defconst phpactor-command-name "phpactor")
@@ -505,7 +507,8 @@ function."
               (message "Buffer modified by phpactor")))
 
         (kill-buffer patchbuf)
-        (delete-file tmpfile)))))
+        (delete-file tmpfile)))
+    (run-hooks 'phpactor-after-update-file-hook)))
 
 ;; Dispatcher:
 (cl-defun phpactor-action-dispatch (&key action parameters version)
