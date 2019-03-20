@@ -155,7 +155,8 @@ of GitHub.")
 (defun phpactor-get-working-dir ()
   "Return working directory of Phpactor."
   (directory-file-name
-   (expand-file-name (php-project-get-root-dir))))
+   (expand-file-name
+    (or (php-project-get-root-dir) default-directory))))
 
 (defun phpactor--expand-local-file-name (name)
   "Expand file name by `NAME'."
