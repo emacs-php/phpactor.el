@@ -149,7 +149,7 @@ of GitHub.")
                                 (php-runtime-quote-string (concat directory file))
                                 (php-runtime-quote-string (concat phpactor-install-directory file)))
              do (php-runtime-expr code))
-    (add-hook 'compilation-finish-functions (lambda (buffer desc) (setq phpactor-executable (phpactor--find-executable))))
+    (add-hook 'compilation-finish-functions (lambda (_buffer _desc) (setq phpactor-executable (phpactor--find-executable))))
     (composer nil "install" "--no-dev")))
 
 (defalias 'phpactor-update #'phpactor-install-or-update)
