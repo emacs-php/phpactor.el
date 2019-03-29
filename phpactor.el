@@ -87,6 +87,12 @@
 (defvar phpactor-after-update-file-hook nil
   "Hook called after the file is updated by phpactor.")
 
+(defcustom phpactor-search-interface 'classic
+  "Completion mechanism for search.
+The options are `classic' and `ivy'."
+  :type '(repeat symbol)
+  :group 'phpactor-ui)
+
 ;;; Constants
 (defconst phpactor-command-name "phpactor")
 (defconst phpactor--supported-rpc-version "1.0.0")
