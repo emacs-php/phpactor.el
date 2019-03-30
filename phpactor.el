@@ -367,22 +367,54 @@ of GitHub.")
   "View references in a new buffer."
   (interactive)
   (let ((current-references phpactor-references))
-    (switch-to-buffer (get-buffer-create phpactor-references-buffer))
-    (set-window-dedicated-p (get-buffer-window) t)
-    (setq buffer-read-only nil)
-    (erase-buffer)
-    (dolist (file-reference current-references)
-      (let ((path (plist-get file-reference :file)))
-        (dolist (reference (plist-get file-reference :references))
-          (when path
-            (insert-text-button (phpactor-truncate-left path phpactor-references-list-col1-width)
-                                'action (lambda (_) (find-file path) (goto-char (plist-get reference :start)))
-                                'help-echo "mouse-2: visit this file in other window")
+    (pcase phpactor-search-interface
+      (`classic
+       (phpactor--list-references-classic current-references))
+      (`ivy
+       (if (featurep 'ivy)
+           (phpactor-ivy-select-source-position current-references "References: ")
+         (message "Please ensure ivy is installed and loaded."))))))
+
+(defun phpactor--list-references-classic (references)
+  "View REFERENCES in a new buffer."
+  (switch-to-buffer (get-buffer-create phpactor-references-buffer))
+  (set-window-dedicated-p (get-buffer-window) t)
+  (setq buffer-read-only nil)
+  (erase-buffer)
+  (dolist (file-reference references)
+    (let ((path (plist-get file-reference :file)))
+      (dolist (reference (plist-get file-reference :references))
+        (when path
+          (insert-text-button (phpactor-truncate-left path phpactor-references-list-col1-width)
+                              'action (lambda (_) (find-file path) (goto-char (plist-get reference :start)))
+                              'help-echo "mouse-2: visit this file in other window")
           (insert ": ")
           (insert (number-to-string (plist-get reference :line_no)))
-            (insert "\n")))))
-    (goto-char 0)
-    (grep-mode)))
+          (insert "\n")))))
+  (goto-char 0)
+  (grep-mode))
+
+(defun phpactor-ivy-select-source-position (references name)
+  "Select one source position from REFERENCES prompted by NAME."
+  (let ((name-alist (mapcar (lambda (file-reference)
+                              (dolist (reference (plist-get file-reference :references))
+                                       (cons (phpactor-format-source-position (plist-get file-reference :file) reference)
+                                             file-reference)))
+                            references)))
+    (ivy-read name name-alist)))
+
+(defun phpactor-format-source-position (file-name reference)
+  "Format source position FILE-NAME REFERENCE."
+  (if reference
+      (let* ((maybe-line (plist-get reference :line_no))
+             (root-dir (phpactor-get-working-dir))
+             (shortened-file-name (if root-dir
+                                      (replace-regexp-in-string (concat "^" (regexp-quote (expand-file-name root-dir)) "[/]?") "" file-name)
+                                    file-name)))
+        (let ((line (if maybe-line (number-to-string (if (= 0 maybe-line) 1 maybe-line)) "?")))
+          (concat shortened-file-name
+                  (propertize (concat ":" line) 'face 'font-lock-comment-face))))
+    "???:?"))
 
 (cl-defun phpactor-action-collection (&key actions)
   "Executes a collection of actions."
