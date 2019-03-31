@@ -396,11 +396,10 @@ of GitHub.")
 
 (defun phpactor-ivy-select-source-position (references name)
   "Select one source position from REFERENCES prompted by NAME."
-  (let ((name-alist (mapcar (lambda (file-reference)
-                              (dolist (reference (plist-get file-reference :references))
-                                       (cons (phpactor-format-source-position (plist-get file-reference :file) reference)
-                                             file-reference)))
-                            references)))
+  (let ((name-alist (list)))
+    (dolist (file-reference references)
+      (dolist (reference (plist-get file-reference :references))
+        (setq name-alist (cons (phpactor-format-source-position (plist-get file-reference :file) reference) name-alist))))
     (ivy-read name name-alist)))
 
 (defun phpactor-format-source-position (file-name reference)
