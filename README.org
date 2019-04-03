@@ -11,13 +11,41 @@ This package is Emacs interface to [[http://phpactor.github.io/phpactor/][Phpact
 #+END_HTML
 ** Instalation
 
-After having installed this package, run `phpactor-update` (this will install a supported version of phpactor inside phpactor.el's installation folder).
-*NOTICE*: To ensure the appropriate version of Phpactor is installed, please run this command after every upgrade of phpactor.el
+*Requirement*: You need to have composer globally installed.
+
+Installation with use-package :
+
+#+BEGIN_SRC emacs-lisp
+(use-package phpactor :ensure t)
+(use-package company-phpactor :ensure t)
+(use-package php-mode
+  ;;
+  :hook ((php-mode . (lambda () (set (make-local-variable 'company-backends)
+       '(;; list of backends
+         company-phpactor
+         company-files
+         ))))))
+#+END_SRC
+
+After having installed this package, run `phpactor-install-or-update` (this will install a supported version of phpactor inside `.emacs.d/phpactor`).
+
+*NOTICE*: To ensure the supported version of Phpactor is installed, you might need to run this command again after an upgrade of this package.
 
 Alternatively, you can install Phpactor on your own and configure `phpactor-executable` but please be aware that any change in Phpactor's rpc protocol can introduce breakages.
 
 
 ** Configuration
+*** eldoc integration
+
+#+BEGIN_SRC elisp
+  (add-hook 'php-mode-hook
+            (lambda ()
+              (make-local-variable 'eldoc-documentation-function)
+              (setq eldoc-documentation-function
+                    'phpactor-hover)))
+#+END_SRC
+
+*** phpactor itself
 See https://phpactor.github.io/phpactor/configuration.html
 
 ** Troubleshooting
@@ -25,3 +53,5 @@ See https://phpactor.github.io/phpactor/configuration.html
 You can run ``phpactor-status`` while visiting a project file.
 
 If needed, configure [[https://github.com/emacs-php/php-mode/blob/1f04813f46219e626b385d0d96abefad914bfae0/php-project.el#L54][the way the project root is detected]] via .dir-locals.el
+
+"*Phpactor Output*" buffer might also contain useful informations.

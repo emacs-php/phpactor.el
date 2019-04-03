@@ -7,7 +7,7 @@
 ;; Created: 18 Apr 2018
 ;; Version: 0.1.0
 ;; Keywords: tools, php
-;; Package-Requires: ((emacs "24.3") (cl-lib "0.5") (company "0.9.6") (phpactor "0.1.0"))
+;; Package-Requires: ((emacs "24.3") (company "0.9.6") (phpactor "0.1.0"))
 ;; URL: https://github.com/emacs-php/phpactor.el
 ;; License: GPL-3.0-or-later
 
@@ -67,7 +67,9 @@ Here we create a temporary syntax table in order to add $ to symbols."
 (defun company-phpactor--post-completion (arg)
   "Trigger auto-import of completed item ARG when relevant."
   (if (get-text-property 0 'class_import arg)
-      (phpactor-import-class (get-text-property 0 'class_import arg))))
+      (phpactor-import-class (get-text-property 0 'class_import arg)))
+  (if (member (get-text-property 0 'type arg) '(list "method" "function"))
+      (let ((parens-require-spaces nil)) (insert-parentheses))))
 
 (defun company-phpactor--annotation (arg)
   "Show additional info (ARG) from phpactor as lateral annotation."
@@ -77,14 +79,15 @@ Here we create a temporary syntax table in order to add $ to symbols."
 (defun company-phpactor (command &optional arg &rest ignored)
   "`company-mode' completion backend for Phpactor."
   (interactive (list 'interactive))
-  (save-restriction
-    (widen)
-    (cl-case command
-      (post-completion (company-phpactor--post-completion arg))
-      (annotation (company-phpactor--annotation arg))
-      (interactive (company-begin-backend 'company-phpactor))
-      (prefix (company-phpactor--grab-symbol))
-      (candidates (all-completions arg (company-phpactor--get-candidates))))))
+  (when (phpactor-find-executable)
+    (save-restriction
+      (widen)
+      (pcase command
+        (`post-completion (company-phpactor--post-completion arg))
+        (`annotation (company-phpactor--annotation arg))
+        (`interactive (company-begin-backend 'company-phpactor))
+        (`prefix (company-phpactor--grab-symbol))
+        (`candidates (company-phpactor--get-candidates))))))
 
 (provide 'company-phpactor)
 ;;; company-phpactor.el ends here
