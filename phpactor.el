@@ -385,10 +385,15 @@ of GitHub.")
      (apply #'phpactor-action-dispatch (list :action (plist-get action :name) :parameters (plist-get action :parameters))))
    actions))
 
-(cl-defun phpactor-action-open-file (&key path offset force_reload)
+(cl-defun phpactor-action-open-file (&key path offset force_reload target)
   "Open file from Phpactor."
   (unless (and path offset)
     (user-error "Definition not found"))
+
+  ;; TODO: Implement other target: Phpactor\Extension\Rpc\Response\OpenFileResponse
+  ;; `target' expects "focused_window", "vsplit", "hsplit" and "new_tab"
+  (unless target
+    (setq target "focused_window"))
 
   (if (fboundp 'xref-push-marker-stack)
       (xref-push-marker-stack)
