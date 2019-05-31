@@ -67,6 +67,11 @@
     (expand-file-name (locate-user-emacs-file "phpactor/")))
   "Directory for setup Phactor.  (default `~/.emacs.d/phpactor/')."
   :type 'directory)
+
+(defcustom phpactor-use-native-json t
+  "If non-nil, use native json parsing if available."
+  :group 'phpactor
+  :type 'boolean)
 
 ;; Variables
 ;;;###autoload
@@ -191,10 +196,8 @@ of GitHub.")
 (defun phpactor--rpc (action arguments)
   "Execute Phpactor `ACTION' subcommand with `ARGUMENTS'."
   (phpactor--add-history 'phpactor--rpc (list action arguments))
-  (let ((json (json-encode (list :action action
-                                 :parameters arguments)))
-        (json-object-type 'plist)
-        (json-array-type 'list)
+  (let ((json (phpactor--serialize-json (list :action action
+                                              :parameters arguments)))
         (output (get-buffer-create "*Phpactor Output*"))
         (phpactor-executable (phpactor-find-executable))
         (cwd (phpactor-get-working-dir)))
@@ -205,9 +208,26 @@ of GitHub.")
       (erase-buffer)
       (insert json)
       (call-process-region (point-min) (point-max) phpactor-executable nil output nil "rpc" (format "--working-dir=%s" default-directory))
-      (with-current-buffer output
-        (goto-char (point-min))
+      (phpactor--parse-json output))))
+
+(defun phpactor--parse-json (buffer)
+  "Read JSON string from BUFFER."
+  (with-current-buffer buffer
+    (goto-char (point-min))
+    (if (and phpactor-use-native-json
+             (fboundp 'json-serialize))
+        (with-no-warnings
+          (json-parse-buffer :object-type 'plist :array-type 'list))
+      (let ((json-object-type 'plist) (json-array-type 'list))
         (json-read-object)))))
+
+(defun phpactor--serialize-json (params)
+  "Serialize PARAMS in to a JSON string."
+  (if (and phpactor-use-native-json
+           (fboundp 'json-serialize))
+      (with-no-warnings
+        (json-serialize params :null-object nil :false-object :json-false))
+    (json-encode params)))
 
 ;;; Phpactor Action
 
