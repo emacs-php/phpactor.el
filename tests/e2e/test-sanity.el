@@ -38,13 +38,13 @@
 
 (describe "var: `phpactor-install-directory'"
   (it "should have some value"
-    (display-warning 'buttercup (format "phpactor install folder is : %s" phpactor-install-directory))
+    (display-warning 'buttercup (format "phpactor install folder is : %s" phpactor-install-directory) :debug)
     (expect phpactor-install-directory :not :to-be nil)
     ))
 
 (describe ": `phpactor--lisp-directory'" ;; I prefer having a test as I'm not that really fine with it being nil
   (it "should have some value"
-      (display-warning 'buttercup (format "phpactor lisp folder is : %s" phpactor--lisp-directory))
+      (display-warning 'buttercup (format "phpactor lisp folder is : %s" phpactor--lisp-directory) :debug)
       (expect phpactor--lisp-directory :not :to-be nil)
 ))
 

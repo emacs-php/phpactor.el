@@ -22,6 +22,7 @@ test: clean $(ELCS)
 	"(let ((default-directory (expand-file-name \".cask\" default-directory))) \
 	   (normal-top-level-add-subdirs-to-load-path) \
            (require 'buttercup))" \
+	--eval "(setq warning-minimum-log-level :debug)" \
 	-f buttercup-run-discover
 
 clean:
