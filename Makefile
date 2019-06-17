@@ -17,6 +17,13 @@ $(AUTOLOADS): $(ELCS)
 	   (normal-top-level-add-subdirs-to-load-path) \
 	   (package-generate-autoloads \"phpactor\" default-directory))"
 
+test: clean $(ELCS)
+	$(EMACS) -Q -batch -L . --eval \
+	"(let ((default-directory (expand-file-name \".cask\" default-directory))) \
+	   (normal-top-level-add-subdirs-to-load-path) \
+           (require 'buttercup))" \
+	-f buttercup-run-discover
+
 clean:
 	rm -f $(ELCS) $(AUTOLOADS)
 
