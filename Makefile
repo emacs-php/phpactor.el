@@ -6,7 +6,7 @@ ELCS = $(ELS:.el=.elc)
 %.elc: %.el
 	$(EMACS) -Q -batch -L . -f package-initialize -f batch-byte-compile $<
 
-all: autoloads $(ELCS)
+all: clean autoloads $(ELCS)
 
 autoloads: $(AUTOLOADS)
 
