@@ -1,3 +1,30 @@
+;;; test-sanity.el --- Behavior-Driven test for phpactor -*- lexical-binding: t; -*-
+
+;; Copyright (C) 2018  Friends of Emacs-PHP development
+
+;; Author: Mikael Kermorgant <mikael@kgtech.fi>
+;; Keywords: maint
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+;;; Commentary:
+
+;; A BDD test code based on Buttercup.
+;; https://github.com/jorgenschaefer/emacs-buttercup
+
+;;; Code:
+(require 'buttercup)
 (require 'phpactor)
 
 (defun buffer-string* (buffer)
@@ -42,3 +69,6 @@
       (expect 'php-project-get-root-dir :to-have-been-called)
       )
     ))
+
+(provide 'test-sanity)
+;;; test-sanity.el ends here
