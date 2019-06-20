@@ -1,4 +1,5 @@
 EMACS ?= emacs
+CASK ?= cask
 ELS = phpactor.el company-phpactor.el
 AUTOLOADS = phpactor-autoloads.el
 ELCS = $(ELS:.el=.elc)
@@ -6,7 +7,7 @@ ELCS = $(ELS:.el=.elc)
 %.elc: %.el
 	$(EMACS) -Q -batch -L . -f package-initialize -f batch-byte-compile $<
 
-all: clean autoloads $(ELCS)
+all: .cask $(ELCS) autoloads
 
 autoloads: $(AUTOLOADS)
 
@@ -17,7 +18,10 @@ $(AUTOLOADS): $(ELCS)
 	   (normal-top-level-add-subdirs-to-load-path) \
 	   (package-generate-autoloads \"phpactor\" default-directory))"
 
-test: clean $(ELCS)
+.cask: Cask
+	$(CASK) install
+
+test: .cask $(ELCS)
 	$(EMACS) -Q -batch -L . --eval \
 	"(let ((default-directory (expand-file-name \".cask\" default-directory))) \
 	   (normal-top-level-add-subdirs-to-load-path) \
