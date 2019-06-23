@@ -42,8 +42,7 @@ This package is Emacs interface to [[http://phpactor.github.io/phpactor/][Phpact
 
  *NOTICE*: To ensure the supported version of Phpactor is installed, you might need to run this command again after an upgrade of this package.
 
- Alternatively, you can install Phpactor on your own and configure `phpactor-executable` but please be aware that any change in Phpactor's rpc protocol can introduce breakages.
-
+Alternatively, you can install Phpactor on your own and customize `phpactor-executable` but please be aware that any change in Phpactor's rpc protocol can introduce breakages.
 
 ** Configuration
 *** completion
