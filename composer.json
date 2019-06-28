@@ -24,7 +24,10 @@
         "classmap-authoritative": true,
         "discard-changes": true,
         "optimize-autoloader": true,
-        "preferred-install": "dist",
+        "preferred-install": {
+            "phpactor/*": "source",
+            "*": "dist"
+        },
         "sort-packages": true,
         "platform": {
             "php": "7.1.3"
