@@ -9,32 +9,54 @@ This package is Emacs interface to [[http://phpactor.github.io/phpactor/][Phpact
 <a href="http://melpa.org/#/phpactor"><img alt="MELPA: phpactor" src="http://melpa.org/packages/phpactor-badge.svg"></a>
 <a href="http://stable.melpa.org/#/phpactor"><img alt="MELPA stable: phpactor" src="http://stable.melpa.org/packages/phpactor-badge.svg"></a>
 #+END_HTML
-** Instalation
+** Installation
 
 *Requirement*: You need to have composer globally installed.
 
-Installation with use-package :
+*** First step
+**** Installation with use-package :
 
-#+BEGIN_SRC emacs-lisp
-(use-package phpactor :ensure t)
-(use-package company-phpactor :ensure t)
-(use-package php-mode
-  ;;
-  :hook ((php-mode . (lambda () (set (make-local-variable 'company-backends)
-       '(;; list of backends
-         company-phpactor
-         company-files
-         ))))))
-#+END_SRC
+ #+BEGIN_SRC emacs-lisp
+ (use-package phpactor :ensure t)
+ (use-package company-phpactor :ensure t)
+ #+END_SRC
 
-After having installed this package, run `phpactor-install-or-update` (this will install a supported version of phpactor inside `.emacs.d/phpactor`).
+**** Installation with straight.el
 
-*NOTICE*: To ensure the supported version of Phpactor is installed, you might need to run this command again after an upgrade of this package.
+ (here using straight.el with use-package)
 
-Alternatively, you can install Phpactor on your own and configure `phpactor-executable` but please be aware that any change in Phpactor's rpc protocol can introduce breakages.
+ #+BEGIN_SRC emacs-lisp
+ (use-package phpactor
+   :straight (phpactor
+              :host github
+              :type git
+              :repo "emacs-php/phpactor.el"
+              :branch "master"
+              :files ("*.el" "composer.json" "composer.lock" (:exclude "*test.el"))
+              )
+   )
+ #+END_SRC
+
+*** Second step
+ After having installed this package, run `phpactor-install-or-update` (this will install a supported version of phpactor inside `.emacs.d/phpactor`).
+
+ *NOTICE*: To ensure the supported version of Phpactor is installed, you might need to run this command again after an upgrade of this package.
+
+ Alternatively, you can install Phpactor on your own and configure `phpactor-executable` but please be aware that any change in Phpactor's rpc protocol can introduce breakages.
 
 
 ** Configuration
+*** completion
+#+BEGIN_SRC emacs-lisp
+ (use-package php-mode
+   ;;
+   :hook ((php-mode . (lambda () (set (make-local-variable 'company-backends)
+        '(;; list of backends
+          company-phpactor
+          company-files
+          ))))))
+#+END_SRC
+
 *** eldoc integration
 
 #+BEGIN_SRC elisp
@@ -89,3 +111,17 @@ You can run ``phpactor-status`` while visiting a project file.
 If needed, configure [[https://github.com/emacs-php/php-mode/blob/1f04813f46219e626b385d0d96abefad914bfae0/php-project.el#L54][the way the project root is detected]] via .dir-locals.el
 
 "*Phpactor Output*" buffer might also contain useful informations.
+
+** About Phpactor
+
+We will assume your emacs configuration is stored under "~/.emacs.d/"
+
+*** Where is phpactor installed
+
+    After running `phpactor-install-or-update`, phpactor should be installed under "~/.emacs.d/phpactor/".
+    And the phpactor executable should be "~/.emacs.d/phpactor/vendor/bin/phpactor"
+
+*** Contribute to phpactor
+
+    Phpactor's packages are cloned (using git) under "~/.emacs.d/phpactor/vendor/phpactor".
+    If you make a modification to phpactor you'd like to contribute, you can just of git straight away to open a pull request therefrom.
