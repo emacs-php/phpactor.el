@@ -659,6 +659,7 @@ function."
 (defun phpactor-status ()
   "Execute Phpactor RPC status command, and pop to buffer."
   (interactive)
+  (setq max-mini-window-height 17)
   (apply #'phpactor-action-dispatch (phpactor--rpc "status" [])))
 
 ;;;###autoload
