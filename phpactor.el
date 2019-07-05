@@ -65,13 +65,19 @@
 (defcustom phpactor-install-directory
   (eval-when-compile
     (expand-file-name (locate-user-emacs-file "phpactor/")))
-  "Directory for setup Phactor.  (default `~/.emacs.d/phpactor/')."
+  "Directory for setup Phpactor.  (default `~/.emacs.d/phpactor/')."
   :type 'directory)
 
 (defcustom phpactor-use-native-json t
   "If non-nil, use native json parsing if available."
   :group 'phpactor
   :type 'boolean)
+
+(defcustom phpactor-status-output-height 18
+  "Custom value for 'max-mini-window-height', allowing phpactor-status to show its output completely."
+  :link '(variable-link max-mini-window-height)
+  :group 'phpactor
+  :type '(integer float))
 
 ;; Variables
 ;;;###autoload
@@ -93,7 +99,6 @@
   "Hook called after the file is updated by phpactor.")
 
 ;;; Constants
-(defconst phpactor--status-output-height 18)
 (defconst phpactor-command-name "phpactor")
 (defconst phpactor--supported-rpc-version "1.0.0")
 (defconst phpactor--lisp-directory
@@ -660,7 +665,7 @@ function."
 (defun phpactor-status ()
   "Execute Phpactor RPC status command, and pop to buffer."
   (interactive)
-  (setq max-mini-window-height phpactor--status-output-height)
+  (setq max-mini-window-height phpactor-status-output-height)
   (apply #'phpactor-action-dispatch (phpactor--rpc "status" [])))
 
 ;;;###autoload
