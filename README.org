@@ -104,6 +104,18 @@ You could for example limit yourself to only one by using [[https://github.com/m
     ("u" "Install" phpactor-install-or-update)]])
 #+END_SRC
 
+*** mini-buffer / echo area height
+    invoking `phpactor-status` will change the value of `max-mini-window-height`
+
+    Rationale: `phpactor-status` gives a quite long output, and some
+    part of it would be hidden in certain circumstances with emacs
+    default settings.
+
+    As `max-mini-window-height` is modified at a global level, this
+    might conflict with your settings. In that case, you could
+    customize `phpactor-status-output-height` to be equal to
+    `max-mini-window-height` (PR with a better solution also welcome)
+
 ** Troubleshooting
 
 You can run ``phpactor-status`` while visiting a project file.
