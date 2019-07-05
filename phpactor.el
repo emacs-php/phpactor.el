@@ -93,6 +93,7 @@
   "Hook called after the file is updated by phpactor.")
 
 ;;; Constants
+(defconst phpactor--status-output-height 18)
 (defconst phpactor-command-name "phpactor")
 (defconst phpactor--supported-rpc-version "1.0.0")
 (defconst phpactor--lisp-directory
@@ -659,7 +660,7 @@ function."
 (defun phpactor-status ()
   "Execute Phpactor RPC status command, and pop to buffer."
   (interactive)
-  (setq max-mini-window-height 18)
+  (setq max-mini-window-height phpactor--status-output-height)
   (apply #'phpactor-action-dispatch (phpactor--rpc "status" [])))
 
 ;;;###autoload
