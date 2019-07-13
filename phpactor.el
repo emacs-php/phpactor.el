@@ -129,14 +129,6 @@ of GitHub.")
   :group 'phpactor)
 
 ;; Utility functions
-(defun phpactor-find-executable ()
-  "Return Phpactor command or path to executable."
-  (or (when phpactor-executable
-        (php-project--eval-bootstrap-scripts phpactor-executable))
-      (let ((vendor-executable (f-join phpactor-install-directory "vendor/bin/phpactor")))
-        (when (file-exists-p vendor-executable)
-          vendor-executable))
-      (error "Phpactor not found.  Please run phpactor-install-or-update")))
 
 ;;;###autoload
 (defun phpactor-install-or-update ()
