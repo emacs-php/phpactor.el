@@ -315,6 +315,8 @@ of GitHub.")
     (:path (phpactor--expand-local-file-name buffer-file-name))
     (:source_path (phpactor--expand-local-file-name buffer-file-name))
     (:offset (1- (position-bytes (point))))
+    (:offset_start (1- (position-bytes (region-beginning))))
+    (:offset_end (1- (position-bytes (region-end))))
     (:current_path (phpactor--expand-local-file-name buffer-file-name))
     (t (error "`%s' is unknown argument" key))))
 
@@ -787,9 +789,9 @@ function."
 
 ;;;###autoload
 (defun phpactor-extract-constant ()
-  "Execute Phpactor RPC extract-constant action."
+  "Execute Phpactor RPC extract_constant action."
   (interactive)
-  (let ((arguments (phpactor--command-argments :source :offset :path)))
+  (let ((arguments (phpactor--command-argments :source :path :offset)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "extract_constant" arguments))))
 
 ;;;###autoload
@@ -798,6 +800,27 @@ function."
   (interactive)
   (let ((arguments (phpactor--command-argments :source :offset)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "hover" arguments))))
+
+;;;###autoload
+(defun phpactor-extract-method ()
+  "Execute Phpactor RPC extract_method action."
+  (interactive)
+  (let ((arguments (phpactor--command-argments :source :path :offset_start :offset_end)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "extract_method" arguments))))
+
+;;;###autoload
+(defun phpactor-extract-expression ()
+  "Execute Phpactor RPC extract_expression action."
+  (interactive)
+  (let ((arguments (phpactor--command-argments :source :path :offset_start :offset_end)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "extract_expression" arguments))))
+
+;;;###autoload
+(defun phpactor-change-visibility ()
+  "Execute Phpactor RPC change_visibility action."
+  (interactive)
+  (let ((arguments (phpactor--command-argments :source :path :offset)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "change_visibility" arguments))))
 
 (provide 'phpactor)
 ;;; phpactor.el ends here
