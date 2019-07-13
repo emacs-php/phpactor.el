@@ -89,9 +89,12 @@ You could for example limit yourself to only one by using [[https://github.com/m
     ("a"  "Accessor" phpactor-generate-accessors)
     ("pc" "Constructor" phpactor-complete-constructor)
     ("pm" "Add missing props" phpactor-complete-properties)
-    ("C"  "Extract const" phpactor-extract-constant)
     ("r" "Rename var locally" phpactor-rename-variable-local)
     ("R" "Rename var in file" phpactor-rename-variable-file)]
+  ["Extract"
+    ("ec" "constant" phpactor-extract-constant)
+    ("ee" "expression" phpactor-extract-expression)
+    ("em"  "method" phpactor-extract-method)]
   ["Methods"
     ("i" "Implement Contracts" phpactor-implement-contracts)
     ("m"  "Generate method" phpactor-generate-method)]
