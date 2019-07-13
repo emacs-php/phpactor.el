@@ -815,5 +815,12 @@ function."
   (let ((arguments (phpactor--command-argments :source :path :offset_start :offset_end)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "extract_expression" arguments))))
 
+;;;###autoload
+(defun phpactor-change-visibility ()
+  "Execute Phpactor RPC change_visibility action."
+  (interactive)
+  (let ((arguments (phpactor--command-argments :source :path :offset)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "change_visibility" arguments))))
+
 (provide 'phpactor)
 ;;; phpactor.el ends here
