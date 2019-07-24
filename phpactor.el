@@ -277,9 +277,9 @@ of GitHub.")
                  (error "Action cancelled")))
       (file (read-file-name label nil default))
       (text (read-string label default))
-      (choice (completing-read label
-                               (cl-loop for (_ v) on choices by #'cddr
-                                        collect v)))
+      ((choice list) (completing-read label
+                                      (cl-loop for (_ v) on choices by #'cddr
+                                               collect v)))
       (t (error "Unknown input type %s" type)))))
 
 (defun phpactor-action--collect-inputs (inputs)
@@ -821,6 +821,13 @@ function."
   (interactive)
   (let ((arguments (phpactor--command-argments :source :path :offset)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "change_visibility" arguments))))
+
+;;;###autoload
+(defun phpactor-override-method ()
+  "Execute Phpactor RPC override_method action."
+  (interactive)
+  (let ((arguments (phpactor--command-argments :source :path)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "override_method" arguments))))
 
 (provide 'phpactor)
 ;;; phpactor.el ends here
