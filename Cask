@@ -4,6 +4,7 @@
 
 (package-file "phpactor.el")
 (package-file "company-phpactor.el")
+(package-file "phpactor-xref.el")
 
 (development
  (depends-on "php-mode")
