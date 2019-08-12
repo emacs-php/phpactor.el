@@ -79,7 +79,7 @@ Here we create a temporary syntax table in order to add $ to symbols."
 (defun company-phpactor (command &optional arg &rest ignored)
   "`company-mode' completion backend for Phpactor."
   (interactive (list 'interactive))
-  (when (phpactor-find-executable)
+  (when phpactor-executable
     (save-restriction
       (widen)
       (pcase command

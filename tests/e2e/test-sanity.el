@@ -55,8 +55,9 @@
       (with-timeout
           (timeout-duration (display-warning 'buttercup (format "Error : timeout waiting %s seconds for composer install to finish" timeout-duration)))
         (while (not (file-exists-p (f-join phpactor-install-directory "vendor/bin/phpactor")))
-          (sleep-for 1)))
-      (expect (phpactor-find-executable) :to-equal (f-join phpactor-install-directory "vendor/bin/phpactor"))
+          (sleep-for 1))
+        (sleep-for 1))
+      (expect phpactor-executable :to-equal (f-join phpactor-install-directory "vendor/bin/phpactor"))
       )))
 
 (describe "defun: `phpactor-get-working-dir'"
