@@ -64,6 +64,10 @@ Here we create a temporary syntax table in order to add $ to symbols."
        candidate)
      suggestions)))
 
+(defun company-phpactor--get-candidates-async (callback)
+  "Get completion candidates asynchronously."
+  (funcall callback (company-phpactor--get-candidates)))
+
 (defun company-phpactor--post-completion (arg)
   "Trigger auto-import of completed item ARG when relevant."
   (if (get-text-property 0 'class_import arg)
@@ -87,7 +91,9 @@ Here we create a temporary syntax table in order to add $ to symbols."
         (`annotation (company-phpactor--annotation arg))
         (`interactive (company-begin-backend 'company-phpactor))
         (`prefix (company-phpactor--grab-symbol))
-        (`candidates (company-phpactor--get-candidates))))))
+        (`candidates
+	 (cons :async (lambda (callback)
+			(company-phpactor--get-candidates-async callback))))))))
 
 (provide 'company-phpactor)
 ;;; company-phpactor.el ends here
