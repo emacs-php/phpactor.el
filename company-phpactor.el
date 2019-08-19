@@ -75,6 +75,10 @@ Here we create a temporary syntax table in order to add $ to symbols."
   "Show additional info (ARG) from phpactor as lateral annotation."
   (message (concat " " (get-text-property 0 'annotation arg))))
 
+(defun company-phpactor--get-candidates-async (callback)
+  "Get completion candidates asynchronously."
+  (funcall callback (company-phpactor--get-candidates)))
+
 ;;;###autoload
 (defun company-phpactor (command &optional arg &rest ignored)
   "`company-mode' completion backend for Phpactor."
@@ -87,7 +91,9 @@ Here we create a temporary syntax table in order to add $ to symbols."
         (`annotation (company-phpactor--annotation arg))
         (`interactive (company-begin-backend 'company-phpactor))
         (`prefix (company-phpactor--grab-symbol))
-        (`candidates (company-phpactor--get-candidates))))))
+        (`candidates
+	 (cons :async (lambda (callback)
+			(company-phpactor--get-candidates-async callback))))))))
 
 (provide 'company-phpactor)
 ;;; company-phpactor.el ends here
