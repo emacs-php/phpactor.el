@@ -112,8 +112,8 @@ of GitHub.")
 ;; Special variables
 (defvar phpactor--execute-async nil)
 
-;;;###autoload
 (defun phpactor--find-executable ()
+  "Return path to Phpactor executable file."
   (let ((vendor-executable (f-join phpactor-install-directory "vendor/bin/phpactor")))
     (if (file-exists-p vendor-executable)
         vendor-executable
