@@ -133,6 +133,13 @@ have to ensure a compatible version of phpactor is used."
   (prog1
       (setq phpactor-executable (phpactor--find-executable))
     (remove-hook 'compilation-finish-functions #'phpactor-reset-executable)))
+
+(defun phpactor-ensure-executable ()
+  "Ensure `phpactor' command installed."
+  (interactive)
+  (unless (and phpactor-executable (file-exists-p phpactor-executable))
+    (phpactor-install-or-update)
+    (phpactor-reset-executable)))
 
 ;; Utility functions
 
