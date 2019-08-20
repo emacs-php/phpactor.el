@@ -7,7 +7,7 @@
 ;; Created: 8 Apr 2018
 ;; Version: 0.1.0
 ;; Keywords: tools, php
-;; Package-Requires: ((emacs "24.4") (cl-lib "0.5") (f "0.17") (php-runtime "0.2") (composer "0.1"))
+;; Package-Requires: ((emacs "24.4") (cl-lib "0.5") (f "0.17") (php-runtime "0.2") (composer "0.1") (async "1.9.3"))
 ;; URL: https://github.com/emacs-php/phpactor.el
 ;; License: GPL-3.0-or-later
 
@@ -52,6 +52,7 @@
 (require 'ring)
 (require 'subr-x)
 (require 'composer)
+(require 'async)
 
 ;; Custom variables
 ;;;###autoload
@@ -222,6 +223,20 @@ have to ensure a compatible version of phpactor is used."
       (insert json)
       (call-process-region (point-min) (point-max) phpactor-executable nil output nil "rpc" (format "--working-dir=%s" default-directory))
       (phpactor--parse-json output))))
+
+(defun phpactor--rpc-async (action arguments callback)
+  "Async execute Phpactor `ACTION' subcommand with `ARGUMENTS' and calling `CALLBACK' after process."
+  (declare (indent 2))
+  (phpactor--add-history 'phpactor--rpc-async (list action arguments))
+  (let* ((json (phpactor--serialize-json (list :action action
+                                       :parameters arguments)))
+         (coding-system-for-write 'utf-8)
+         (executable phpactor-executable)
+         (proc (async-start-process
+                "phpactor-async" executable callback
+                "rpc" (format "--working-dir=%s" (phpactor-get-working-dir)))))
+    (process-send-string proc json)
+    (process-send-eof proc)))
 
 (defun phpactor--parse-json (buffer)
   "Read JSON string from BUFFER."
