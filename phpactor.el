@@ -117,14 +117,14 @@ of GitHub.")
   (let ((vendor-executable (f-join phpactor-install-directory "vendor/bin/phpactor")))
     (if (file-exists-p vendor-executable)
         vendor-executable
-      (warn "Phpactor not found. Please run phpactor-install-or-update")
+      (warn "Phpactor not found.  Please run `phpactor-install-or-update' command")
       nil)))
 
- (defcustom phpactor-executable (phpactor--find-executable)
+(defcustom phpactor-executable (phpactor--find-executable)
   "Path to phpactor executable.
- It is recommemded not to customize this, but if you do, you'll
- have to ensure a compatible version of phpactor is used."
-  :type '(string)
+It is recommemded not to customize this, but if you do, you'll
+have to ensure a compatible version of phpactor is used."
+  :type 'string
   :safe #'stringp
   :group 'phpactor)
 
@@ -133,6 +133,13 @@ of GitHub.")
   (prog1
       (setq phpactor-executable (phpactor--find-executable))
     (remove-hook 'compilation-finish-functions #'phpactor-reset-executable)))
+
+(defun phpactor-ensure-executable ()
+  "Ensure `phpactor' command installed."
+  (interactive)
+  (unless (and phpactor-executable (file-exists-p phpactor-executable))
+    (phpactor-install-or-update)
+    (phpactor-reset-executable)))
 
 ;; Utility functions
 
@@ -550,7 +557,7 @@ function."
   (when (and version (not (equal phpactor--supported-rpc-version version)))
     (if phpactor-executable
         (error "Phpactor uses rpc protocol %s but this package requires %s" version phpactor--supported-rpc-version)
-      (error "Phpactor should be upgraded. Please run phpactor-install-or-update")))
+      (user-error "Phpactor should be upgraded.  Please run `phpactor-install-or-update' command")))
   (phpactor--add-history 'phpactor-action-dispatch (list :action action :parameters parameters :version version))
   (let ((func (cdr-safe (assq (intern action) phpactor-action-table))))
     (if func
