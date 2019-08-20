@@ -120,11 +120,11 @@ of GitHub.")
       (warn "Phpactor not found. Please run phpactor-install-or-update")
       nil)))
 
- (defcustom phpactor-executable (phpactor--find-executable)
+(defcustom phpactor-executable (phpactor--find-executable)
   "Path to phpactor executable.
- It is recommemded not to customize this, but if you do, you'll
- have to ensure a compatible version of phpactor is used."
-  :type '(string)
+It is recommemded not to customize this, but if you do, you'll
+have to ensure a compatible version of phpactor is used."
+  :type 'string
   :safe #'stringp
   :group 'phpactor)
 
