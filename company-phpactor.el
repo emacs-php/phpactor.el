@@ -32,6 +32,17 @@
 (require 'company)
 (require 'phpactor)
 
+(defgroup company-phpactor nil
+  "Company backend for Phpactor."
+  :prefix "company-phpactor-"
+  :group 'company
+  :group 'phpactor)
+
+(defcustom company-phpactor-request-async t
+  "When non-NIL, asynchronous recuest to Phpactor."
+  :type 'boolean
+  :group 'company-phpactor)
+
 (defun company-phpactor--grab-symbol ()
   "If point is at the end of a symbol, return it.
 Otherwise, if point is not inside a symbol, return an empty string.
