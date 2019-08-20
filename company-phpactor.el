@@ -62,9 +62,10 @@ Here we create a temporary syntax table in order to add $ to symbols."
   (let ((response (phpactor--rpc "complete" (phpactor--command-argments :source :offset))))
     (plist-get (plist-get (plist-get response  :parameters) :value) :suggestions)))
 
-(defun company-phpactor--get-candidates ()
+(defun company-phpactor--get-candidates (&optional suggestions)
   "Build a list of candidates with text-properties extracted from phpactor's output."
-  (let ((suggestions (company-phpactor--get-suggestions)) candidate)
+  (let ((suggestions (or suggestions (company-phpactor--get-suggestions)))
+        candidate)
     (mapcar
      (lambda (suggestion)
        (setq candidate (plist-get suggestion :name))
