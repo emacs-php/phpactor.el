@@ -62,10 +62,9 @@ Here we create a temporary syntax table in order to add $ to symbols."
   (let ((response (phpactor--rpc "complete" (phpactor--command-argments :source :offset))))
     (plist-get (plist-get (plist-get response  :parameters) :value) :suggestions)))
 
-(defun company-phpactor--get-candidates (&optional suggestions)
-  "Build a list of candidates with text-properties extracted from phpactor's output."
-  (let ((suggestions (or suggestions (company-phpactor--get-suggestions)))
-        candidate)
+(defun company-phpactor--get-candidates (suggestions)
+  "Build a list of candidates with text-properties extracted from phpactor's output `SUGGESTIONS'."
+  (let (candidate)
     (mapcar
      (lambda (suggestion)
        (setq candidate (plist-get suggestion :name))
@@ -88,8 +87,15 @@ Here we create a temporary syntax table in order to add $ to symbols."
   (message (concat " " (get-text-property 0 'annotation arg))))
 
 (defun company-phpactor--get-candidates-async (callback)
-  "Get completion candidates asynchronously."
-  (funcall callback (company-phpactor--get-candidates)))
+  "Get completion candidates asynchronously calling `CALLBACK' by Phpactor."
+  (if (not company-phpactor-request-async)
+      (funcall callback (company-phpactor--get-candidates (company-phpactor--get-suggestions)))
+    (phpactor--rpc-async "complete" (phpactor--command-argments :source :offset)
+      (lambda (proc)
+        (let* ((response (phpactor--parse-json (process-buffer proc)))
+               (suggestions
+                (plist-get (plist-get (plist-get response  :parameters) :value) :suggestions)))
+          (funcall callback (company-phpactor--get-candidates suggestions)))))))
 
 ;;;###autoload
 (defun company-phpactor (command &optional arg &rest ignored)
@@ -103,9 +109,7 @@ Here we create a temporary syntax table in order to add $ to symbols."
         (`annotation (company-phpactor--annotation arg))
         (`interactive (company-begin-backend 'company-phpactor))
         (`prefix (company-phpactor--grab-symbol))
-        (`candidates
-	 (cons :async (lambda (callback)
-			(company-phpactor--get-candidates-async callback))))))))
+        (`candidates (cons :async #'company-phpactor--get-candidates-async))))))
 
 (provide 'company-phpactor)
 ;;; company-phpactor.el ends here
