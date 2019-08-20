@@ -117,7 +117,7 @@ of GitHub.")
   (let ((vendor-executable (f-join phpactor-install-directory "vendor/bin/phpactor")))
     (if (file-exists-p vendor-executable)
         vendor-executable
-      (warn "Phpactor not found. Please run phpactor-install-or-update")
+      (warn "Phpactor not found.  Please run `phpactor-install-or-update' command")
       nil)))
 
 (defcustom phpactor-executable (phpactor--find-executable)
@@ -550,7 +550,7 @@ function."
   (when (and version (not (equal phpactor--supported-rpc-version version)))
     (if phpactor-executable
         (error "Phpactor uses rpc protocol %s but this package requires %s" version phpactor--supported-rpc-version)
-      (error "Phpactor should be upgraded. Please run phpactor-install-or-update")))
+      (user-error "Phpactor should be upgraded.  Please run `phpactor-install-or-update' command")))
   (phpactor--add-history 'phpactor-action-dispatch (list :action action :parameters parameters :version version))
   (let ((func (cdr-safe (assq (intern action) phpactor-action-table))))
     (if func
