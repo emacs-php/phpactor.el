@@ -127,6 +127,12 @@ of GitHub.")
   :type '(string)
   :safe #'stringp
   :group 'phpactor)
+
+(defun phpactor-reset-executable (&rest _args)
+  "Reset `phpactor-executable' variable by `phpactor--find-executable'."
+  (prog1
+      (setq phpactor-executable (phpactor--find-executable))
+    (remove-hook 'compilation-finish-functions #'phpactor-reset-executable)))
 
 ;; Utility functions
 
@@ -152,7 +158,7 @@ of GitHub.")
                                 (php-runtime-quote-string (concat directory file))
                                 (php-runtime-quote-string (concat phpactor-install-directory file)))
              do (php-runtime-expr code))
-    (add-hook 'compilation-finish-functions (lambda (buffer desc) (setq phpactor-executable (phpactor--find-executable))))
+    (add-hook 'compilation-finish-functions 'phpactor-reset-executable)
     (composer nil "install" "--no-dev")))
 
 (defalias 'phpactor-update #'phpactor-install-or-update)
