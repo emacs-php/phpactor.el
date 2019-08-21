@@ -87,7 +87,7 @@ Here we create a temporary syntax table in order to add $ to symbols."
         (`annotation (company-phpactor--annotation arg))
         (`interactive (company-begin-backend 'company-phpactor))
         (`prefix (company-phpactor--grab-symbol))
-        (`candidates (company-phpactor--get-candidates))))))
+        (`candidates (all-completions arg (company-phpactor--get-candidates)))))))
 
 (provide 'company-phpactor)
 ;;; company-phpactor.el ends here
