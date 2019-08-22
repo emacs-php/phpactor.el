@@ -231,10 +231,11 @@ have to ensure a compatible version of phpactor is used."
   (let* ((json (phpactor--serialize-json (list :action action
                                        :parameters arguments)))
          (coding-system-for-write 'utf-8)
+         (default-directory (phpactor-get-working-dir))
          (executable phpactor-executable)
          (proc (async-start-process
                 "phpactor-async" executable callback
-                "rpc" (format "--working-dir=%s" (phpactor-get-working-dir)))))
+                "rpc" (format "--working-dir=%s" default-directory))))
     (process-send-string proc json)
     (process-send-eof proc)))
 
