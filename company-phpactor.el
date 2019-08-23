@@ -32,6 +32,17 @@
 (require 'company)
 (require 'phpactor)
 
+(defgroup company-phpactor nil
+  "Company backend for Phpactor."
+  :prefix "company-phpactor-"
+  :group 'company
+  :group 'phpactor)
+
+(defcustom company-phpactor-request-async t
+  "When non-NIL, asynchronous recuest to Phpactor."
+  :type 'boolean
+  :group 'company-phpactor)
+
 (defun company-phpactor--grab-symbol ()
   "If point is at the end of a symbol, return it.
 Otherwise, if point is not inside a symbol, return an empty string.
@@ -51,9 +62,9 @@ Here we create a temporary syntax table in order to add $ to symbols."
   (let ((response (phpactor--rpc "complete" (phpactor--command-argments :source :offset))))
     (plist-get (plist-get (plist-get response  :parameters) :value) :suggestions)))
 
-(defun company-phpactor--get-candidates ()
-  "Build a list of candidates with text-properties extracted from phpactor's output."
-  (let ((suggestions (company-phpactor--get-suggestions)) candidate)
+(defun company-phpactor--get-candidates (suggestions)
+  "Build a list of candidates with text-properties extracted from phpactor's output `SUGGESTIONS'."
+  (let (candidate)
     (mapcar
      (lambda (suggestion)
        (setq candidate (plist-get suggestion :name))
@@ -75,6 +86,17 @@ Here we create a temporary syntax table in order to add $ to symbols."
   "Show additional info (ARG) from phpactor as lateral annotation."
   (message (concat " " (get-text-property 0 'annotation arg))))
 
+(defun company-phpactor--get-candidates-async (callback)
+  "Get completion candidates asynchronously calling `CALLBACK' by Phpactor."
+  (if (not company-phpactor-request-async)
+      (funcall callback (company-phpactor--get-candidates (company-phpactor--get-suggestions)))
+    (phpactor--rpc-async "complete" (phpactor--command-argments :source :offset)
+      (lambda (proc)
+        (let* ((response (phpactor--parse-json (process-buffer proc)))
+               (suggestions
+                (plist-get (plist-get (plist-get response  :parameters) :value) :suggestions)))
+          (funcall callback (company-phpactor--get-candidates suggestions)))))))
+
 ;;;###autoload
 (defun company-phpactor (command &optional arg &rest ignored)
   "`company-mode' completion backend for Phpactor."
@@ -87,7 +109,7 @@ Here we create a temporary syntax table in order to add $ to symbols."
         (`annotation (company-phpactor--annotation arg))
         (`interactive (company-begin-backend 'company-phpactor))
         (`prefix (company-phpactor--grab-symbol))
-        (`candidates (company-phpactor--get-candidates))))))
+        (`candidates (cons :async #'company-phpactor--get-candidates-async))))))
 
 (provide 'company-phpactor)
 ;;; company-phpactor.el ends here
