@@ -42,6 +42,10 @@
 (cl-defmethod xref-backend-definitions ((_backend (eql phpactor-xref)) symbol)
   (phpactor-xref--find-definitions))
 
+(defun phpactor--xref-find-definitions ()
+  "Find definitions or jump directly when only one found."
+  (phpactor-goto-definition))
+
 (cl-defmethod xref-backend-identifier-completion-table ((_backend (eql phpactor-xref)))
   "Return a list of terms for completions taken from the symbols in the current buffer.
 The current implementation returns all the words in the buffer,
@@ -50,12 +54,6 @@ which is really sub optimal."
 
 (defun phpactor-xref--xref-find-references ()
   "Return a list of reference candidates."
-  (seq-map (lambda (candidate)
-             (phpactor-xref--make-xref candidate))
-           (phpactor-xref--find-candidates)))
-
-(defun phpactor-xref--find-definitions()
-  "Return a list of candidates matching SYMBOL."
   (seq-map (lambda (candidate)
              (phpactor-xref--make-xref candidate))
            (phpactor-xref--find-candidates)))
