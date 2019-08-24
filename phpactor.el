@@ -440,6 +440,8 @@ have to ensure a compatible version of phpactor is used."
   "Open file from Phpactor."
   (unless (and path offset)
     (user-error "Definition not found"))
+  (unless (file-name-absolute-p path)
+    (setq path (expand-file-name path (phpactor-get-working-dir))))
 
   ;; TODO: Implement other target: Phpactor\Extension\Rpc\Response\OpenFileResponse
   ;; `target' expects "focused_window", "vsplit", "hsplit" and "new_tab"
