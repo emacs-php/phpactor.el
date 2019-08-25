@@ -730,7 +730,7 @@ If any region is active, it takes precedence over symbol at point."
   (interactive)
   (let ((arguments (phpactor--command-argments :source :offset :path))
         (name (or name (if (region-active-p) (buffer-substring (point) (mark)) (symbol-at-point)))))
-    (apply #'phpactor-action-dispatch (phpactor--rpc "import_class" (append arguments (list :name name))))))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "import_class" (append arguments (list :qualified_name name))))))
 
 ;;;###autoload
 (defun phpactor-complete-constructor ()
