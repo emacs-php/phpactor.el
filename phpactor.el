@@ -705,7 +705,7 @@ function."
   "Execute Phpactor RPC import_class command for class NAME."
   (interactive)
   (let ((arguments (phpactor--command-argments :source :offset :path)))
-    (apply #'phpactor-action-dispatch (phpactor--rpc "import_class" (append arguments (list :name name))))))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "import_class" (append arguments (list :qualified_name name))))))
 
 ;;;###autoload
 (defun phpactor-complete-constructor ()
