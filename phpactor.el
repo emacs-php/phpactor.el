@@ -701,10 +701,14 @@ function."
     (apply #'phpactor-action-dispatch (phpactor--rpc "goto_definition" arguments))))
 
 ;;;###autoload
-(defun phpactor-import-class (name)
-  "Execute Phpactor RPC import_class command for class NAME."
+(defun phpactor-import-class (&optional name)
+  "Execute Phpactor RPC import_class command for class NAME.
+
+If called interactively, treat current symbol under cursor as NAME.
+If any region is active, it takes precedence over symbol at point."
   (interactive)
-  (let ((arguments (phpactor--command-argments :source :offset :path)))
+  (let ((arguments (phpactor--command-argments :source :offset :path))
+        (name (or name (if (region-active-p) (buffer-substring (point) (mark)) (symbol-at-point)))))
     (apply #'phpactor-action-dispatch (phpactor--rpc "import_class" (append arguments (list :name name))))))
 
 ;;;###autoload
