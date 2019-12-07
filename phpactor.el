@@ -53,6 +53,7 @@
 (require 'subr-x)
 (require 'composer)
 (require 'async)
+(require 'smart-jump nil t)
 
 ;; Custom variables
 ;;;###autoload
@@ -143,6 +144,17 @@ have to ensure a compatible version of phpactor is used."
     (phpactor-reset-executable)))
 
 ;; Utility functions
+
+;;;###autoload
+(defun phpactor-smart-jump-register (&optional modes)
+  "Register `smart-jump' for MODES."
+  (smart-jump-register
+   :modes (or modes '(php-mode phps-mode))
+   :jump-fn 'phpactor-goto-definition
+   :pop-fn 'pop-tag-mark
+   :should-jump t
+   :heuristic 'point
+   :async t))
 
 ;;;###autoload
 (defun phpactor-install-or-update ()

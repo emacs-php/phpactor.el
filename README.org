@@ -66,6 +66,18 @@ Alternatively, you can install Phpactor on your own and customize `phpactor-exec
                     'phpactor-hover)))
 #+END_SRC
 
+*** Jump (go to definition)
+**** using [[https://github.com/jojojames/smart-jump][Smart-jump]]
+#+BEGIN_SRC elisp
+(with-eval-after-load 'php-mode
+  (phpactor-smart-jump-register))
+#+END_SRC
+**** without Smart-jump
+#+BEGIN_SRC elisp
+(with-eval-after-load 'php-mode
+  (define-key php-mode-map (kbd "M-.") #'phpactor-goto-definition)
+  (define-key php-mode-map (kbd "M-?") #'phpactor-find-references))
+#+END_SRC
 *** phpactor itself
 See https://phpactor.github.io/phpactor/configuration.html
 
