@@ -308,8 +308,17 @@ have to ensure a compatible version of phpactor is used."
     (update_file_source . phpactor-action-update-file-source)))
 
 ;; Helper functions:
-(cl-defun phpactor--action-input-parameters (value-type &key default label choices type)
+(cl-defun phpactor--action-input-parameters (value-type &key default label choices type multi)
   "Request user input by parameters."
+  (if multi
+      (cl-loop for input = (phpactor--action-input-parameters-1
+                            value-type default label choices type)
+               until (string= input "")
+               collect input)
+    (phpactor--action-input-parameters-1 value-type default label choices type)))
+
+(defun phpactor--action-input-parameters-1 (value-type default label choices type)
+  "Inner function of `phpactor--action-input-parameters'."
   (let ((use-dialog-box nil)
         (type (if type (intern type) value-type)))
     (cl-case type
