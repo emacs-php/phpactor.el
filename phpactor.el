@@ -185,9 +185,11 @@ have to ensure a compatible version of phpactor is used."
 
 (defun phpactor-get-working-dir ()
   "Return working directory of Phpactor."
+  (if (projectile-mode)
+      (projectile-project-root (buffer-file-name))
   (directory-file-name
    (expand-file-name
-    (or (php-project-get-root-dir) default-directory))))
+    (or (php-project-get-root-dir) default-directory)))))
 
 (defun phpactor--expand-local-file-name (name)
   "Expand file name by `NAME'."
