@@ -1,6 +1,6 @@
 ;;; company-phpactor.el --- company-mode backend for Phpactor -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2018  Friends of Emacs-PHP development
+;; Copyright (C) 2020  Friends of Emacs-PHP development
 
 ;; Author: Martin Tang <martin.tang365@gmail.com>
 ;;         Mikael Kermorgant <mikael@kgtech.fi>

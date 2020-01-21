@@ -1,6 +1,6 @@
 ;;; phpactor.el --- Interface to Phpactor            -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2018  Friends of Emacs-PHP development
+;; Copyright (C) 2020  Friends of Emacs-PHP development
 
 ;; Author: USAMI Kenta <tadsan@zonu.me>
 ;;         Mikael Kermorgant <mikael@kgtech.fi>
