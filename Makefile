@@ -5,7 +5,11 @@ AUTOLOADS = phpactor-autoloads.el
 ELCS = $(ELS:.el=.elc)
 
 %.elc: %.el
-	$(EMACS) -Q -batch -L . -f package-initialize -f batch-byte-compile $<
+	$(EMACS) -Q -batch -L . --eval \
+	"(let ((default-directory (expand-file-name \".cask\" default-directory))) \
+	   (require 'package) \
+	   (normal-top-level-add-subdirs-to-load-path))" \
+	-f package-initialize -f batch-byte-compile $<
 
 all: .cask $(ELCS) autoloads
 
