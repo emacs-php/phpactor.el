@@ -18,7 +18,7 @@
         "psr-4": {"EmacsPHP\\Phpactor\\Sample\\": "tests/src/"}
     },
     "require": {
-        "phpactor/phpactor": "dev-master#40e61062413754375d4fcf13034f771886998a0b"
+        "phpactor/phpactor": "dev-master#c6d484b4901dcbbe9769f9e565794d228bc7349d"
     },
     "config": {
         "classmap-authoritative": true,
@@ -30,7 +30,7 @@
         },
         "sort-packages": true,
         "platform": {
-            "php": "7.1.3"
+            "php": "7.2.5"
         }
     }
 }
