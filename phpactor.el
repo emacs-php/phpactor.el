@@ -308,7 +308,7 @@ have to ensure a compatible version of phpactor is used."
     (update_file_source . phpactor-action-update-file-source)))
 
 ;; Helper functions:
-(cl-defun phpactor--action-input-parameters (value-type &key default label choices type multi)
+(cl-defun phpactor--action-input-parameters (value-type &key default label choices type multi keyMap)
   "Request user input by parameters."
   (if multi
       (cl-loop for input = (phpactor--action-input-parameters-1
