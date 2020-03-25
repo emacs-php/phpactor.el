@@ -6,6 +6,7 @@ This package is Emacs interface to [[http://phpactor.github.io/phpactor/][Phpact
 *NOTICE*: Phpactor is also in development stage.
 
 #+BEGIN_HTML
+<a href="https://github.com/emacs-php/phpactor.el/actions"><img alt="Build Status" src="https://github.com/emacs-php/phpactor.el/workflows/CI/badge.svg"></a>
 <a href="http://melpa.org/#/phpactor"><img alt="MELPA: phpactor" src="http://melpa.org/packages/phpactor-badge.svg"></a>
 <a href="http://stable.melpa.org/#/phpactor"><img alt="MELPA stable: phpactor" src="http://stable.melpa.org/packages/phpactor-badge.svg"></a>
 #+END_HTML
