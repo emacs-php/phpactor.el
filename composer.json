@@ -18,7 +18,9 @@
         "psr-4": {"EmacsPHP\\Phpactor\\Sample\\": "tests/src/"}
     },
     "require": {
-        "phpactor/phpactor": "dev-master#c6d484b4901dcbbe9769f9e565794d228bc7349d"
+        "phpactor/language-server-completion-extension": "^0.1.0@dev",
+        "phpactor/language-server-extension": "^0.2.0@dev",
+        "phpactor/phpactor": "dev-master#e31565fe317b7994e6a09aa8f9c8208d6eba3532"
     },
     "config": {
         "classmap-authoritative": true,
