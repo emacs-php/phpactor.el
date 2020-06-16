@@ -46,6 +46,7 @@
 
 ;;; Code:
 (require 'cl-lib)
+(require 'f)
 (require 'json)
 (require 'php-project)
 (require 'php-runtime)
