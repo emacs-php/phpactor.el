@@ -300,6 +300,7 @@ have to ensure a compatible version of phpactor is used."
     (error . phpactor-action-error)
     (collection . phpactor-action-collection)
     (open_file . phpactor-action-open-file)
+    (override_method . phpactor-override-method)
     (close_file . phpactor-action-close-file)
     (file_references . phpactor-action-file-references)
     (input_callback . phpactor-action-input-callback)
