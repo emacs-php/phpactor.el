@@ -18,6 +18,7 @@
         "psr-4": {"EmacsPHP\\Phpactor\\Sample\\": "tests/src/"}
     },
     "require": {
+        "composer/package-versions-deprecated": "^1.0",
         "phpactor/extension-manager-extension": "^0.8.0@dev",
         "phpactor/language-server-extension": "^0.4.0@dev",
         "phpactor/phpactor": "dev-master#c2b3405ce5afc4e395ee2863a938dd3953f67c36"
