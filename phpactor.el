@@ -126,10 +126,9 @@ of GitHub.")
             target)
            ((setq target (executable-find "phpactor"))
             target))))
-    (if (file-exists-p vendor-executable)
-        vendor-executable
-      (warn "Phpactor not found.  Please run `phpactor-install-or-update' command")
-      nil)))
+    (unless vendor-executable
+      (warn "Phpactor not found.  Please run `phpactor-install-or-update' command"))
+    vendor-executable))
 
 (defcustom phpactor-executable (phpactor--find-executable)
   "Path to phpactor executable.
