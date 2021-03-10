@@ -542,7 +542,7 @@ function."
         (goto-char (point-min))
         (while (not (eobp))
           (unless (looking-at "^\\([ad]\\)\\([0-9]+\\) \\([0-9]+\\)")
-            (error "Invalid rcs patch or internal error in go--apply-rcs-patch"))
+            (error "Invalid rcs patch or internal error in phpactor--apply-rcs-patch"))
           (forward-line)
           (let ((action (match-string 1))
                 (from (string-to-number (match-string 2)))
