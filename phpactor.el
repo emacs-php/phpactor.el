@@ -321,6 +321,8 @@ have to ensure a compatible version of phpactor is used."
 
 (defun phpactor--action-input-parameters-1 (value-type default label choices type)
   "Inner function of `phpactor--action-input-parameters'."
+  (when (eq type :null)
+    (setq type nil))
   (let ((use-dialog-box nil)
         (type (if type (intern type) value-type)))
     (cl-case type
@@ -347,7 +349,7 @@ have to ensure a compatible version of phpactor is used."
   (cl-loop for (key value) on parameters by #'cddr
            do (message "key:%s value:%s input:%s"
                        key value (plist-get input-vars key))
-           unless value
+           when (or (null value) (eq :null value))
            do (setq parameters (plist-put parameters key
                                           (plist-get input-vars key))))
   (cl-loop for (key value) on input-vars by #'cddr
