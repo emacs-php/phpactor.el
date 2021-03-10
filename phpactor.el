@@ -685,9 +685,7 @@ function."
 (defun phpactor-extension-list ()
   "Execute Phpactor RPC extension_list command."
   (interactive)
-  (let ((arguments (phpactor--command-argments :source_path)))
-    (apply #'phpactor-action-dispatch (phpactor--rpc "extension_list" arguments))))
-
+  (apply #'phpactor-action-dispatch (phpactor--rpc "extension_list" [])))
 
 ;;;###autoload
 (defun phpactor-extension-remove ()
