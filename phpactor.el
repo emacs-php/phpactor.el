@@ -237,6 +237,8 @@ have to ensure a compatible version of phpactor is used."
       (setq default-directory cwd)
       (erase-buffer)
       (insert json)
+      (unless phpactor-executable
+        (error "`phpactor-executable' is not set.  Please run `phpactor-install-or-update' command"))
       (call-process-region (point-min) (point-max) phpactor-executable nil output nil "rpc" (format "--working-dir=%s" default-directory))
       (phpactor--parse-json output))))
 
