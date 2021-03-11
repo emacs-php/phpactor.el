@@ -80,6 +80,7 @@
 (defvar phpactor--debug nil)
 (defvar phpactor-history-size 100)
 (defvar phpactor-history-ring nil)
+(defvar phpactor-smart-jump-initialized nil)
 
 (defvar phpactor--buffer-name "*Phpactor*")
 (defvar phpactor-after-update-file-hook nil
@@ -149,13 +150,15 @@ have to ensure a compatible version of phpactor is used."
 ;;;###autoload
 (defun phpactor-smart-jump-register (&optional modes)
   "Register `smart-jump' for MODES."
-  (smart-jump-register
-   :modes (or modes '(php-mode phps-mode))
-   :jump-fn 'phpactor-goto-definition
-   :pop-fn 'pop-tag-mark
-   :should-jump t
-   :heuristic 'point
-   :async t))
+  (unless phpactor-smart-jump-initialized
+    (smart-jump-register
+     :modes (or modes '(php-mode phps-mode))
+     :jump-fn 'phpactor-goto-definition
+     :pop-fn 'pop-tag-mark
+     :should-jump t
+     :heuristic 'point
+     :async t)
+    (setq phpactor-smart-jump-initialized t)))
 
 ;;;###autoload
 (defun phpactor-install-or-update ()
@@ -321,6 +324,8 @@ have to ensure a compatible version of phpactor is used."
 
 (defun phpactor--action-input-parameters-1 (value-type default label choices type)
   "Inner function of `phpactor--action-input-parameters'."
+  (when (eq type :null)
+    (setq type nil))
   (let ((use-dialog-box nil)
         (type (if type (intern type) value-type)))
     (cl-case type
@@ -347,7 +352,7 @@ have to ensure a compatible version of phpactor is used."
   (cl-loop for (key value) on parameters by #'cddr
            do (message "key:%s value:%s input:%s"
                        key value (plist-get input-vars key))
-           unless value
+           when (or (null value) (eq :null value))
            do (setq parameters (plist-put parameters key
                                           (plist-get input-vars key))))
   (cl-loop for (key value) on input-vars by #'cddr
@@ -542,7 +547,7 @@ function."
         (goto-char (point-min))
         (while (not (eobp))
           (unless (looking-at "^\\([ad]\\)\\([0-9]+\\) \\([0-9]+\\)")
-            (error "Invalid rcs patch or internal error in go--apply-rcs-patch"))
+            (error "Invalid rcs patch or internal error in phpactor--apply-rcs-patch"))
           (forward-line)
           (let ((action (match-string 1))
                 (from (string-to-number (match-string 2)))
@@ -685,9 +690,7 @@ function."
 (defun phpactor-extension-list ()
   "Execute Phpactor RPC extension_list command."
   (interactive)
-  (let ((arguments (phpactor--command-argments :source_path)))
-    (apply #'phpactor-action-dispatch (phpactor--rpc "extension_list" arguments))))
-
+  (apply #'phpactor-action-dispatch (phpactor--rpc "extension_list" [])))
 
 ;;;###autoload
 (defun phpactor-extension-remove ()
@@ -731,7 +734,9 @@ If called interactively, treat current symbol under cursor as NAME.
 If any region is active, it takes precedence over symbol at point."
   (interactive)
   (let ((arguments (phpactor--command-argments :source :offset :path))
-        (name (or name (if (region-active-p) (buffer-substring (point) (mark)) (symbol-at-point)))))
+        (name (or name (if (region-active-p)
+                           (buffer-substring (point) (mark))
+                         (symbol-name (symbol-at-point))))))
     (apply #'phpactor-action-dispatch (phpactor--rpc "import_class" (append arguments (list :qualified_name name))))))
 
 ;;;###autoload
