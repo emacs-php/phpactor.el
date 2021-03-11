@@ -80,6 +80,7 @@
 (defvar phpactor--debug nil)
 (defvar phpactor-history-size 100)
 (defvar phpactor-history-ring nil)
+(defvar phpactor-smart-jump-initialized nil)
 
 (defvar phpactor--buffer-name "*Phpactor*")
 (defvar phpactor-after-update-file-hook nil
@@ -149,13 +150,15 @@ have to ensure a compatible version of phpactor is used."
 ;;;###autoload
 (defun phpactor-smart-jump-register (&optional modes)
   "Register `smart-jump' for MODES."
-  (smart-jump-register
-   :modes (or modes '(php-mode phps-mode))
-   :jump-fn 'phpactor-goto-definition
-   :pop-fn 'pop-tag-mark
-   :should-jump t
-   :heuristic 'point
-   :async t))
+  (unless phpactor-smart-jump-initialized
+    (smart-jump-register
+     :modes (or modes '(php-mode phps-mode))
+     :jump-fn 'phpactor-goto-definition
+     :pop-fn 'pop-tag-mark
+     :should-jump t
+     :heuristic 'point
+     :async t)
+    (setq phpactor-smart-jump-initialized t)))
 
 ;;;###autoload
 (defun phpactor-install-or-update ()
