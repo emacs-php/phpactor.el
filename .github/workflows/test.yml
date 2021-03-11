@@ -12,7 +12,6 @@ jobs:
     strategy:
       matrix:
         emacs_version:
-        - "25.1"
         - "25.2"
         - "25.3"
         - "26.1"
@@ -23,7 +22,7 @@ jobs:
         - emacs_version: snapshot
           allow_failure: true
     steps:
-    - uses: actions/setup-python@v1.1.1
+    - uses: actions/setup-python@v2
       with:
         python-version: '3.6'
         architecture: 'x64'
@@ -33,7 +32,7 @@ jobs:
     - uses: conao3/setup-cask@master
       with:
         version: 'snapshot'
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: Run tests
       if: matrix.allow_failure != true
       run: 'make test'
