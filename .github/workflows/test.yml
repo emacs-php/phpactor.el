@@ -14,11 +14,13 @@ jobs:
         emacs_version:
         - "25.2"
         - "25.3"
-        - "26.1"
         - "26.2"
         - "26.3"
+        - "27.1"
         - snapshot
         include:
+        - emacs_version: "25.2"
+          allow_failure: true
         - emacs_version: snapshot
           allow_failure: true
     steps:
