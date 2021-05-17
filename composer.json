@@ -19,7 +19,8 @@
     },
     "require": {
         "composer/package-versions-deprecated": "^1.0",
-        "phpactor/phpactor": "dev-master#58624d2f3548c565ca7cfa44b47dcaf37b922dfa"
+        "phpactor/phpactor": "dev-master#58624d2f3548c565ca7cfa44b47dcaf37b922dfa",
+        "sebastian/diff": "^4.0"
     },
     "config": {
         "classmap-authoritative": true,
