@@ -352,17 +352,11 @@ have to ensure a compatible version of phpactor is used."
   "Fill variables PARAMETERS by INPUT-VARS."
   (message "fill-vars %s %s" parameters input-vars)
   (cl-loop for (key value) on parameters by #'cddr
-           do (message "key:%s value:%s input:%s"
-                       key value (plist-get input-vars key))
            when (or (null value) (eq :null value))
-           do (setq parameters (plist-put parameters key
-                                          (plist-get input-vars key))))
+           do (setq parameters (plist-put parameters key (plist-get input-vars key))))
   (cl-loop for (key value) on input-vars by #'cddr
-           do (message "key:%s value:%s input:%s"
-                       key value (plist-get input-vars key))
            unless (plist-member parameters key)
-           do (setq parameters (plist-put parameters key
-                                          (plist-get input-vars key))))
+           do (setq parameters (plist-put parameters key (plist-get input-vars key))))
   parameters)
 
 (defun phpactor--command-argments-1 (key)
