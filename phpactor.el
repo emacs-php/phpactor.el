@@ -578,15 +578,13 @@ function."
             (widen)
             (with-current-buffer patchbuf
               (erase-buffer))
-
             (with-temp-file tmpfile
               (insert source))
-
-            (if (zerop (call-process-region (point-min) (point-max) "diff" nil patchbuf nil "-n" "-" tmpfile))
+            (if (zerop (call-process-region (point-min) (point-max)
+                                            "diff" nil patchbuf nil "-n" "-" tmpfile))
                 (message "Buffer was unchanged by phpactor")
               (phpactor--apply-rcs-patch patchbuf)
               (message "Buffer modified by phpactor")))
-
         (kill-buffer patchbuf)
         (delete-file tmpfile)))
     (run-hooks 'phpactor-after-update-file-hook)))
