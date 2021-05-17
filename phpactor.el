@@ -350,7 +350,6 @@ have to ensure a compatible version of phpactor is used."
 
 (defun phpactor-action--fill-vars (parameters input-vars)
   "Fill variables PARAMETERS by INPUT-VARS."
-  (message "fill-vars %s %s" parameters input-vars)
   (cl-loop for (key value) on parameters by #'cddr
            when (or (null value) (eq :null value))
            do (setq parameters (plist-put parameters key (plist-get input-vars key))))
@@ -393,7 +392,6 @@ have to ensure a compatible version of phpactor is used."
   "Require INPUTS and dispatch CALLBACK."
   (let* ((input-vars (phpactor-action--collect-inputs inputs))
          (parameters (phpactor-action--fill-vars (plist-get callback :parameters) input-vars)))
-    (message "%s" callback)
     (apply #'phpactor-action-dispatch (phpactor--rpc (plist-get callback :action) parameters))))
 
 (cl-defun phpactor-action-information (&key information details)
