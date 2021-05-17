@@ -316,7 +316,7 @@ have to ensure a compatible version of phpactor is used."
 
 ;; Helper functions:
 (cl-defun phpactor--action-input-parameters (value-type &key default label choices type multi keyMap)
-  "Request user input by parameters."
+  "Request user input by VALUE-TYPE, DEFAULT, LABEL, CHOICES, TYPE, MULTI.  Unuse KEYMAP."
   (if multi
       (cl-loop for input = (phpactor--action-input-parameters-1
                             value-type default label choices type)
@@ -325,7 +325,7 @@ have to ensure a compatible version of phpactor is used."
     (phpactor--action-input-parameters-1 value-type default label choices type)))
 
 (defun phpactor--action-input-parameters-1 (value-type default label choices type)
-  "Inner function of `phpactor--action-input-parameters'."
+  "Inner function of `phpactor--action-input-parameters' with VALUE-TYPE, DEFAULT, LABEL, CHOICES and TYPE."
   (when (eq type :null)
     (setq type nil))
   (let ((use-dialog-box nil)
@@ -341,7 +341,7 @@ have to ensure a compatible version of phpactor is used."
       (t (error "Unknown input type %s" type)))))
 
 (defun phpactor-action--collect-inputs (inputs)
-  "Request input by `INPUTS' and return alist which collected the variables."
+  "Request input by INPUTS and return alist which collected the variables."
   (cl-loop for i in inputs
            for name = (intern (concat ":" (plist-get i :name)))
            for type = (intern (plist-get i :type))
@@ -349,7 +349,7 @@ have to ensure a compatible version of phpactor is used."
            append (list name (apply #'phpactor--action-input-parameters type parameters))))
 
 (defun phpactor-action--fill-vars (parameters input-vars)
-  "Fill variables `PARAMETERS' by `INPUT-VARS'."
+  "Fill variables PARAMETERS by INPUT-VARS."
   (message "fill-vars %s %s" parameters input-vars)
   (cl-loop for (key value) on parameters by #'cddr
            do (message "key:%s value:%s input:%s"
@@ -385,25 +385,25 @@ have to ensure a compatible version of phpactor is used."
            append (list key arg)))
 
 (cl-defun phpactor-action-error (&key message details)
-  "Echo error message from Phpactor."
+  "Echo error MESSAGE and DETAILS from Phpactor."
   (when phpactor--debug
     (phpactor-action-information :information message :details details))
   (user-error message))
 
 ;; Action functions:
 (cl-defun phpactor-action-echo (&key message)
-  "Echo message from Phpactor."
+  "Echo MESSAGE from Phpactor."
   (message phpactor-action--message-format message))
 
 (cl-defun phpactor-action-input-callback (&key callback inputs)
-  "Require `INPUTS' and dispatch `CALLBACK'."
+  "Require INPUTS and dispatch CALLBACK."
   (let* ((input-vars (phpactor-action--collect-inputs inputs))
          (parameters (phpactor-action--fill-vars (plist-get callback :parameters) input-vars)))
     (message "%s" callback)
     (apply #'phpactor-action-dispatch (phpactor--rpc (plist-get callback :action) parameters))))
 
 (cl-defun phpactor-action-information (&key information details)
-  "Pop information buffer from Phpactor."
+  "Pop INFORMATION buffer with DETAILS from Phpactor."
   (let ((buffer (get-buffer-create phpactor-action--buffer-name)))
     (with-current-buffer buffer
       (view-mode -1)
@@ -416,13 +416,13 @@ have to ensure a compatible version of phpactor is used."
     (pop-to-buffer buffer)))
 
 (cl-defun phpactor-action-return (&key value)
-  "Return var from Phpactor."
+  "Return VALUE from Phpactor."
   value)
 
 (defvar phpactor-references nil)
 
 (cl-defun phpactor-action-file-references (&key file_references)
-  "Receives a list of file references for information purpose."
+  "Receives a list of FILE_REFERENCES for information purpose."
   (setq-local phpactor-references file_references)
   (message "Phpactor changed %d references(s), use phpactor-list-references to check them" (length file_references)))
 
@@ -460,7 +460,7 @@ have to ensure a compatible version of phpactor is used."
     (grep-mode)))
 
 (cl-defun phpactor-action-collection (&key actions)
-  "Executes a collection of actions."
+  "Executes a collection of ACTIONS."
   (mapc
    (lambda (action)
      (apply #'phpactor-action-dispatch (list :action (plist-get action :name) :parameters (plist-get action :parameters))))
@@ -492,7 +492,7 @@ have to ensure a compatible version of phpactor is used."
   (goto-char (1+ (byte-to-position (max 1 offset)))))
 
 (cl-defun phpactor-action-close-file (&key path)
-  "Close file from Phpactor."
+  "Close file by PATH from Phpactor."
   (kill-buffer (find-file-noselect path t)))
 
 ;; this function was adapted from go-mode
@@ -601,7 +601,7 @@ function."
 
 ;; Dispatcher:
 (cl-defun phpactor-action-dispatch (&key action parameters version)
-  "Execite action by `NAME' and `PARAMETERS'."
+  "Execite ACTION by PARAMETERS with VERSION."
   (when (and version (not (equal phpactor--supported-rpc-version version)))
     (if phpactor-executable
         (error "Phpactor uses rpc protocol %s but this package requires %s" version phpactor--supported-rpc-version)
