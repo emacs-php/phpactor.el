@@ -75,6 +75,11 @@
   "If non-nil, use native json parsing if available."
   :group 'phpactor
   :type 'boolean)
+
+(defcustom phpactor-use-xref t
+  "Defines phpactor xref backend."
+  :group 'phpactor
+  :type 'boolean)
 
 ;; Variables
 (defvar phpactor--debug nil)
@@ -786,6 +791,12 @@ If any region is active, it takes precedence over symbol at point."
     (phpactor-list-references)))
 
 ;;;###autoload
+(defun phpactor--find-references ()
+  "Execute Phpactor RPC references action to find references."
+  (let ((arguments (phpactor--command-argments :source :path :offset)))
+    (apply #'phpactor-action-dispatch (phpactor--rpc "references" arguments))))
+
+;;;###autoload
 (defun phpactor-replace-references ()
   "Execute Phpactor RPC references action command to replace references."
   (interactive)
@@ -882,6 +893,9 @@ If any region is active, it takes precedence over symbol at point."
   (interactive)
   (let ((arguments (phpactor--command-argments :source :path)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "override_method" arguments))))
+
+(autoload 'phpactor-xref-backend "phpactor-xref"
+  "Phpactor backend for Xref.")
 
 (provide 'phpactor)
 ;;; phpactor.el ends here
