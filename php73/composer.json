@@ -19,7 +19,7 @@
     },
     "require": {
         "composer/package-versions-deprecated": "1.x-dev",
-        "phpactor/phpactor": "^0.18"
+        "phpactor/phpactor": "^0.18.1"
     },
     "config": {
         "classmap-authoritative": true,
