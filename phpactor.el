@@ -173,6 +173,8 @@ have to ensure a compatible version of phpactor is used."
                       phpactor--remote-composer-file-url-dir)))
     (unless (file-directory-p phpactor-install-directory)
       (make-directory phpactor-install-directory))
+    (when (version< (php-runtime-expr "PHP_VERSION") "7.4.0")
+      (setq directory (concat directory "/php73")))
     ;; Create .gitignore to prevent unnecessary files from being copied to GitHub
     (unless (file-exists-p (expand-file-name ".gitignore" phpactor-install-directory))
       (f-write-text "*\n" 'utf-8 (expand-file-name ".gitignore" phpactor-install-directory)))

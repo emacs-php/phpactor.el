@@ -19,7 +19,7 @@
     },
     "require": {
         "composer/package-versions-deprecated": "1.x-dev",
-        "phpactor/phpactor": "dev-master#fdecf4178900bffeabb6d9b0f3a7e3960052c2e7"
+        "phpactor/phpactor": "^0.18.1"
     },
     "config": {
         "classmap-authoritative": true,
@@ -31,7 +31,7 @@
         },
         "sort-packages": true,
         "platform": {
-            "php": "7.4.28"
+            "php": "7.3.0"
         },
         "allow-plugins": {
             "composer/package-versions-deprecated": true
