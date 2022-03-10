@@ -3,4 +3,4 @@
 /.cask
 /flycheck*
 /phpactor-autoloads.el
-/vendor
+vendor
