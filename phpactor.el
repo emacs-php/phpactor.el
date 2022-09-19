@@ -55,6 +55,8 @@
 (require 'composer)
 (require 'async)
 (require 'smart-jump nil t)
+
+(declare-function smart-jump-register "ext:smart-jump")
 
 ;; Custom variables
 ;;;###autoload
