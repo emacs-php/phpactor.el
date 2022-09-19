@@ -1,6 +1,6 @@
-;;; company-phpactor.el --- company-mode backend for Phpactor -*- lexical-binding: t; -*-
+;;; company-phpactor.el --- A company-mode backend for Phpactor -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2020  Friends of Emacs-PHP development
+;; Copyright (C) 2022  Friends of Emacs-PHP development
 
 ;; Author: Martin Tang <martin.tang365@gmail.com>
 ;;         Mikael Kermorgant <mikael@kgtech.fi>
@@ -29,8 +29,9 @@
 ;; Company integration for Phpactor.
 
 ;;; Code:
-(require 'company)
 (require 'phpactor)
+
+(declare-function company-begin-backend "ext:company" (backend &optional callback))
 
 (defgroup company-phpactor nil
   "Company backend for Phpactor."
@@ -63,7 +64,7 @@ Here we create a temporary syntax table in order to add $ to symbols."
     (plist-get (plist-get (plist-get response  :parameters) :value) :suggestions)))
 
 (defun company-phpactor--get-candidates (suggestions)
-  "Build a list of candidates with text-properties extracted from phpactor's output `SUGGESTIONS'."
+  "Build a list of candidates extracted from phpactor's output SUGGESTIONS."
   (let (candidate)
     (mapcar
      (lambda (suggestion)
