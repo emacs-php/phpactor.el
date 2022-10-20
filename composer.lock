@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "690bb5fba9659d313ff02df344a35c10",
+    "content-hash": "9b6c2b6a18354c010dd70bf3d252f4e4",
     "packages": [
         {
             "name": "amphp/amp",
@@ -1137,12 +1137,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/DaveRandom/LibDNS.git",
-                "reference": "e8b6d6593d18ac3a6a14666d8a68a4703b2e05f9"
+                "reference": "42c2d700d1178c9f9e78664793463f7f1aea248c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DaveRandom/LibDNS/zipball/e8b6d6593d18ac3a6a14666d8a68a4703b2e05f9",
-                "reference": "e8b6d6593d18ac3a6a14666d8a68a4703b2e05f9",
+                "url": "https://api.github.com/repos/DaveRandom/LibDNS/zipball/42c2d700d1178c9f9e78664793463f7f1aea248c",
+                "reference": "42c2d700d1178c9f9e78664793463f7f1aea248c",
                 "shasum": ""
             },
             "require": {
@@ -1173,7 +1173,7 @@
                 "issues": "https://github.com/DaveRandom/LibDNS/issues",
                 "source": "https://github.com/DaveRandom/LibDNS/tree/2.x"
             },
-            "time": "2019-12-03T09:12:46+00:00"
+            "time": "2022-09-20T18:15:38+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -1218,12 +1218,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/JetBrains/phpstorm-stubs.git",
-                "reference": "37dd64dd3cec7b957dbfab754752f310b13ced84"
+                "reference": "ded8d118bab0870bf61027bf4fbdfbe6dcc0afd4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JetBrains/phpstorm-stubs/zipball/37dd64dd3cec7b957dbfab754752f310b13ced84",
-                "reference": "37dd64dd3cec7b957dbfab754752f310b13ced84",
+                "url": "https://api.github.com/repos/JetBrains/phpstorm-stubs/zipball/ded8d118bab0870bf61027bf4fbdfbe6dcc0afd4",
+                "reference": "ded8d118bab0870bf61027bf4fbdfbe6dcc0afd4",
                 "shasum": ""
             },
             "require-dev": {
@@ -1259,7 +1259,7 @@
             "support": {
                 "source": "https://github.com/JetBrains/phpstorm-stubs/tree/master"
             },
-            "time": "2022-09-07T10:47:56+00:00"
+            "time": "2022-10-20T14:24:05+00:00"
         },
         {
             "name": "kelunik/certificate",
@@ -1392,16 +1392,16 @@
         },
         {
             "name": "microsoft/tolerant-php-parser",
-            "version": "v0.1.1",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/microsoft/tolerant-php-parser.git",
-                "reference": "6a965617cf484355048ac6d2d3de7b6ec93abb16"
+                "reference": "3eccfd273323aaf69513e2f1c888393f5947804b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/microsoft/tolerant-php-parser/zipball/6a965617cf484355048ac6d2d3de7b6ec93abb16",
-                "reference": "6a965617cf484355048ac6d2d3de7b6ec93abb16",
+                "url": "https://api.github.com/repos/microsoft/tolerant-php-parser/zipball/3eccfd273323aaf69513e2f1c888393f5947804b",
+                "reference": "3eccfd273323aaf69513e2f1c888393f5947804b",
                 "shasum": ""
             },
             "require": {
@@ -1410,6 +1410,7 @@
             "require-dev": {
                 "phpunit/phpunit": "^8.5.15"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -1431,9 +1432,9 @@
             "description": "Tolerant PHP-to-AST parser designed for IDE usage scenarios",
             "support": {
                 "issues": "https://github.com/microsoft/tolerant-php-parser/issues",
-                "source": "https://github.com/microsoft/tolerant-php-parser/tree/v0.1.1"
+                "source": "https://github.com/microsoft/tolerant-php-parser/tree/v0.1.2"
             },
-            "time": "2021-07-16T21:28:12+00:00"
+            "time": "2022-10-05T17:30:19+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -1587,12 +1588,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpactor/class-to-file.git",
-                "reference": "0121674cfb0c350d18a65b4ec464c49268f4b611"
+                "reference": "290dabd216a5486c3faff32e5f84742e6c038108"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpactor/class-to-file/zipball/0121674cfb0c350d18a65b4ec464c49268f4b611",
-                "reference": "0121674cfb0c350d18a65b4ec464c49268f4b611",
+                "url": "https://api.github.com/repos/phpactor/class-to-file/zipball/290dabd216a5486c3faff32e5f84742e6c038108",
+                "reference": "290dabd216a5486c3faff32e5f84742e6c038108",
                 "shasum": ""
             },
             "require": {
@@ -1604,7 +1605,7 @@
                 "ergebnis/composer-normalize": "^2.0",
                 "friendsofphp/php-cs-fixer": "^3.0",
                 "phpspec/prophecy-phpunit": "^2.0",
-                "phpstan/phpstan": "~0.12.0",
+                "phpstan/phpstan": "^1.0",
                 "phpunit/phpunit": "^9.0",
                 "symfony/var-dumper": "^6.0 || ^5.0"
             },
@@ -1632,9 +1633,9 @@
             ],
             "description": "Library to covert class names to file paths and vice-versa",
             "support": {
-                "source": "https://github.com/phpactor/class-to-file/tree/0.5.1"
+                "source": "https://github.com/phpactor/class-to-file/tree/master"
             },
-            "time": "2022-08-15T14:15:35+00:00"
+            "time": "2022-10-08T08:32:21+00:00"
         },
         {
             "name": "phpactor/container",
@@ -1642,12 +1643,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpactor/container.git",
-                "reference": "a517b095e07c6af51c402aa8f4c39f0cfd59deb1"
+                "reference": "14e98f4b381a7dd89d5509edb76deacb71d4deae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpactor/container/zipball/a517b095e07c6af51c402aa8f4c39f0cfd59deb1",
-                "reference": "a517b095e07c6af51c402aa8f4c39f0cfd59deb1",
+                "url": "https://api.github.com/repos/phpactor/container/zipball/14e98f4b381a7dd89d5509edb76deacb71d4deae",
+                "reference": "14e98f4b381a7dd89d5509edb76deacb71d4deae",
                 "shasum": ""
             },
             "require": {
@@ -1657,9 +1658,9 @@
             },
             "require-dev": {
                 "ergebnis/composer-normalize": "^2.0",
-                "friendsofphp/php-cs-fixer": "^2.17",
+                "friendsofphp/php-cs-fixer": "^3.0",
                 "phpspec/prophecy-phpunit": "^2.0",
-                "phpstan/phpstan": "~0.12.0",
+                "phpstan/phpstan": "^1.0",
                 "phpunit/phpunit": "^9.0"
             },
             "default-branch": true,
@@ -1687,22 +1688,22 @@
             "description": "Phpactor's DI Container",
             "support": {
                 "issues": "https://github.com/phpactor/container/issues",
-                "source": "https://github.com/phpactor/container/tree/master"
+                "source": "https://github.com/phpactor/container/tree/2.0.2"
             },
-            "time": "2021-05-05T19:18:32+00:00"
+            "time": "2022-10-16T21:03:17+00:00"
         },
         {
             "name": "phpactor/language-server",
-            "version": "3.2.0",
+            "version": "3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpactor/language-server.git",
-                "reference": "221ebc68d865b7ccc3f496755c18fb31f822052e"
+                "reference": "d20395c182c492ab606f9135ad1fe707620e9306"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpactor/language-server/zipball/221ebc68d865b7ccc3f496755c18fb31f822052e",
-                "reference": "221ebc68d865b7ccc3f496755c18fb31f822052e",
+                "url": "https://api.github.com/repos/phpactor/language-server/zipball/d20395c182c492ab606f9135ad1fe707620e9306",
+                "reference": "d20395c182c492ab606f9135ad1fe707620e9306",
                 "shasum": ""
             },
             "require": {
@@ -1753,9 +1754,9 @@
             "description": "Generic Language Server Platform",
             "support": {
                 "issues": "https://github.com/phpactor/language-server/issues",
-                "source": "https://github.com/phpactor/language-server/tree/3.2.0"
+                "source": "https://github.com/phpactor/language-server/tree/3.3.0"
             },
-            "time": "2022-08-04T14:40:19+00:00"
+            "time": "2022-10-02T16:25:31+00:00"
         },
         {
             "name": "phpactor/language-server-protocol",
@@ -1933,12 +1934,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpactor/phpactor.git",
-                "reference": "c102bef07614c48a53fb552a1fd56663b5a1949d"
+                "reference": "8cd4fe14bc3b2bf0401c56708ce2b6e3bcbd7754"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpactor/phpactor/zipball/c102bef07614c48a53fb552a1fd56663b5a1949d",
-                "reference": "c102bef07614c48a53fb552a1fd56663b5a1949d",
+                "url": "https://api.github.com/repos/phpactor/phpactor/zipball/8cd4fe14bc3b2bf0401c56708ce2b6e3bcbd7754",
+                "reference": "8cd4fe14bc3b2bf0401c56708ce2b6e3bcbd7754",
                 "shasum": ""
             },
             "require": {
@@ -1949,13 +1950,13 @@
                 "dnoegel/php-xdg-base-dir": "^0.1.0",
                 "ext-pcntl": "*",
                 "jetbrains/phpstorm-stubs": "dev-master",
-                "microsoft/tolerant-php-parser": "^0.1.0",
+                "microsoft/tolerant-php-parser": "dev-main",
                 "monolog/monolog": "^1.23",
                 "php": "^7.4 || ^8.0",
                 "phpactor/amp-fswatch": "^0.2.0",
                 "phpactor/class-to-file": "~0.4.3",
                 "phpactor/container": "^2.0.0",
-                "phpactor/language-server": "^3.2.0",
+                "phpactor/language-server": "^3.3.0",
                 "phpactor/language-server-protocol": "~0.3.0",
                 "phpactor/map-resolver": "^1.5.0",
                 "phpactor/phly-event-dispatcher": "^2.0.0",
@@ -2044,7 +2045,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-09-18T14:00:29+00:00"
+            "time": "2022-10-20T06:56:25+00:00"
         },
         {
             "name": "psr/container",
@@ -2446,12 +2447,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "3f97f6c7b7e26848a90c0c0cfb91eeb2bb8618be"
+                "reference": "ae0727b4b524bebd61096c967d130bd12d6c0f22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/3f97f6c7b7e26848a90c0c0cfb91eeb2bb8618be",
-                "reference": "3f97f6c7b7e26848a90c0c0cfb91eeb2bb8618be",
+                "url": "https://api.github.com/repos/symfony/console/zipball/ae0727b4b524bebd61096c967d130bd12d6c0f22",
+                "reference": "ae0727b4b524bebd61096c967d130bd12d6c0f22",
                 "shasum": ""
             },
             "require": {
@@ -2537,7 +2538,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-08-26T13:50:20+00:00"
+            "time": "2022-10-18T13:11:10+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -2612,12 +2613,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "2d67c1f9a1937406a9be3171b4b22250c0a11447"
+                "reference": "ac09569844a9109a5966b9438fc29113ce77cf51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/2d67c1f9a1937406a9be3171b4b22250c0a11447",
-                "reference": "2d67c1f9a1937406a9be3171b4b22250c0a11447",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/ac09569844a9109a5966b9438fc29113ce77cf51",
+                "reference": "ac09569844a9109a5966b9438fc29113ce77cf51",
                 "shasum": ""
             },
             "require": {
@@ -2668,7 +2669,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-08-02T13:48:16+00:00"
+            "time": "2022-09-21T19:53:16+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -3476,12 +3477,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "2900c668a32138a34118740de3e4d5a701801f53"
+                "reference": "089e7237497fae7a9c404d0c3aeb8db3254733e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/2900c668a32138a34118740de3e4d5a701801f53",
-                "reference": "2900c668a32138a34118740de3e4d5a701801f53",
+                "url": "https://api.github.com/repos/symfony/string/zipball/089e7237497fae7a9c404d0c3aeb8db3254733e4",
+                "reference": "089e7237497fae7a9c404d0c3aeb8db3254733e4",
                 "shasum": ""
             },
             "require": {
@@ -3554,7 +3555,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-09-01T01:52:16+00:00"
+            "time": "2022-10-05T15:16:54+00:00"
         },
         {
             "name": "symfony/yaml",
@@ -3562,12 +3563,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "7a3aa21ac8ab1a96cc6de5bbcab4bc9fc943b18c"
+                "reference": "e83fe9a72011f07c662da46a05603d66deeeb487"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/7a3aa21ac8ab1a96cc6de5bbcab4bc9fc943b18c",
-                "reference": "7a3aa21ac8ab1a96cc6de5bbcab4bc9fc943b18c",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/e83fe9a72011f07c662da46a05603d66deeeb487",
+                "reference": "e83fe9a72011f07c662da46a05603d66deeeb487",
                 "shasum": ""
             },
             "require": {
@@ -3629,7 +3630,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-08-02T15:52:22+00:00"
+            "time": "2022-10-03T15:15:50+00:00"
         },
         {
             "name": "thecodingmachine/safe",
@@ -3776,12 +3777,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "226b73cff0e030a0d4e499a3656de38504f14307"
+                "reference": "0986e5468209a40279b1ae60b27be84844424907"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/226b73cff0e030a0d4e499a3656de38504f14307",
-                "reference": "226b73cff0e030a0d4e499a3656de38504f14307",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/0986e5468209a40279b1ae60b27be84844424907",
+                "reference": "0986e5468209a40279b1ae60b27be84844424907",
                 "shasum": ""
             },
             "require": {
@@ -3848,7 +3849,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-08-14T13:28:40+00:00"
+            "time": "2022-10-15T05:53:42+00:00"
         },
         {
             "name": "webmozart/assert",
