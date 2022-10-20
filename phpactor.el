@@ -61,7 +61,7 @@
 ;; Custom variables
 ;;;###autoload
 (defgroup phpactor nil
-  "PHP refactoring and introspection"
+  "PHP refactoring and introspection."
   :prefix "phpactor-"
   :group 'tools
   :group 'php)
@@ -419,20 +419,15 @@ have to ensure a compatible version of phpactor is used."
 
 (cl-defun phpactor-action-file-references (&key file_references)
   "Receives a list of FILE_REFERENCES for information purpose."
-  (setq-local phpactor-references file_references)
-  (message "Phpactor changed %d references(s), use phpactor-list-references to check them" (length file_references)))
+  (setq phpactor-references file_references)
+  (let ((len (length file_references)))
+    (message "Phpactor changed %d %s, use phpactor-list-references to check them"
+             len
+             (if (= len 1) "reference" "references"))))
 
 ;;; Listing references in this buffer
 (defconst phpactor-references-buffer "*Phpactor references*"
   "The name of the buffer to list referenced files.")
-
-(defconst phpactor-references-list-col1-width 60)
-
-(defun phpactor-truncate-left (string width)
-  "Truncate STRING to WIDTH starting from the end, prepending ..."
-  (if (> (length string) width)
-      (concat "..." (substring string (- 3 width)))
-    string))
 
 (defun phpactor-list-references ()
   "View references in a new buffer."
@@ -443,10 +438,11 @@ have to ensure a compatible version of phpactor is used."
     (setq buffer-read-only nil)
     (erase-buffer)
     (dolist (file-reference current-references)
-      (let ((path (plist-get file-reference :file)))
+      (let ((path (plist-get file-reference :file))
+            (working-dir (phpactor-get-working-dir)))
         (dolist (reference (plist-get file-reference :references))
           (when path
-            (insert-text-button (phpactor-truncate-left path phpactor-references-list-col1-width)
+            (insert-text-button (file-relative-name path working-dir)
                                 'action (lambda (_) (find-file path) (goto-char (plist-get reference :start)))
                                 'help-echo "mouse-2: visit this file in other window")
             (insert ": ")
