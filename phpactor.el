@@ -198,12 +198,12 @@ have to ensure a compatible version of phpactor is used."
     (or (php-project-get-root-dir) default-directory))))
 
 (defun phpactor--expand-local-file-name (name)
-  "Expand file name by `NAME'."
+  "Expand file name by NAME."
   ;; TODO: Support TRAMP
   (expand-file-name name))
 
 (defun phpactor--make-command-string (sub-command &rest args)
-  "Return command string by `SUB-COMMAND' and `ARGS'."
+  "Return command string by SUB-COMMAND and ARGS."
   (declare (indent 1))
   (mapconcat 'shell-quote-argument
              (cons phpactor-executable
@@ -228,7 +228,7 @@ have to ensure a compatible version of phpactor is used."
 
 ;; Phpactor RPC
 (defun phpactor--rpc (action arguments)
-  "Execute Phpactor `ACTION' subcommand with `ARGUMENTS'."
+  "Execute Phpactor ACTION subcommand with ARGUMENTS."
   (phpactor--add-history 'phpactor--rpc (list action arguments))
   (let ((json (phpactor--serialize-json (list :action action
                                               :parameters arguments)))
@@ -247,7 +247,7 @@ have to ensure a compatible version of phpactor is used."
       (phpactor--parse-json output))))
 
 (defun phpactor--rpc-async (action arguments callback)
-  "Async execute Phpactor `ACTION' subcommand with `ARGUMENTS' and calling `CALLBACK' after process."
+  "Async execute Phpactor ACTION subcommand with ARGUMENTS and calling CALLBACK after process."
   (declare (indent 2))
   (phpactor--add-history 'phpactor--rpc-async (list action arguments))
   (let* ((json (phpactor--serialize-json (list :action action
