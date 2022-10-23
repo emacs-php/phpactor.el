@@ -266,7 +266,8 @@ have to ensure a compatible version of phpactor is used."
   (with-current-buffer buffer
     (goto-char (point-min))
     (if (and phpactor-use-native-json
-             (fboundp 'json-serialize))
+             (eval-when-compile (and (fboundp 'json-serialize)
+                                     (fboundp 'json-parse-buffer))))
         (with-no-warnings
           (json-parse-buffer :object-type 'plist :array-type 'list))
       (let ((json-object-type 'plist) (json-array-type 'list))
