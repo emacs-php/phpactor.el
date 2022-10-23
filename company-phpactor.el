@@ -30,6 +30,9 @@
 
 ;;; Code:
 (require 'phpactor)
+(eval-when-compile
+  (require 'php-mode nil t)
+  (defvar php-mode-syntax-table))
 
 (declare-function company-begin-backend "ext:company" (backend &optional callback))
 
