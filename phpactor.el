@@ -77,10 +77,14 @@
   "If non-nil, use native json parsing if available."
   :group 'phpactor
   :type 'boolean)
+
+(defcustom phpactor-history-size nil
+  "If non-NIL, keep RPC command history."
+  :group 'phpactor
+  :type '(choice nil integer))
 
 ;; Variables
 (defvar phpactor--debug nil)
-(defvar phpactor-history-size 100)
 (defvar phpactor-history-ring nil)
 (defvar phpactor-smart-jump-initialized nil)
 
@@ -211,10 +215,11 @@ have to ensure a compatible version of phpactor is used."
              " "))
 
 (defun phpactor--add-history (name entry)
-  "Add Phpactor history by `NAME' and `ENTRY'."
-  (unless phpactor-history-ring
-    (setq phpactor-history-ring (make-ring phpactor-history-size)))
-  (ring-insert phpactor-history-ring (cons name entry)))
+  "Add Phpactor history by NAME and ENTRY."
+  (when phpactor-history-size
+    (unless phpactor-history-ring
+      (setq phpactor-history-ring (make-ring phpactor-history-size)))
+    (ring-insert phpactor-history-ring (cons name entry))))
 
 (defun phpactor-config:dump ()
   "Execute Phpactor `config:dump' sub command."
