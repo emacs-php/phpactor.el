@@ -321,6 +321,7 @@ have to ensure a compatible version of phpactor is used."
 ;; Helper functions:
 (cl-defun phpactor--action-input-parameters (value-type &key default label choices type multi keyMap)
   "Request user input by VALUE-TYPE, DEFAULT, LABEL, CHOICES, TYPE, MULTI.  Unuse KEYMAP."
+  (unless (eval-when-compile t) keyMap)
   (if multi
       (cl-loop for input = (phpactor--action-input-parameters-1
                             value-type default label choices type)
