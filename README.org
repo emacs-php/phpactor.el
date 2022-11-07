@@ -10,6 +10,14 @@ This package is Emacs interface to [[http://phpactor.github.io/phpactor/][Phpact
 <a href="http://melpa.org/#/phpactor"><img alt="MELPA: phpactor" src="http://melpa.org/packages/phpactor-badge.svg"></a>
 <a href="http://stable.melpa.org/#/phpactor"><img alt="MELPA stable: phpactor" src="http://stable.melpa.org/packages/phpactor-badge.svg"></a>
 #+END_HTML
+** Consider moving to LSP
+Phpactor is a language server that supports the LSP Protocol and its own RPC protocol.  This package only implements Phpactor's own RPC protocol.
+
+They won't be removed immediately, but the LSP provides a comprehensive better user experience.
+This package will continue to be maintained and we will follow any changes to the RPC protocol.
+
+Please read [[https://github.com/emacs-php/php-mode/wiki/LSP-Support][LSP Support · emacs-php/php-mode Wiki]] for LSP clients in PHP.
+
 ** Installation
 
 *Requirement*: You need to have composer globally installed.
