@@ -27,38 +27,43 @@
 (require 'buttercup)
 (require 'phpactor)
 
-(defun buffer-string* (buffer)
-  (with-current-buffer buffer
-    (buffer-substring-no-properties (point-min) (point-max)  )))
-
 (describe "var: `phpactor-history-size'"
   (it "should have default value"
-    (expect phpactor-history-size :to-be 100)
-    ))
+    (expect phpactor-history-size :to-be nil)))
 
 (describe "var: `phpactor-install-directory'"
   (it "should have some value"
-    (display-warning 'buttercup (format "phpactor install folder is : %s" phpactor-install-directory) :debug)
-    (expect phpactor-install-directory :not :to-be nil)
-    ))
+    (display-warning 'buttercup
+                     (format "phpactor install directory is: %s" phpactor-install-directory)
+                     :debug)
+    (expect phpactor-install-directory :not :to-be nil)))
 
-(describe ": `phpactor--lisp-directory'" ;; I prefer having a test as I'm not that really fine with it being nil
+(describe ": `phpactor--lisp-directory'"
+  ;; I prefer having a test as I'm not that really fine with it being nil
   (it "should have some value"
-      (display-warning 'buttercup (format "phpactor lisp folder is : %s" phpactor--lisp-directory) :debug)
-      (expect phpactor--lisp-directory :not :to-be nil)
-))
+    (display-warning 'buttercup
+                     (format "phpactor lisp directory is: %s" phpactor--lisp-directory)
+                     :debug)
+    (expect phpactor--lisp-directory :not :to-be nil)))
 
 (describe "defun: `phpactor-install-or-update'"
   (it "should find phpactor installed under phpactor-install-directory :"
-    (let ((timeout-duration 300))
-      (phpactor-install-or-update)
-      (with-timeout
-          (timeout-duration (display-warning 'buttercup (format "Error : timeout waiting %s seconds for composer install to finish" timeout-duration)))
-        (while (not (file-exists-p (f-join phpactor-install-directory "vendor/bin/phpactor")))
+    (let* ((phpactor-install-directory default-directory)
+           (timeout-duration 300)
+           (error-timeout (format "Error: timeout waiting %s seconds for composer install to finish"
+                                  timeout-duration))
+           (path-to-phpactor (expand-file-name "vendor/bin/phpactor" phpactor-install-directory))
+           (compilation-buffer (phpactor-install-or-update)))
+      (expect (executable-find "composer") :not :to-be nil)
+      (with-timeout (timeout-duration (display-warning 'buttercup error-timeout))
+        (while (not (eq 'run (process-status (get-buffer-process compilation-buffer))))
           (sleep-for 1))
         (sleep-for 1))
-      (expect phpactor-executable :to-equal (f-join phpactor-install-directory "vendor/bin/phpactor"))
-      )))
+      (princ "\n--------------------\n")
+      (princ (with-current-buffer compilation-buffer
+               (buffer-substring (point-min) (point-max))))
+      (princ "--------------------\n\n")
+      (expect (phpactor--find-executable) :to-equal path-to-phpactor))))
 
 (describe "defun: `phpactor-get-working-dir'"
   (it "should rely on php-project"
@@ -67,9 +72,7 @@
     (with-current-buffer (find-file "tests/src/Book.php")
       ;; (message "phpactor-working-dir is : %s" (php-project-get-root-dir))
       (phpactor-get-working-dir)
-      (expect 'php-project-get-root-dir :to-have-been-called)
-      )
-    ))
+      (expect 'php-project-get-root-dir :to-have-been-called))))
 
 (provide 'test-sanity)
 ;;; test-sanity.el ends here
