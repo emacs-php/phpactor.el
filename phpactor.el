@@ -176,11 +176,13 @@ have to ensure a compatible version of phpactor is used."
                              (file-exists-p (expand-file-name "composer.json" phpactor--lisp-directory))
                              (file-exists-p (expand-file-name "composer.lock" phpactor--lisp-directory)))
                         phpactor--lisp-directory
-                      phpactor--remote-composer-file-url-dir)))
+                      phpactor--remote-composer-file-url-dir))
+         (php-version (php-runtime-expr "PHP_VERSION")))
     (unless (file-directory-p phpactor-install-directory)
       (make-directory phpactor-install-directory))
-    (when (version< (php-runtime-expr "PHP_VERSION") "7.4.0")
-      (setq directory (concat directory "/php73")))
+    (cond
+     ((version< php-version "7.4.0") (setq directory (concat directory "/php73")))
+     ((version< php-version "8.0.0") (setq directory (concat directory "/php74"))))
     ;; Create .gitignore to prevent unnecessary files from being copied to GitHub
     (unless (file-exists-p (expand-file-name ".gitignore" phpactor-install-directory))
       (f-write-text "*\n" 'utf-8 (expand-file-name ".gitignore" phpactor-install-directory)))
