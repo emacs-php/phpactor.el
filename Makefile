@@ -1,39 +1,23 @@
 EMACS ?= emacs
 CASK ?= cask
-ELS = phpactor.el company-phpactor.el
-AUTOLOADS = phpactor-autoloads.el
+EASK ?= eask
 ELCS = $(ELS:.el=.elc)
 
-%.elc: %.el
-	$(EMACS) -Q -batch -L . --eval \
-	"(let ((default-directory (expand-file-name \".cask\" default-directory))) \
-	   (require 'package) \
-	   (normal-top-level-add-subdirs-to-load-path))" \
-	-f package-initialize -f batch-byte-compile $<
+compile:
+	$(EASK) compile
 
-all: .cask $(ELCS) autoloads
+all: .eask $(ELCS) autoloads
 
-autoloads: $(AUTOLOADS)
+autoloads:
+	$(EASK) generate autoloads
 
-$(AUTOLOADS): $(ELCS)
-	$(EMACS) -Q -batch -L . --eval \
-	"(progn \
-	   (require 'package) \
-	   (normal-top-level-add-subdirs-to-load-path) \
-	   (package-generate-autoloads \"phpactor\" default-directory))"
+.eask: Eask
+	$(EASK) install-deps --dev
 
-.cask: Cask
-	$(CASK) install
-
-test: .cask $(ELCS)
-	$(EMACS) -Q -batch -L . --eval \
-	"(let ((default-directory (expand-file-name \".cask\" default-directory))) \
-	   (normal-top-level-add-subdirs-to-load-path) \
-           (require 'buttercup))" \
-	--eval "(setq warning-minimum-log-level :debug)" \
-	-f buttercup-run-discover
+test: .eask $(ELCS)
+	$(EASK) test buttercup
 
 clean:
-	rm -f $(ELCS) $(AUTOLOADS)
+	$(EASK) clean all
 
 .PHONY: all autoloads clean test
