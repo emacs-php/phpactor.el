@@ -1,6 +1,8 @@
 *.elc
 *.rej
 /.cask
+/.eask
+/dist
 /flycheck*
 /phpactor-autoloads.el
 vendor
