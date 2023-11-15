@@ -205,9 +205,11 @@ have to ensure a compatible version of phpactor is used."
     (unless (file-exists-p (expand-file-name ".gitignore" phpactor-install-directory))
       (write-region "*\n" nil (expand-file-name ".gitignore" phpactor-install-directory) nil :silent))
     (if phar-available
-        (php-runtime-expr (format "copy(%s, %s)"
-                                  (php-runtime-quote-string phpactor-phar-download-url)
-                                  (php-runtime-quote-string (expand-file-name "phpactor.phar" phpactor-install-directory))))
+        (let ((phar-file (expand-file-name "phpactor.phar" phpactor-install-directory)))
+          (php-runtime-expr (format "copy(%s, %s)"
+                                    (php-runtime-quote-string phpactor-phar-download-url)
+                                    (php-runtime-quote-string phar-file)))
+          (chmod phar-file #o755))
       (cl-loop for file in '("composer.json" "composer.lock")
                for code = (format "copy(%s, %s)"
                                   ;; Do not use `f-join' as this string may be a URL.
