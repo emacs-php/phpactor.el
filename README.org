@@ -141,7 +141,7 @@ We will assume your emacs configuration is stored under "~/.emacs.d/"
 
 *** Where is phpactor installed
 
-    After running `phpactor-install-or-update`, phpactor should be installed under "~/.emacs.d/phpactor/".
+    After running ~phpactor-install-or-update~, Phpactor should be installed under "~/.emacs.d/phpactor/".
     And the phpactor executable should be "~/.emacs.d/phpactor/vendor/bin/phpactor"
 
 *** Contribute to phpactor

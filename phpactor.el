@@ -7,7 +7,7 @@
 ;; Created: 8 Apr 2018
 ;; Version: 0.1.0
 ;; Keywords: tools, php
-;; Package-Requires: ((emacs "25.1") (f "0.17") (php-runtime "0.2") (composer "0.2.0") (async "1.9.3"))
+;; Package-Requires: ((emacs "25.1") (php-runtime "0.2") (composer "0.2.0") (async "1.9.3"))
 ;; URL: https://github.com/emacs-php/phpactor.el
 ;; License: GPL-3.0-or-later
 
@@ -46,7 +46,6 @@
 
 ;;; Code:
 (require 'cl-lib)
-(require 'f)
 (require 'json)
 (require 'php-project)
 (require 'php-runtime)
@@ -71,17 +70,33 @@
   (eval-when-compile
     (expand-file-name (locate-user-emacs-file "phpactor/")))
   "Directory for setup Phactor.  (default `~/.emacs.d/phpactor/')."
-  :type 'directory)
+  :type 'directory
+  :group 'phpactor)
 
 (defcustom phpactor-use-native-json t
   "If non-nil, use native json parsing if available."
-  :group 'phpactor
-  :type 'boolean)
+  :type 'boolean
+  :group 'phpactor)
 
 (defcustom phpactor-history-size nil
   "If non-NIL, keep RPC command history."
-  :group 'phpactor
-  :type '(choice nil integer))
+  :type '(choice nil integer)
+  :group 'phpactor)
+
+(defconst phpactor-known-latest-version "2023.09.24.0")
+
+(defcustom phpactor-install-method 'phar
+  "Symbol of install Phpactor method."
+  :type '(choice (const :tag "Download Phar file" phar)
+                 (const :tag "Install with Composer" composer))
+  :group 'phpactor)
+
+(defcustom phpactor-phar-download-url
+  (eval-when-compile
+    (format "https://github.com/phpactor/phpactor/releases/download/%s/phpactor.phar" phpactor-known-latest-version))
+  "URL for Phpactor's Phar archive download."
+  :type 'string
+  :group 'phpactor)
 
 ;; Variables
 (defvar phpactor--debug nil)
@@ -124,11 +139,12 @@ of GitHub.")
 
 (defun phpactor--find-executable ()
   "Return path to Phpactor executable file."
-  (let ((vendor-executable (f-join phpactor-install-directory "vendor/bin/phpactor")))
-    (if (file-exists-p vendor-executable)
-        vendor-executable
-      (warn "Phpactor not found.  Please run `phpactor-install-or-update' command")
-      nil)))
+  (let ((phar-file (expand-file-name "phpactor.phar" phpactor-install-directory))
+        (vendor-executable (expand-file-name "vendor/bin/phpactor" phpactor-install-directory)))
+    (cond
+     ((file-exists-p phar-file) phar-file)
+     ((file-exists-p vendor-executable) vendor-executable)
+     ((warn "Phpactor not found.  Please run `phpactor-install-or-update' command")))))
 
 (defcustom phpactor-executable (phpactor--find-executable)
   "Path to phpactor executable.
@@ -177,23 +193,29 @@ have to ensure a compatible version of phpactor is used."
                              (file-exists-p (expand-file-name "composer.lock" phpactor--lisp-directory)))
                         phpactor--lisp-directory
                       phpactor--remote-composer-file-url-dir))
-         (php-version (php-runtime-expr "PHP_VERSION")))
+         (php-version (php-runtime-expr "PHP_VERSION"))
+         phar-available)
     (unless (file-directory-p phpactor-install-directory)
       (make-directory phpactor-install-directory))
     (cond
      ((version< php-version "7.4.0") (setq directory (concat directory "/php73")))
-     ((version< php-version "8.0.0") (setq directory (concat directory "/php74"))))
+     ((version< php-version "8.0.0") (setq directory (concat directory "/php74")))
+     (t (setq phar-available (eq phpactor-install-method 'phar))))
     ;; Create .gitignore to prevent unnecessary files from being copied to GitHub
     (unless (file-exists-p (expand-file-name ".gitignore" phpactor-install-directory))
-      (f-write-text "*\n" 'utf-8 (expand-file-name ".gitignore" phpactor-install-directory)))
-    (cl-loop for file in '("composer.json" "composer.lock")
-             for code = (format "copy(%s, %s)"
-                                ;; Do not use `f-join' as this string may be a URL.
-                                (php-runtime-quote-string (concat directory file))
-                                (php-runtime-quote-string (concat phpactor-install-directory file)))
-             do (php-runtime-expr code))
-    (add-hook 'compilation-finish-functions 'phpactor-reset-executable)
-    (composer nil "install" "--no-dev")))
+      (write-region "*\n" nil (expand-file-name ".gitignore" phpactor-install-directory) nil :silent))
+    (if phar-available
+        (php-runtime-expr (format "copy(%s, %s)"
+                                  (php-runtime-quote-string phpactor-phar-download-url)
+                                  (php-runtime-quote-string (expand-file-name "phpactor.phar" phpactor-install-directory))))
+      (cl-loop for file in '("composer.json" "composer.lock")
+               for code = (format "copy(%s, %s)"
+                                  ;; Do not use `f-join' as this string may be a URL.
+                                  (php-runtime-quote-string (concat directory file))
+                                  (php-runtime-quote-string (concat phpactor-install-directory file)))
+               do (php-runtime-expr code))
+      (add-hook 'compilation-finish-functions 'phpactor-reset-executable)
+      (composer nil "install" "--no-dev"))))
 
 (defalias 'phpactor-update #'phpactor-install-or-update)
 
