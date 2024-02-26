@@ -1,6 +1,6 @@
 ;;; phpactor.el --- Interface to Phpactor            -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2020  Friends of Emacs-PHP development
+;; Copyright (C) 2024  Friends of Emacs-PHP development
 
 ;; Author: USAMI Kenta <tadsan@zonu.me>
 ;;         Mikael Kermorgant <mikael@kgtech.fi>
@@ -54,6 +54,7 @@
 (require 'subr-x)
 (require 'composer)
 (require 'async)
+(require 'xref)
 (require 'smart-jump nil t)
 
 (declare-function smart-jump-register "ext:smart-jump")
@@ -176,12 +177,13 @@ have to ensure a compatible version of phpactor is used."
                              (file-exists-p (expand-file-name "composer.lock" phpactor--lisp-directory)))
                         phpactor--lisp-directory
                       phpactor--remote-composer-file-url-dir))
-         (php-version (php-runtime-expr "PHP_VERSION")))
+         (php-version (string-to-number (php-runtime-expr "PHP_VERSION_ID"))))
     (unless (file-directory-p phpactor-install-directory)
       (make-directory phpactor-install-directory))
     (cond
-     ((version< php-version "7.4.0") (setq directory (concat directory "/php73")))
-     ((version< php-version "8.0.0") (setq directory (concat directory "/php74"))))
+     ((< php-version 70400) (setq directory (concat directory "/php73")))
+     ((< php-version 80000) (setq directory (concat directory "/php74")))
+     ((< php-version 80100) (setq directory (concat directory "/php80"))))
     ;; Create .gitignore to prevent unnecessary files from being copied to GitHub
     (unless (file-exists-p (expand-file-name ".gitignore" phpactor-install-directory))
       (f-write-text "*\n" 'utf-8 (expand-file-name ".gitignore" phpactor-install-directory)))
