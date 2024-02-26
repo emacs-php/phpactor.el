@@ -55,9 +55,9 @@ Here we create a temporary syntax table in order to add $ to symbols."
     (modify-syntax-entry ?\$ "_" $temp-syn-table)
 
     (with-syntax-table $temp-syn-table
-      (if (looking-at "\\_>")
-          (buffer-substring (point) (save-excursion (skip-syntax-backward "w_")
-                                                    (point)))
+      (if (looking-at-p "\\_>")
+          (buffer-substring-no-properties (point) (save-excursion (skip-syntax-backward "w_.")
+                                                                  (point)))
         (unless (and (char-after) (memq (char-syntax (char-after)) '(?w ?_)))
           "")))))
 
