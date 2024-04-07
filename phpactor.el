@@ -48,7 +48,7 @@
 (require 'cl-lib)
 (require 'f)
 (require 'json)
-(require 'php-project)
+(require 'php-project nil t)
 (require 'php-runtime)
 (require 'ring)
 (require 'subr-x)
@@ -57,6 +57,7 @@
 (require 'xref)
 (require 'smart-jump nil t)
 
+(declare-function php-project-get-root-dir "ext:php-project")
 (declare-function smart-jump-register "ext:smart-jump")
 
 ;; Custom variables
@@ -202,7 +203,11 @@ have to ensure a compatible version of phpactor is used."
   "Return working directory of Phpactor."
   (directory-file-name
    (expand-file-name
-    (or (php-project-get-root-dir) default-directory))))
+    (or (if (fboundp 'php-project-get-root-dir)
+            (php-project-get-root-dir)
+          (or (locate-dominating-file default-directory ".phpactor.yml")
+              (locate-dominating-file default-directory "composer.json")))
+        default-directory))))
 
 (defun phpactor--expand-local-file-name (name)
   "Expand file name by NAME."
