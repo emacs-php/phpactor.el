@@ -68,8 +68,7 @@
 
 ;;;###autoload
 (defcustom phpactor-install-directory
-  (eval-when-compile
-    (expand-file-name (locate-user-emacs-file "phpactor/")))
+  (expand-file-name (locate-user-emacs-file "phpactor/"))
   "Directory for setup Phactor.  (default `~/.emacs.d/phpactor/')."
   :type 'directory)
 
