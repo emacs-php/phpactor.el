@@ -4,6 +4,7 @@
     "type": "project",
     "license": "GPL-3.0-or-later",
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "authors": [
         {
             "name": "USAMI Kenta",
@@ -18,7 +19,7 @@
         "psr-4": {"EmacsPHP\\Phpactor\\Sample\\": "tests/src/"}
     },
     "require": {
-        "phpactor/phpactor": "dev-master#0f8c7ab"
+        "phpactor/phpactor": "dev-master#cc28b51"
     },
     "config": {
         "classmap-authoritative": true,
