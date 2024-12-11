@@ -690,7 +690,7 @@ function."
 (defun phpactor-navigate ()
   "Execute Phpactor RPC navigate command."
   (interactive)
-  (let ((arguments (phpactor--command-argments :source_path :destination)))
+  (let ((arguments (phpactor--command-argments :source_path)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "navigate" arguments))))
 
 ;;;###autoload
