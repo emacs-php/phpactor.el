@@ -19,7 +19,7 @@
         "psr-4": {"EmacsPHP\\Phpactor\\Sample\\": "tests/src/"}
     },
     "require": {
-        "phpactor/phpactor": "dev-master#1860cb6164364681ded2f209659e6f82e4613571"
+        "phpactor/phpactor": "^2025.03.28"
     },
     "config": {
         "classmap-authoritative": true,
