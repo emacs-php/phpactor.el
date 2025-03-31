@@ -178,7 +178,10 @@ have to ensure a compatible version of phpactor is used."
                              (file-exists-p (expand-file-name "composer.lock" phpactor--lisp-directory)))
                         phpactor--lisp-directory
                       phpactor--remote-composer-file-url-dir))
-         (php-version (string-to-number (php-runtime-expr "PHP_VERSION_ID"))))
+         (php-version (progn
+                        (unless (file-directory-p phpactor-install-directory)
+                          (mkdir phpactor-install-directory))
+                        (string-to-number (php-runtime-expr "PHP_VERSION_ID")))))
     (unless (file-directory-p phpactor-install-directory)
       (make-directory phpactor-install-directory))
     (cond
