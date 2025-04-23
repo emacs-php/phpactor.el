@@ -1,3 +1,5 @@
+;; -*- mode: eask; lexical-binding: t -*-
+
 (package "phpactor"
          "0.1.0"
          "Interface to Phpactor")
