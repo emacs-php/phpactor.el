@@ -1,13 +1,13 @@
 ;;; phpactor.el --- Interface to Phpactor            -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2024  Friends of Emacs-PHP development
+;; Copyright (C) 2025  Friends of Emacs-PHP development
 
 ;; Author: USAMI Kenta <tadsan@zonu.me>
 ;;         Mikael Kermorgant <mikael@kgtech.fi>
 ;; Created: 8 Apr 2018
 ;; Version: 0.1.0
 ;; Keywords: tools, php
-;; Package-Requires: ((emacs "25.1") (f "0.17") (php-runtime "0.2") (composer "0.2.0") (async "1.9.3"))
+;; Package-Requires: ((emacs "26.1") (f "0.17") (php-runtime "0.2") (composer "0.2.0") (async "1.9.3"))
 ;; URL: https://github.com/emacs-php/phpactor.el
 ;; License: GPL-3.0-or-later
 
@@ -92,6 +92,8 @@
 (defvar phpactor--buffer-name "*Phpactor*")
 (defvar phpactor-after-update-file-hook nil
   "Hook called after the file is updated by phpactor.")
+
+(defvar phpactor--index-buffer-name-template "*Phpactor index %s*")
 
 ;;; Constants
 (defconst phpactor-command-name "phpactor")
@@ -241,6 +243,47 @@ have to ensure a compatible version of phpactor is used."
          #'shell-command
        #'shell-command-to-string)
      (phpactor--make-command-string "config:dump"))))
+
+(defun phpactor-index-symbols-buffer (force-update)
+  "Run the Phpactor `index:search' command and return the buffer.
+If FORCE-UPDATE is non-nil (e.g., via a prefix argument > 1),
+regenerate the index and update the buffer.
+Otherwise, use cached results if the buffer already exists and is populated."
+  (interactive (list (> (prefix-numeric-value current-prefix-arg) 1)))
+  (let* ((default-directory (phpactor-get-working-dir))
+         (buf-name (format phpactor--index-buffer-name-template
+                           (abbreviate-file-name default-directory)))
+         (buf (get-buffer-create buf-name))
+         original-hash new-hash)
+    (with-current-buffer buf
+      (when (or force-update (zerop (buffer-size)))
+        (widen)
+        (setq original-hash (buffer-hash))
+        (erase-buffer)
+        (shell-command (phpactor--make-command-string "index:search") (current-buffer))
+        (sort-lines nil (point-min) (point-max))
+        (setq new-hash (buffer-hash))))
+    (prog1 buf
+      (when (called-interactively-p 'interactive)
+        (message "Buffer %S has %s" buf-name (cond ((null original-hash) "loaded from cache")
+                                                   ((equal original-hash (buffer-hash)) "updated")
+                                                   ("not updated")))))))
+
+(defun phpactor--index-symbols-as-alist ()
+  "Return result of Phpactor `index:search' command as alist."
+  (with-current-buffer (phpactor-index-symbols-buffer nil)
+    (goto-char (point-min))
+    (cl-loop while (re-search-forward "^\\(class\\|function\\|constant\\) # \\([^
+(]+\\)\\( (\\(?:interface\\|class\\|trait\\))\\)?$" nil t)
+             collect (cons (match-string 0) (match-string 2)))))
+
+(defun phpactor-index:query (identifier)
+  "Execute Phpactor `index:query' sub command with IDENTIFIER."
+  (interactive (list (let* ((alist (phpactor--index-symbols-as-alist))
+                            (input (completing-read "Identifier: " alist)))
+                       (alist-get input alist nil nil #'equal))))
+  (let ((default-directory (phpactor-get-working-dir)))
+    (compile (phpactor--make-command-string "index:query" identifier))))
 
 ;; Phpactor RPC
 (defun phpactor--rpc (action arguments)
