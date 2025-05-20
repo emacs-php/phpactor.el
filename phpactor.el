@@ -127,11 +127,18 @@ of GitHub.")
 
 (defun phpactor--find-executable ()
   "Return path to Phpactor executable file."
-  (let ((vendor-executable (f-join phpactor-install-directory "vendor/bin/phpactor")))
-    (if (file-exists-p vendor-executable)
-        vendor-executable
-      (warn "Phpactor not found.  Please run `phpactor-install-or-update' command")
-      nil)))
+  (let* (target
+         (vendor-executable
+          (cond
+           ((progn
+              (setq target (f-join phpactor-install-directory "vendor/bin/phpactor"))
+              (file-executable-p target))
+            target)
+           ((setq target (executable-find "phpactor"))
+            target))))
+    (unless vendor-executable
+      (warn "Phpactor not found.  Please run `phpactor-install-or-update' command"))
+    vendor-executable))
 
 (defcustom phpactor-executable (phpactor--find-executable)
   "Path to phpactor executable.
