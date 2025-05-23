@@ -481,7 +481,7 @@ Otherwise, use cached results if the buffer already exists and is populated."
   "Receives a list of FILE_REFERENCES for information purpose."
   (setq phpactor-references file_references)
   (let ((len (length file_references)))
-    (message "Phpactor changed %d %s, use phpactor-list-references to check them"
+    (message "Phpactor changed %d %s, visit `*Phpactor references*' buffer to check them"
              len
              (if (= len 1) "reference" "references"))))
 
@@ -489,9 +489,8 @@ Otherwise, use cached results if the buffer already exists and is populated."
 (defconst phpactor-references-buffer "*Phpactor references*"
   "The name of the buffer to list referenced files.")
 
-(defun phpactor-list-references ()
+(defun phpactor--list-references ()
   "View references in a new buffer."
-  (interactive)
   (let ((current-references phpactor-references))
     (switch-to-buffer (get-buffer-create phpactor-references-buffer))
     (set-window-dedicated-p (get-buffer-window) t)
@@ -843,7 +842,7 @@ If any region is active, it takes precedence over symbol at point."
   (interactive)
   (let ((arguments (phpactor--command-argments :source :path :offset)))
     (apply #'phpactor-action-dispatch (phpactor--rpc "references" arguments))
-    (phpactor-list-references)))
+    (phpactor--list-references)))
 
 ;;;###autoload
 (defun phpactor-replace-references ()
