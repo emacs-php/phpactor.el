@@ -7,7 +7,7 @@
 ;; Created: 8 Apr 2018
 ;; Version: 0.1.0
 ;; Keywords: tools, php
-;; Package-Requires: ((emacs "26.1") (f "0.17") (php-runtime "0.2") (composer "0.2.0") (async "1.9.3"))
+;; Package-Requires: ((emacs "26.1") (php-runtime "0.2") (composer "0.2.0") (async "1.9.3"))
 ;; URL: https://github.com/emacs-php/phpactor.el
 ;; License: GPL-3.0-or-later
 
@@ -46,7 +46,6 @@
 
 ;;; Code:
 (require 'cl-lib)
-(require 'f)
 (require 'json)
 (require 'php-project nil t)
 (require 'php-runtime)
@@ -127,7 +126,7 @@ of GitHub.")
 
 (defun phpactor--find-executable ()
   "Return path to Phpactor executable file."
-  (let ((vendor-executable (f-join phpactor-install-directory "vendor/bin/phpactor")))
+  (let ((vendor-executable (expand-file-name "vendor/bin/phpactor" phpactor-install-directory)))
     (if (file-exists-p vendor-executable)
         vendor-executable
       (warn "Phpactor not found.  Please run `phpactor-install-or-update' command")
@@ -192,7 +191,7 @@ have to ensure a compatible version of phpactor is used."
      ((< php-version 80100) (setq directory (concat directory "/php80"))))
     ;; Create .gitignore to prevent unnecessary files from being copied to GitHub
     (unless (file-exists-p (expand-file-name ".gitignore" phpactor-install-directory))
-      (f-write-text "*\n" 'utf-8 (expand-file-name ".gitignore" phpactor-install-directory)))
+      (write-region "*\n" nil (expand-file-name ".gitignore" phpactor-install-directory) nil :silent))
     (cl-loop for file in '("composer.json" "composer.lock")
              for code = (format "copy(%s, %s)"
                                 ;; Do not use `f-join' as this string may be a URL.

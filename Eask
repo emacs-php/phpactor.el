@@ -14,12 +14,10 @@
 (source 'melpa)
 (source 'gnu)
 
-(depends-on "emacs" "25.1")
-(depends-on "f")
+(depends-on "emacs" "26.1")
 (depends-on "php-runtime")
 (depends-on "composer")
 (depends-on "async")
-
 
 (development
  (depends-on "php-mode")
