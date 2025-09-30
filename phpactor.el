@@ -283,13 +283,30 @@ Otherwise, use cached results if the buffer already exists and is populated."
                        (alist-get input alist nil nil #'equal))))
   (let ((default-directory (phpactor-get-working-dir)))
     (compile (phpactor--make-command-string "index:query" identifier))))
+
+(defun phpactor-index:build (force-update)
+  "Execute Phpactor `index:build' sub command.
+If FORCE-UPDATE is non-NIL, purge index before building."
+  (interactive (list (> (prefix-numeric-value current-prefix-arg) 1)))
+  (let ((default-directory (phpactor-get-working-dir)))
+    (compile (if force-update
+                 (phpactor--make-command-string "index:build" "--reset")
+               (phpactor--make-command-string "index:build")))))
+
+(defun phpactor-file:info ()
+  "Execute Phpactor `index:build' sub command.
+If FORCE-UPDATE is non-NIL, purge index before building."
+  (interactive)
+  (let ((default-directory (phpactor-get-working-dir)))
+    (compile (phpactor--make-command-string "file:info" buffer-file-name))))
+
 
 ;; Phpactor RPC
 (defun phpactor--rpc (action arguments)
   "Execute Phpactor ACTION subcommand with ARGUMENTS."
   (phpactor--add-history 'phpactor--rpc (list action arguments))
   (let ((json (phpactor--serialize-json (list :action action
-                                              :parameters arguments)))
+                                      :parameters arguments)))
         (output (get-buffer-create "*Phpactor Output*"))
         (coding-system-for-write 'utf-8)
         (cwd (phpactor-get-working-dir)))
