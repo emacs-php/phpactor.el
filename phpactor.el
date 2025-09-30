@@ -546,16 +546,12 @@ If FORCE-UPDATE is non-NIL, purge index before building."
   (unless target
     (setq target "focused_window"))
 
-  (if (fboundp 'xref-push-marker-stack)
-      (xref-push-marker-stack)
-    (with-no-warnings
-      (ring-insert find-tag-marker-ring (point-marker))))
+  (xref-push-marker-stack)
 
   (let ((buf (find-buffer-visiting path)))
     (when (and force_reload buf)
-      (progn
-        (set-buffer buf)
-        (revert-buffer t t t))))
+      (set-buffer buf)
+      (revert-buffer t t t)))
   (find-file path)
   (goto-char (1+ (byte-to-position (max 1 offset)))))
 
