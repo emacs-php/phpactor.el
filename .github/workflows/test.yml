@@ -5,6 +5,11 @@ on:
     paths-ignore:
     - '**/*.md'
     - 'etc/*'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -19,7 +24,7 @@ jobs:
           - "27.2"
           - "28.2"
           - "29.4"
-          - "30.1"
+          - "30.2"
         experimental: [false]
         include:
           - os: ubuntu-latest
@@ -39,7 +44,7 @@ jobs:
         tools: composer
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - uses: actions/setup-python@v4
+    - uses: actions/setup-python@v6
       with:
         python-version: '3.10'
         architecture: 'x64'
@@ -49,7 +54,7 @@ jobs:
     - uses: emacs-eask/setup-eask@master
       with:
         version: 'snapshot'
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - name: Get Composer cache directory
       id: composer-cache
       run: |
