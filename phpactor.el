@@ -7,7 +7,7 @@
 ;; Created: 8 Apr 2018
 ;; Version: 0.1.0
 ;; Keywords: tools, php
-;; Package-Requires: ((emacs "26.1") (php-runtime "0.2") (composer "0.2.0") (async "1.9.3"))
+;; Package-Requires: ((emacs "27.1") (php-runtime "0.2") (composer "0.2.0") (async "1.9.3"))
 ;; URL: https://github.com/emacs-php/phpactor.el
 ;; License: GPL-3.0-or-later
 
