@@ -81,7 +81,7 @@
 (defcustom phpactor-history-size nil
   "If non-NIL, keep RPC command history."
   :group 'phpactor
-  :type '(choice nil integer))
+  :type '(choice (const :tag "Disabled" nil) integer))
 
 ;; Variables
 (defvar phpactor--debug nil)
@@ -266,8 +266,8 @@ Otherwise, use cached results if the buffer already exists and is populated."
     (prog1 buf
       (when (called-interactively-p 'interactive)
         (message "Buffer %S has %s" buf-name (cond ((null original-hash) "loaded from cache")
-                                                   ((equal original-hash (buffer-hash)) "updated")
-                                                   ("not updated")))))))
+                                                   ((equal original-hash new-hash) "not updated")
+                                                   ("updated")))))))
 
 (defun phpactor--index-symbols-as-alist ()
   "Return result of Phpactor `index:search' command as alist."
@@ -323,7 +323,8 @@ If FORCE-UPDATE is non-NIL, purge index before building."
       (phpactor--parse-json output))))
 
 (defun phpactor--rpc-async (action arguments callback)
-  "Async execute Phpactor ACTION subcommand with ARGUMENTS and calling CALLBACK after process."
+  "Async execute Phpactor ACTION subcommand with ARGUMENTS and calling
+CALLBACK after process."
   (declare (indent 2))
   (phpactor--add-history 'phpactor--rpc-async (list action arguments))
   (let* ((json (phpactor--serialize-json (list :action action
@@ -397,7 +398,8 @@ If FORCE-UPDATE is non-NIL, purge index before building."
 
 ;; Helper functions:
 (cl-defun phpactor--action-input-parameters (value-type &key default label choices type multi keyMap)
-  "Request user input by VALUE-TYPE, DEFAULT, LABEL, CHOICES, TYPE, MULTI.  Unuse KEYMAP."
+  "Request user input by VALUE-TYPE, DEFAULT, LABEL, CHOICES, TYPE, MULTI.
+Unuse KEYMAP."
   (unless (eval-when-compile t) keyMap)
   (if multi
       (cl-loop for input = (phpactor--action-input-parameters-1
@@ -407,7 +409,8 @@ If FORCE-UPDATE is non-NIL, purge index before building."
     (phpactor--action-input-parameters-1 value-type default label choices type)))
 
 (defun phpactor--action-input-parameters-1 (value-type default label choices type)
-  "Inner function of `phpactor--action-input-parameters' with VALUE-TYPE, DEFAULT, LABEL, CHOICES and TYPE."
+  "Inner function of `phpactor--action-input-parameters' with VALUE-TYPE,
+DEFAULT, LABEL, CHOICES and TYPE."
   (when (eq type :null)
     (setq type nil))
   (let ((use-dialog-box nil)
@@ -435,7 +438,7 @@ If FORCE-UPDATE is non-NIL, purge index before building."
   (cl-loop for (key value) on parameters by #'cddr
            when (or (null value) (eq :null value))
            do (setq parameters (plist-put parameters key (plist-get input-vars key))))
-  (cl-loop for (key value) on input-vars by #'cddr
+  (cl-loop for (key _) on input-vars by #'cddr
            unless (plist-member parameters key)
            do (setq parameters (plist-put parameters key (plist-get input-vars key))))
   parameters)
@@ -641,6 +644,8 @@ function."
 (cl-defun  phpactor-action-update-file-source (&key path source edits)
   "Replace the source code in the current file."
   (interactive)
+  ;; Phpactor also sends EDITS, but the new SOURCE is diffed instead.
+  (ignore edits)
   (let ((tmpfile (make-temp-file "phpactor" nil ".php"))
         (patchbuf (get-buffer-create "*Phpactor patch*"))
         (coding-system-for-read 'utf-8)

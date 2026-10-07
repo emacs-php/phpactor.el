@@ -102,7 +102,7 @@ Here we create a temporary syntax table in order to add $ to symbols."
           (funcall callback (company-phpactor--get-candidates suggestions)))))))
 
 ;;;###autoload
-(defun company-phpactor (command &optional arg &rest ignored)
+(defun company-phpactor (command &optional arg &rest _ignored)
   "`company-mode' completion backend for Phpactor."
   (interactive (list 'interactive))
   (when phpactor-executable
