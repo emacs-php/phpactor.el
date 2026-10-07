@@ -10,7 +10,7 @@
 
 ### Requirements
 
- * GNU Emacs 24.3+
+ * GNU Emacs 28.1+
  * PHP 7+
  * [Cask](https://github.com/cask/cask): Project management tool for Emacs
  * *(optional)* [Composer](https://getcomposer.org/): Dependency Manager for PHP
