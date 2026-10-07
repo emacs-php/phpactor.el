@@ -188,7 +188,8 @@ have to ensure a compatible version of phpactor is used."
     (cond
      ((< php-version 70400) (setq directory (concat directory "/php73")))
      ((< php-version 80000) (setq directory (concat directory "/php74")))
-     ((< php-version 80100) (setq directory (concat directory "/php80"))))
+     ((< php-version 80100) (setq directory (concat directory "/php80")))
+     ((< php-version 80200) (setq directory (concat directory "/php81"))))
     ;; Create .gitignore to prevent unnecessary files from being copied to GitHub
     (unless (file-exists-p (expand-file-name ".gitignore" phpactor-install-directory))
       (write-region "*\n" nil (expand-file-name ".gitignore" phpactor-install-directory) nil :silent))

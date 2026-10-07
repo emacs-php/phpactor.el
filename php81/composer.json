@@ -19,7 +19,7 @@
         "psr-4": {"EmacsPHP\\Phpactor\\Sample\\": "tests/src/"}
     },
     "require": {
-        "phpactor/phpactor": "2026.10.07.0"
+        "phpactor/phpactor": "dev-master#89c6cbb"
     },
     "config": {
         "classmap-authoritative": true,
@@ -31,7 +31,7 @@
         },
         "sort-packages": true,
         "platform": {
-            "php": "8.2.0"
+            "php": "8.1.0"
         },
         "allow-plugins": {
             "composer/package-versions-deprecated": true
